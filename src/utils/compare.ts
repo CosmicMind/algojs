@@ -34,9 +34,7 @@
  * @module Compare
  */
 
-export interface CompareFn<T> {
-  (a: T, b: T): number
-}
+export type CompareFn<T> = (a: T, b: T) => number
 
 export const stringCompare: CompareFn<string> = (a, b) =>
   a == b ? 0 : a > b ? 1 : -1

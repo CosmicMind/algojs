@@ -63,6 +63,7 @@
  *  has a small size `n`.
  */
 
+import { LinearSort } from '@/utils/sort'
 import { CompareFn } from '@/utils/compare'
 
 /**
@@ -76,7 +77,7 @@ import { CompareFn } from '@/utils/compare'
  * @param {T[]} data
  * @param {CompareFn<T>} fn
  */
-export const insertionSort = <T>(data: T[], fn: CompareFn<T>): void => {
+export const insertionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void => {
   for (let i = 1, n = data.length; i < n; ++i) {
     const key = data[i]
     let j = i - 1

@@ -36,6 +36,4 @@
 
 import { CompareFn } from '@/utils/compare'
 
-export interface LinearSort<T> {
-  (data: T[], fn: CompareFn<T>): void
-}
+export type LinearSort = <T>(data: T[], fn: CompareFn<T>) => void
