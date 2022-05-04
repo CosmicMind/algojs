@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export type {
-  CompareFn,
+export type { CompareFn } from '@/utils/compare'
+export {
   stringCompare,
   numericCompare,
   stringKeyCompare,
