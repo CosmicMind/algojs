@@ -1,50 +1,52 @@
 {
 	"name": "@cosmicverse/algo",
-	"version": "0.0.1-rc-a",
+	"version": "0.0.1-rc-c",
 	"description": "An algorithms and data structures library in TypeScript.",
 	"keywords": [],
 	"author": {
 		"name": "Daniel Jonathan",
 		"email": "daniel@cosmicverse.org"
 	},
-	"license" : "BSD-3-Clause",
+	"license": "BSD-3-Clause",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Cosmicverse/Algo.git"
 	},
-	"main": "src/index.ts",
-	"module": "dist/lib.es.js",
 	"type": "module",
-	"config": {
-		"main": "src/index.ts",
-		"module": "lib.es.js",
-		"tests": "lib.tests.mjs"
-	},
-	"directories": {
-		"lib": "src",
-		"test": "tests"
-	},
+	"main": "dist/lib.es.js",
+	"module": "dist/lib.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist",
+		"LICENSE",
+		"package.json",
+		"package-lock.json",
+		"README.md",
+		"tsconfig.json"
+	],
 	"scripts": {
+		"lint:run": "eslint . --ext .ts",
 		"test:build": "vite build --config vite.config.tests.js --mode development",
 		"test:watch": "vite build --config vite.config.tests.js --mode watch",
-		"test:run": "ava build/lib.tests.mjs",
+		"test:run": "ava dist/lib.es.tests.mjs",
 		"dev:build": "vite build --config vite.config.js --mode development",
 		"dev:watch": "vite build --config vite.config.js --mode watch",
-		"prod:build": "vite build --config vite.config.js --mode production",
-		"lint:run": "eslint . --ext .ts"
+		"package:build": "vite build --config vite.config.js --mode development",
+		"package:watch": "vite build --config vite.config.js --mode watch",
+		"package:publish": "npm publish --access public",
+		"prod:build": "vite build --config vite.config.js --mode production"
 	},
 	"devDependencies": {
-		"@types/node": "^17.0.26",
-		"@typescript-eslint/eslint-plugin": "^5.20.0",
-		"@typescript-eslint/parser": "^5.20.0",
+		"@types/node": "^17.0.31",
+		"@typescript-eslint/eslint-plugin": "^5.22.0",
+		"@typescript-eslint/parser": "^5.22.0",
 		"@vue/eslint-config-typescript": "^10.0.0",
 		"ava": "^4.2.0",
-		"eslint": "^8.14.0"
-	},
-	"dependencies": {
 		"dotenv": "^16.0.0",
+		"eslint": "^8.14.0",
 		"ts-node": "^10.7.0",
 		"tslib": "^2.4.0",
+		"vite-plugin-dts": "^1.1.1",
 		"vite-tsconfig-paths": "^3.4.1"
 	}
 }

@@ -64,7 +64,7 @@
  *                      {1, 2, 2, 3, 4, 8, 9, 10}
  */
 
-import { CompareFn } from '@/utils/compare'
+// import { CompareFn } from '@/utils/compare'
 
 /**
  * @template T
@@ -77,38 +77,38 @@ import { CompareFn } from '@/utils/compare'
  * @param {T[]} data
  * @param {CompareFn<T>} fn
  */
-export const mergeSort = <T>(data: T[], fn: CompareFn<T>): void => {
+// export const mergeSort = <T>(data: T[], fn: CompareFn<T>): void => {
 
-}
+// }
 
-const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>): void => {
-  const nL = q - p + 1
-  const nR = r - q
+// const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>): void => {
+//   const nL = q - p + 1
+//   const nR = r - q
 
-  const L: T[] = []
-  const R: T[] = []
+//   const L: T[] = []
+//   const R: T[] = []
 
-  let i = 0
-  let j = 0
+//   let i = 0
+//   let j = 0
 
-  for (; i < nL; ++i) L[i] = data[i + p]
-  for (; j < nR; ++j) R[j] = data[j + q + 1]
+//   for (; i < nL; ++i) L[i] = data[i + p]
+//   for (; j < nR; ++j) R[j] = data[j + q + 1]
 
-  i = 0 // indexes the smallest remaining element in L
-  j = 0 // indexes the smallest remaining element in R
-  let k = p // indexes the location in A to fill
+//   i = 0 // indexes the smallest remaining element in L
+//   j = 0 // indexes the smallest remaining element in R
+//   let k = p // indexes the location in A to fill
 
-  // As long as each of the array L and R contain an unmerged element,
-  // copy the smallest unmerged element back into data[p : r]
+//   // As long as each of the array L and R contain an unmerged element,
+//   // copy the smallest unmerged element back into data[p : r]
 
-  while (i < nL && j < nR) {
-    if (L[i] <= R[j]) data[k] = L[i++]
-    else data[k] = R[j++]
-    ++k
-  }
+//   while (i < nL && j < nR) {
+//     if (L[i] <= R[j]) data[k] = L[i++]
+//     else data[k] = R[j++]
+//     ++k
+//   }
 
-  while (j < nR) {
-    data[k] = R[j++]
-    ++k
-  }
-}
+//   while (j < nR) {
+//     data[k] = R[j++]
+//     ++k
+//   }
+// }

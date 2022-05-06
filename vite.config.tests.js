@@ -34,14 +34,15 @@ import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 const main = 'tests/index.ts'
-const outDir = 'build'
-const fileName = () => process.env.npm_package_config_tests
+const outDir = process.env.npm_out_dir
+const fileName = format => `lib.${format}.tests.mjs`
 const name = process.env.npm_package_name
 const entry = main
 const formats = [ 'es' ]
 const external = [
   'ava',
-  'dotenv'
+  'dotenv',
+  'eslint'
 ]
 const globals = {}
 
@@ -50,7 +51,7 @@ const isDev = mode => 'development' === mode || isWatch(mode)
 
 export default ({ mode }) => {
   const manifest = false
-  const emptyOutDir = true
+  const emptyOutDir = false
   const cssCodeSplit = true
   const sourcemap = false
 
@@ -58,11 +59,11 @@ export default ({ mode }) => {
   const watch = isWatch(mode)
 
   return defineConfig({
+    outDir,
     plugins: [
       tsconfigPaths()
     ],
     build: {
-      outDir,
       manifest,
       emptyOutDir,
       cssCodeSplit,
