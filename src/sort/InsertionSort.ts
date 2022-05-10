@@ -67,17 +67,17 @@ import { LinearSort } from '@/utils/sort'
 import { CompareFn } from '@/utils/compare'
 
 /**
- * @template T
+ * @template TType
  *
  * The `insertionSort` algorithm is implemented using generics, which
  * allows for specific data types to be processed. A `CompareFn`
  * function is passed as a second parameter in order to specify more
  * complex comparison operations.
  *
- * @param {T[]} data
- * @param {CompareFn<T>} fn
+ * @param {TType[]} data
+ * @param {CompareFn<TType>} fn
  */
-export const insertionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void => {
+export const insertionSort: LinearSort = <TType>(data: TType[], fn: CompareFn<TType>): void => {
   for (let i = 1, n = data.length; i < n; ++i) {
     const key = data[i]
     let j = i - 1
