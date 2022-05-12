@@ -37,7 +37,7 @@ import {
   stringKeyCompare,
   numericCompare,
   numericKeyCompare,
-} from '@/utils/compare';
+} from '../../src';
 
 import { insertionSort } from '@/sort/InsertionSort'
 

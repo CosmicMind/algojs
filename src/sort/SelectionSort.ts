@@ -39,8 +39,8 @@
  * used on small sizes of data due to its slow performance run time.
  */
 
-import { LinearSort } from '@/utils/sort'
-import { CompareFn } from '@/utils/compare'
+import { LinearSort } from '../utils/sort'
+import { CompareFn } from '../utils/compare'
 
 /**
  * @template TType

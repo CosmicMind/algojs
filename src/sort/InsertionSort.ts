@@ -63,8 +63,8 @@
  *  has a small size `n`.
  */
 
-import { LinearSort } from '@/utils/sort'
-import { CompareFn } from '@/utils/compare'
+import { LinearSort } from '../utils/sort'
+import { CompareFn } from '../utils/compare'
 
 /**
  * @template TType

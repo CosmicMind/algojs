@@ -30,5 +30,5 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export * from '@tests/sort/InsertionSort.test'
-export * from '@tests/sort/SelectionSort.test'
+export * from './sort/InsertionSort.test'
+export * from './sort/SelectionSort.test'
