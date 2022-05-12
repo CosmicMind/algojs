@@ -24,6 +24,9 @@
 		"README.md",
 		"tsconfig.json"
 	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"lint:run": "eslint . --ext .ts",
 		"tests:build": "vite build --config vite.config.tests.js --mode development",
@@ -50,6 +53,6 @@
 		"vite-tsconfig-paths": "^3.4.1"
 	},
 	"dependencies": {
-		"dotenv": "^16.0.0"
+		"dotenv": "^16.0.1"
 	}
 }
