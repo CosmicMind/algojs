@@ -64,7 +64,7 @@
  *                      {1, 2, 2, 3, 4, 8, 9, 10}
  */
 
-// import { CompareFn } from '@/utils/compare'
+// import { CompareFn } from './utils/compare'
 
 /**
  * @template TType

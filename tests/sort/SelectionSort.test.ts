@@ -39,7 +39,7 @@ import {
   numericKeyCompare,
 } from '../../src';
 
-import { selectionSort } from '@/sort/SelectionSort'
+import { selectionSort } from '../../src'
 
 test('SelectionSort: string',async t => {
   const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]
