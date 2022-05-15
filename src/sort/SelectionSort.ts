@@ -60,7 +60,9 @@ export const selectionSort: LinearSort = <TType>(data: TType[], fn: CompareFn<TT
     q = i
 
     for (let j = i + 1; j < n; ++j) {
-      if (0 < fn(data[q], data[j])) q = j
+      if (0 < fn(data[q], data[j])) {
+        q = j
+      }
     }
 
     const temp = data[q]
