@@ -1,0 +1,13 @@
+name: Build and Tests
+
+on:
+  push:
+    branches:    
+      - '*'
+      - '!main'
+
+jobs:
+  general:
+    uses: cosmicverse/workflows/.github/workflows/general.yml@main
+    with:
+      reponame: foundation
