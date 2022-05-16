@@ -1,10 +1,6 @@
-name: Build and Tests
+name: Lint, Build, and Test
 
-on:
-  push:
-    branches:    
-      - '*'
-      - '!main'
+on: [push]
 
 jobs:
   general:
