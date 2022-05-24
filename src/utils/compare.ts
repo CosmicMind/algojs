@@ -37,17 +37,17 @@
 export type CompareFn<T> = (a: T, b: T) => number
 
 export const stringCompare: CompareFn<string> = (a, b) =>
-  a == b ? 0 : a > b ? 1 : -1
+  a === b ? 0 : a > b ? 1 : -1
 
 export const numericCompare: CompareFn<number> = (a, b) =>
-  a == b ? 0 : a > b ? 1 : -1
+  a === b ? 0 : a > b ? 1 : -1
 
 export interface IStringKey {
   key: string
 }
 
 export const stringKeyCompare: CompareFn<IStringKey> = (a, b) =>
-  a.key == b.key ? 0 : a.key > b.key ? 1 : -1
+  a.key === b.key ? 0 : a.key > b.key ? 1 : -1
 
 
 export interface INumericKey {
@@ -55,4 +55,4 @@ export interface INumericKey {
 }
 
 export const numericKeyCompare: CompareFn<INumericKey> = (a, b) =>
-  a.key == b.key ? 0 : a.key > b.key ? 1 : -1
+  a.key === b.key ? 0 : a.key > b.key ? 1 : -1
