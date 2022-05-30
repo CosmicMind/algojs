@@ -67,15 +67,15 @@
 // import { CompareFn } from './utils/compare'
 
 /**
- * @template TType
+ * @template T
  *
  * The `mergeSort` algorithm is implemented using generics, which
  * allows for specific data types to be processed. A `CompareFn`
  * function is passed as a second parameter in order to specify more
  * complex comparison operations.
  *
- * @param {TType[]} data
- * @param {CompareFn<TType>} fn
+ * @param {T[]} data
+ * @param {CompareFn<T>} fn
  */
 // export const mergeSort = <T>(data: T[], fn: CompareFn<T>): void => {
 
