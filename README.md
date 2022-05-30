@@ -16,7 +16,7 @@ An algorithms and data structures library in TypeScript.
 
 BSD 3-Clause License
 
-Copyright (c) 2022, Daniel Jonathan <daniel at cosmicverse dot com>
+Copyright (c) 2022, Daniel Jonathan <daniel at cosmicverse dot org>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
