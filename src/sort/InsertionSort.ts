@@ -63,8 +63,8 @@
  *  has a small size `n`.
  */
 
-import { LinearSort } from '../utils/sort'
-import { CompareFn } from '../utils/compare'
+import {LinearSort} from '../utils/sort'
+import {CompareFn} from '../utils/compare'
 
 /**
  * @template T
@@ -78,15 +78,15 @@ import { CompareFn } from '../utils/compare'
  * @param {CompareFn<T>} fn
  */
 export const insertionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void => {
-  for (let i = 1, n = data.length; i < n; ++i) {
-    const key = data[i]
-    let j = i - 1
+    for (let i = 1, n = data.length; i < n; ++i) {
+        const key = data[i]
+        let j = i - 1
 
-    while (-1 < j && 0 < fn(data[j], key)) {
-      data[j + 1] = data[j]
-      --j
+        while (-1 < j && 0 < fn(data[j], key)) {
+            data[j + 1] = data[j]
+            --j
+        }
+
+        data[j + 1] = key
     }
-
-    data[j + 1] = key
-  }
 }

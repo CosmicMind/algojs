@@ -33,150 +33,150 @@
 import test from 'ava'
 
 import {
-  stringCompare,
-  stringKeyCompare,
-  numericCompare,
-  numericKeyCompare,
+    stringCompare,
+    stringKeyCompare,
+    numericCompare,
+    numericKeyCompare,
 } from '../../src';
 
-import { insertionSort } from '../../src'
+import {insertionSort} from '../../src'
 
-test('InsertionSort: string',async t => {
-  const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]
-  const sorted = [ '1', '77', 'a', 'b', 'cde', 'efg' ]
+test('InsertionSort: string', async t => {
+    const data = ['a', 'b', '1', 'cde', '77', 'efg']
+    const sorted = ['1', '77', 'a', 'b', 'cde', 'efg']
 
-  insertionSort(data, stringCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, stringCompare)
+    t.deepEqual(data, sorted)
 })
 
-test('InsertionSort: string with duplicates',async t => {
-  const data = [ 'abc', '1', 'b', '1', 'cde', '77', 'efg', 'cde', 'xyz', '0' ]
-  const sorted = [ '0', '1', '1', '77', 'abc', 'b', 'cde', 'cde', 'efg', 'xyz' ]
+test('InsertionSort: string with duplicates', async t => {
+    const data = ['abc', '1', 'b', '1', 'cde', '77', 'efg', 'cde', 'xyz', '0']
+    const sorted = ['0', '1', '1', '77', 'abc', 'b', 'cde', 'cde', 'efg', 'xyz']
 
-  insertionSort(data, stringCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, stringCompare)
+    t.deepEqual(data, sorted)
 })
 
-test('InsertionSort: string key',async t => {
-  const data = [
-    { key: 'a' },
-    { key: 'b' },
-    { key: '1' },
-    { key: 'cde' },
-    { key: '77' },
-    { key: 'efg' }
-  ]
+test('InsertionSort: string key', async t => {
+    const data = [
+        {key: 'a'},
+        {key: 'b'},
+        {key: '1'},
+        {key: 'cde'},
+        {key: '77'},
+        {key: 'efg'}
+    ]
 
-  const sorted = [
-    { key: '1' },
-    { key: '77' },
-    { key: 'a' },
-    { key: 'b' },
-    { key: 'cde' },
-    { key: 'efg' }
-  ]
+    const sorted = [
+        {key: '1'},
+        {key: '77'},
+        {key: 'a'},
+        {key: 'b'},
+        {key: 'cde'},
+        {key: 'efg'}
+    ]
 
-  insertionSort(data, stringKeyCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, stringKeyCompare)
+    t.deepEqual(data, sorted)
 })
 
-test('InsertionSort: string key with duplicates',async t => {
-  const data = [
-    { key: 'abc' },
-    { key: '1' },
-    { key: 'b' },
-    { key: '1' },
-    { key: 'cde' },
-    { key: '77' },
-    { key: 'efg' },
-    { key: 'cde' },
-    { key: 'xyz' },
-    { key: '0' }
-  ]
+test('InsertionSort: string key with duplicates', async t => {
+    const data = [
+        {key: 'abc'},
+        {key: '1'},
+        {key: 'b'},
+        {key: '1'},
+        {key: 'cde'},
+        {key: '77'},
+        {key: 'efg'},
+        {key: 'cde'},
+        {key: 'xyz'},
+        {key: '0'}
+    ]
 
-  const sorted = [
-    { key: '0' },
-    { key: '1' },
-    { key: '1' },
-    { key: '77' },
-    { key: 'abc' },
-    { key: 'b' },
-    { key: 'cde' },
-    { key: 'cde' },
-    { key: 'efg' },
-    { key: 'xyz' }
-  ]
+    const sorted = [
+        {key: '0'},
+        {key: '1'},
+        {key: '1'},
+        {key: '77'},
+        {key: 'abc'},
+        {key: 'b'},
+        {key: 'cde'},
+        {key: 'cde'},
+        {key: 'efg'},
+        {key: 'xyz'}
+    ]
 
-  insertionSort(data, stringKeyCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, stringKeyCompare)
+    t.deepEqual(data, sorted)
 })
 
-test('InsertionSort: number',async t => {
-  const data = [ 5, 2, 4, 6, 1, 3 ]
-  const sorted = [ 1, 2, 3, 4, 5, 6 ]
+test('InsertionSort: number', async t => {
+    const data = [5, 2, 4, 6, 1, 3]
+    const sorted = [1, 2, 3, 4, 5, 6]
 
-  insertionSort(data, numericCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, numericCompare)
+    t.deepEqual(data, sorted)
 })
 
-test('InsertionSort: number with duplicates',async t => {
-  const data = [ 5, 6, 2, 4, 6, 1, 3, 1, 5, 0 ]
-  const sorted = [ 0, 1, 1, 2, 3, 4, 5, 5, 6, 6 ]
+test('InsertionSort: number with duplicates', async t => {
+    const data = [5, 6, 2, 4, 6, 1, 3, 1, 5, 0]
+    const sorted = [0, 1, 1, 2, 3, 4, 5, 5, 6, 6]
 
-  insertionSort(data, numericCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, numericCompare)
+    t.deepEqual(data, sorted)
 })
 
-test('InsertionSort: number key',async t => {
-  const data = [
-    { key: 5 },
-    { key: 2 },
-    { key: 4 },
-    { key: 6 },
-    { key: 1 },
-    { key: 3 }
-  ]
+test('InsertionSort: number key', async t => {
+    const data = [
+        {key: 5},
+        {key: 2},
+        {key: 4},
+        {key: 6},
+        {key: 1},
+        {key: 3}
+    ]
 
-  const sorted = [
-    { key: 1 },
-    { key: 2 },
-    { key: 3 },
-    { key: 4 },
-    { key: 5 },
-    { key: 6 }
-  ]
+    const sorted = [
+        {key: 1},
+        {key: 2},
+        {key: 3},
+        {key: 4},
+        {key: 5},
+        {key: 6}
+    ]
 
-  insertionSort(data, numericKeyCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, numericKeyCompare)
+    t.deepEqual(data, sorted)
 })
 
-test('InsertionSort: number key with duplicates',async t => {
-  const data = [
-    { key: 5 },
-    { key: 6 },
-    { key: 2 },
-    { key: 4 },
-    { key: 6 },
-    { key: 1 },
-    { key: 3 },
-    { key: 1 },
-    { key: 5 },
-    { key: 0 }
-  ]
+test('InsertionSort: number key with duplicates', async t => {
+    const data = [
+        {key: 5},
+        {key: 6},
+        {key: 2},
+        {key: 4},
+        {key: 6},
+        {key: 1},
+        {key: 3},
+        {key: 1},
+        {key: 5},
+        {key: 0}
+    ]
 
-  const sorted = [
-    { key: 0 },
-    { key: 1 },
-    { key: 1 },
-    { key: 2 },
-    { key: 3 },
-    { key: 4 },
-    { key: 5 },
-    { key: 5 },
-    { key: 6 },
-    { key: 6 }
-  ]
+    const sorted = [
+        {key: 0},
+        {key: 1},
+        {key: 1},
+        {key: 2},
+        {key: 3},
+        {key: 4},
+        {key: 5},
+        {key: 5},
+        {key: 6},
+        {key: 6}
+    ]
 
-  insertionSort(data, numericKeyCompare)
-  t.deepEqual(data, sorted)
+    insertionSort(data, numericKeyCompare)
+    t.deepEqual(data, sorted)
 })

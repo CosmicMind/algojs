@@ -30,15 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export type { CompareFn } from './utils/compare'
+export type {CompareFn} from './utils/compare'
 export {
-  stringCompare,
-  numericCompare,
-  stringKeyCompare,
-  numericKeyCompare,
+    stringCompare,
+    numericCompare,
+    stringKeyCompare,
+    numericKeyCompare,
 } from './utils/compare'
 
-export type { LinearSort } from './utils/sort'
+export type {LinearSort} from './utils/sort'
 
-export { insertionSort } from './sort/InsertionSort'
-export { selectionSort } from './sort/SelectionSort'
+export {insertionSort} from './sort/InsertionSort'
+export {selectionSort} from './sort/SelectionSort'
