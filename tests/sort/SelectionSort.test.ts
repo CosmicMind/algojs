@@ -37,7 +37,7 @@ import {
   stringKeyCompare,
   numericCompare,
   numericKeyCompare,
-} from '../../src';
+} from '../../src'
 
 import { selectionSort } from '../../src'
 
