@@ -39,8 +39,8 @@
  * used on small sizes of data due to its slow performance run time.
  */
 
-import {LinearSort} from '../utils/sort'
-import {CompareFn} from '../utils/compare'
+import { LinearSort } from '../utils/sort'
+import { CompareFn } from '../utils/compare'
 
 /**
  * @template T
@@ -54,19 +54,19 @@ import {CompareFn} from '../utils/compare'
  * @param {CompareFn<T>} fn
  */
 export const selectionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void => {
-    let q = 0
+  let q = 0
 
-    for (let i = 0, n = data.length; i < n; ++i) {
-        q = i
+  for (let i = 0, n = data.length; i < n; ++i) {
+    q = i
 
-        for (let j = i + 1; j < n; ++j) {
-            if (0 < fn(data[q], data[j])) {
-                q = j
-            }
-        }
-
-        const temp = data[q]
-        data[q] = data[i]
-        data[i] = temp
+    for (let j = i + 1; j < n; ++j) {
+      if (0 < fn(data[q], data[j])) {
+        q = j
+      }
     }
+
+    const temp = data[q]
+    data[q] = data[i]
+    data[i] = temp
+  }
 }
