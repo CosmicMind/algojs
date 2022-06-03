@@ -41,7 +41,7 @@ import {
 
 import { selectionSort } from '../../src'
 
-test('SelectionSort: string', async t => {
+test('SelectionSort: string', t => {
   const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]
   const sorted = [ '1', '77', 'a', 'b', 'cde', 'efg' ]
 
@@ -49,7 +49,7 @@ test('SelectionSort: string', async t => {
   t.deepEqual(data, sorted)
 })
 
-test('SelectionSort: string with duplicates', async t => {
+test('SelectionSort: string with duplicates', t => {
   const data = [ 'abc', '1', 'b', '1', 'cde', '77', 'efg', 'cde', 'xyz', '0' ]
   const sorted = [ '0', '1', '1', '77', 'abc', 'b', 'cde', 'cde', 'efg', 'xyz' ]
 
@@ -57,7 +57,7 @@ test('SelectionSort: string with duplicates', async t => {
   t.deepEqual(data, sorted)
 })
 
-test('SelectionSort: string key', async t => {
+test('SelectionSort: string key', t => {
   const data = [
     { key: 'a' },
     { key: 'b' },
@@ -80,7 +80,7 @@ test('SelectionSort: string key', async t => {
   t.deepEqual(data, sorted)
 })
 
-test('SelectionSort: string key with duplicates', async t => {
+test('SelectionSort: string key with duplicates', t => {
   const data = [
     { key: 'abc' },
     { key: '1' },
@@ -111,7 +111,7 @@ test('SelectionSort: string key with duplicates', async t => {
   t.deepEqual(data, sorted)
 })
 
-test('SelectionSort: number', async t => {
+test('SelectionSort: number', t => {
   const data = [ 5, 2, 4, 6, 1, 3 ]
   const sorted = [ 1, 2, 3, 4, 5, 6 ]
 
@@ -119,7 +119,7 @@ test('SelectionSort: number', async t => {
   t.deepEqual(data, sorted)
 })
 
-test('SelectionSort: number with duplicates', async t => {
+test('SelectionSort: number with duplicates', t => {
   const data = [ 5, 6, 2, 4, 6, 1, 3, 1, 5, 0 ]
   const sorted = [ 0, 1, 1, 2, 3, 4, 5, 5, 6, 6 ]
 
@@ -127,7 +127,7 @@ test('SelectionSort: number with duplicates', async t => {
   t.deepEqual(data, sorted)
 })
 
-test('SelectionSort: number key', async t => {
+test('SelectionSort: number key', t => {
   const data = [
     { key: 5 },
     { key: 2 },
@@ -150,7 +150,7 @@ test('SelectionSort: number key', async t => {
   t.deepEqual(data, sorted)
 })
 
-test('SelectionSort: number key with duplicates', async t => {
+test('SelectionSort: number key with duplicates', t => {
   const data = [
     { key: 5 },
     { key: 6 },
