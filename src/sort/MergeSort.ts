@@ -75,7 +75,7 @@ import { CompareFn } from '../utils/compare'
  * @param {number} l
  * @param {number} m
  * @param {number} r
- * @param compare: A comparison function.
+ * @param {CompareFn} fn
  */
 const merge = <T>(data: T[], l: number, m: number, r: number, fn: CompareFn<T>) => {
   const n1 = m - l + 1
@@ -140,7 +140,7 @@ const merge = <T>(data: T[], l: number, m: number, r: number, fn: CompareFn<T>) 
  * @param {number} r
  * @param {CompareFn<T>} fn
  */
-export const sort = <T>(data: T[], l: number, r: number, fn: CompareFn<T>) => {
+const sort = <T>(data: T[], l: number, r: number, fn: CompareFn<T>) => {
   if (l < r) {
     // same as (l + r) / 2 but avoids overflow for large l
     const m = Math.floor(l + (r - l) / 2)
