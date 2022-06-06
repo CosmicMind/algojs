@@ -31,4 +31,5 @@
  */
 
 export * from './sort/InsertionSort.test'
+export * from './sort/MergeSort.test'
 export * from './sort/SelectionSort.test'

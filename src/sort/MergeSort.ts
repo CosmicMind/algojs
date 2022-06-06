@@ -33,7 +33,7 @@
 /**
  * @module MergeSort
  *
- * Run Time: O(n * log n)
+ * Run Time: O(n * log(n))
  *
  * Merge sort is a sorting algorithm that is more generally suited for larger
  *  data sets. It is not an `in place` sorting algorithm, and requires double
@@ -64,51 +64,99 @@
  *                      {1, 2, 2, 3, 4, 8, 9, 10}
  */
 
-// import { CompareFn } from './utils/compare'
+import { CompareFn } from '../utils/compare'
 
 /**
  * @template T
  *
- * The `mergeSort` algorithm is implemented using generics, which
- * allows for specific data types to be processed. A `CompareFn`
- * function is passed as a second parameter in order to specify more
- * complex comparison operations.
+ * Performs the comparison and merge operations.
+ *
+ * @param {T[]} data
+ * @param {number} l
+ * @param {number} m
+ * @param {number} r
+ * @param compare: A comparison function.
+ */
+const merge = <T>(data: T[], l: number, m: number, r: number, fn: CompareFn<T>) => {
+  const n1 = m - l + 1
+  const n2 = r - m
+
+  let i
+  let j
+  let k
+
+  const L: T[] = []
+  const R: T[] = []
+
+  for (i = 0; i < n1; ++i) {
+    L[i] = data[l + i]
+  }
+
+  for (j = 0; j < n2; ++j) {
+    R[j] = data[m + j + 1]
+  }
+
+  i = 0
+  j = 0
+  k = l // initial index of subarray
+
+  // merge the array L, R back into data
+  // while performing the sort operation
+  while (i < n1 && j < n2) {
+    if (1 > fn(L[i], R[j])) {
+      data[k] = L[i]
+      ++i
+    }
+    else {
+      data[k] = R[j]
+      ++j
+    }
+
+    ++k
+  }
+
+  // copy remaining elements of L
+  while (i < n1) {
+    data[k] = L[i]
+    ++i
+    ++k
+  }
+
+  // copy remaining elements of R
+  while (j < n2) {
+    data[k] = R[j]
+    ++j
+    ++k
+  }
+}
+
+/**
+ * @template T
+ *
+ * Merge sort algorithm.
+ *
+ * @param {T[]} data
+ * @param {number} l
+ * @param {number} r
+ * @param {CompareFn<T>} fn
+ */
+export const sort = <T>(data: T[], l: number, r: number, fn: CompareFn<T>) => {
+  if (l < r) {
+    // same as (l + r) / 2 but avoids overflow for large l
+    const m = Math.floor(l + (r - l) / 2)
+    sort(data, l, m, fn)
+    sort(data, m + 1, r, fn)
+
+    merge(data, l, m, r, fn)
+  }
+}
+
+/**
+ * @template T
+ *
+ * Merge sort algorithm.
  *
  * @param {T[]} data
  * @param {CompareFn<T>} fn
  */
-// export const mergeSort = <T>(data: T[], fn: CompareFn<T>): void => {
-
-// }
-
-// const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>): void => {
-//   const nL = q - p + 1
-//   const nR = r - q
-
-//   const L: T[] = []
-//   const R: T[] = []
-
-//   let i = 0
-//   let j = 0
-
-//   for (; i < nL; ++i) L[i] = data[i + p]
-//   for (; j < nR; ++j) R[j] = data[j + q + 1]
-
-//   i = 0 // indexes the smallest remaining element in L
-//   j = 0 // indexes the smallest remaining element in R
-//   let k = p // indexes the location in A to fill
-
-//   // As long as each of the array L and R contain an unmerged element,
-//   // copy the smallest unmerged element back into data[p : r]
-
-//   while (i < nL && j < nR) {
-//     if (L[i] <= R[j]) data[k] = L[i++]
-//     else data[k] = R[j++]
-//     ++k
-//   }
-
-//   while (j < nR) {
-//     data[k] = R[j++]
-//     ++k
-//   }
-// }
+export const mergeSort = <T>(data: T[], fn: CompareFn<T>) => sort(data, 0, data.length - 1, fn)
