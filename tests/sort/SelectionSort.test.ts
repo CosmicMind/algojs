@@ -43,18 +43,18 @@ import { selectionSort } from '../../src'
 
 test('SelectionSort: string', t => {
   const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]
-  const sorted = [ '1', '77', 'a', 'b', 'cde', 'efg' ]
+  const expected = [ '1', '77', 'a', 'b', 'cde', 'efg' ]
 
   selectionSort(data, stringCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('SelectionSort: string with duplicates', t => {
   const data = [ 'abc', '1', 'b', '1', 'cde', '77', 'efg', 'cde', 'xyz', '0' ]
-  const sorted = [ '0', '1', '1', '77', 'abc', 'b', 'cde', 'cde', 'efg', 'xyz' ]
+  const expected = [ '0', '1', '1', '77', 'abc', 'b', 'cde', 'cde', 'efg', 'xyz' ]
 
   selectionSort(data, stringCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('SelectionSort: string key', t => {
@@ -67,7 +67,7 @@ test('SelectionSort: string key', t => {
     { key: 'efg' }
   ]
 
-  const sorted = [
+  const expected = [
     { key: '1' },
     { key: '77' },
     { key: 'a' },
@@ -77,7 +77,7 @@ test('SelectionSort: string key', t => {
   ]
 
   selectionSort(data, stringKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('SelectionSort: string key with duplicates', t => {
@@ -94,7 +94,7 @@ test('SelectionSort: string key with duplicates', t => {
     { key: '0' }
   ]
 
-  const sorted = [
+  const expected = [
     { key: '0' },
     { key: '1' },
     { key: '1' },
@@ -108,23 +108,23 @@ test('SelectionSort: string key with duplicates', t => {
   ]
 
   selectionSort(data, stringKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('SelectionSort: number', t => {
   const data = [ 5, 2, 4, 6, 1, 3 ]
-  const sorted = [ 1, 2, 3, 4, 5, 6 ]
+  const expected = [ 1, 2, 3, 4, 5, 6 ]
 
   selectionSort(data, numericCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('SelectionSort: number with duplicates', t => {
   const data = [ 5, 6, 2, 4, 6, 1, 3, 1, 5, 0 ]
-  const sorted = [ 0, 1, 1, 2, 3, 4, 5, 5, 6, 6 ]
+  const expected = [ 0, 1, 1, 2, 3, 4, 5, 5, 6, 6 ]
 
   selectionSort(data, numericCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('SelectionSort: number key', t => {
@@ -137,7 +137,7 @@ test('SelectionSort: number key', t => {
     { key: 3 }
   ]
 
-  const sorted = [
+  const expected = [
     { key: 1 },
     { key: 2 },
     { key: 3 },
@@ -147,7 +147,7 @@ test('SelectionSort: number key', t => {
   ]
 
   selectionSort(data, numericKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('SelectionSort: number key with duplicates', t => {
@@ -164,7 +164,7 @@ test('SelectionSort: number key with duplicates', t => {
     { key: 0 }
   ]
 
-  const sorted = [
+  const expected = [
     { key: 0 },
     { key: 1 },
     { key: 1 },
@@ -178,5 +178,5 @@ test('SelectionSort: number key with duplicates', t => {
   ]
 
   selectionSort(data, numericKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })

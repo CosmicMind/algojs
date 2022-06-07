@@ -82,7 +82,7 @@ export const insertionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void 
     const key = data[i]
     let j = i - 1
 
-    while (-1 < j && 0 < fn(data[j], key)) {
+    while (0 <= j && 0 < fn(data[j], key)) {
       data[j + 1] = data[j]
       --j
     }

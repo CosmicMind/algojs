@@ -43,18 +43,18 @@ import { mergeSort } from '../../src'
 
 test('mergeSort: string', t => {
   const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]
-  const sorted = [ '1', '77', 'a', 'b', 'cde', 'efg' ]
+  const expected = [ '1', '77', 'a', 'b', 'cde', 'efg' ]
 
   mergeSort(data, stringCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('mergeSort: string with duplicates', t => {
   const data = [ 'abc', '1', 'b', '1', 'cde', '77', 'efg', 'cde', 'xyz', '0' ]
-  const sorted = [ '0', '1', '1', '77', 'abc', 'b', 'cde', 'cde', 'efg', 'xyz' ]
+  const expected = [ '0', '1', '1', '77', 'abc', 'b', 'cde', 'cde', 'efg', 'xyz' ]
 
   mergeSort(data, stringCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('mergeSort: string key', t => {
@@ -67,7 +67,7 @@ test('mergeSort: string key', t => {
     { key: 'efg' }
   ]
 
-  const sorted = [
+  const expected = [
     { key: '1' },
     { key: '77' },
     { key: 'a' },
@@ -77,7 +77,7 @@ test('mergeSort: string key', t => {
   ]
 
   mergeSort(data, stringKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('mergeSort: string key with duplicates', t => {
@@ -94,7 +94,7 @@ test('mergeSort: string key with duplicates', t => {
     { key: '0' }
   ]
 
-  const sorted = [
+  const expected = [
     { key: '0' },
     { key: '1' },
     { key: '1' },
@@ -108,23 +108,23 @@ test('mergeSort: string key with duplicates', t => {
   ]
 
   mergeSort(data, stringKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('mergeSort: number', t => {
   const data = [ 5, 2, 4, 6, 1, 3 ]
-  const sorted = [ 1, 2, 3, 4, 5, 6 ]
+  const expected = [ 1, 2, 3, 4, 5, 6 ]
 
   mergeSort(data, numericCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('mergeSort: number with duplicates', t => {
   const data = [ 5, 6, 2, 4, 6, 1, 3, 1, 5, 0 ]
-  const sorted = [ 0, 1, 1, 2, 3, 4, 5, 5, 6, 6 ]
+  const expected = [ 0, 1, 1, 2, 3, 4, 5, 5, 6, 6 ]
 
   mergeSort(data, numericCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('mergeSort: number key', t => {
@@ -137,7 +137,7 @@ test('mergeSort: number key', t => {
     { key: 3 }
   ]
 
-  const sorted = [
+  const expected = [
     { key: 1 },
     { key: 2 },
     { key: 3 },
@@ -147,7 +147,7 @@ test('mergeSort: number key', t => {
   ]
 
   mergeSort(data, numericKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
 
 test('mergeSort: number key with duplicates', t => {
@@ -164,7 +164,7 @@ test('mergeSort: number key with duplicates', t => {
     { key: 0 }
   ]
 
-  const sorted = [
+  const expected = [
     { key: 0 },
     { key: 1 },
     { key: 1 },
@@ -178,5 +178,5 @@ test('mergeSort: number key with duplicates', t => {
   ]
 
   mergeSort(data, numericKeyCompare)
-  t.deepEqual(data, sorted)
+  t.deepEqual(data, expected)
 })
