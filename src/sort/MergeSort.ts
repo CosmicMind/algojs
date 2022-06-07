@@ -72,14 +72,14 @@ import { CompareFn } from '../utils/compare'
  * Performs the comparison and merge operations.
  *
  * @param {T[]} data
- * @param {number} l
- * @param {number} m
+ * @param {number} p
+ * @param {number} q
  * @param {number} r
  * @param {CompareFn} fn
  */
-const merge = <T>(data: T[], l: number, m: number, r: number, fn: CompareFn<T>) => {
-  const n1 = m - l + 1
-  const n2 = r - m
+const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>): void => {
+  const n1 = q - p + 1
+  const n2 = r - q
 
   let i
   let j
@@ -89,16 +89,16 @@ const merge = <T>(data: T[], l: number, m: number, r: number, fn: CompareFn<T>) 
   const R: T[] = []
 
   for (i = 0; i < n1; ++i) {
-    L[i] = data[l + i]
+    L[i] = data[p + i]
   }
 
   for (j = 0; j < n2; ++j) {
-    R[j] = data[m + j + 1]
+    R[j] = data[q + j + 1]
   }
 
   i = 0
   j = 0
-  k = l // initial index of subarray
+  k = p // initial index of subarray
 
   // merge the array L, R back into data
   // while performing the sort operation
@@ -136,18 +136,18 @@ const merge = <T>(data: T[], l: number, m: number, r: number, fn: CompareFn<T>) 
  * Merge sort algorithm.
  *
  * @param {T[]} data
- * @param {number} l
+ * @param {number} p
  * @param {number} r
  * @param {CompareFn<T>} fn
  */
-const sort = <T>(data: T[], l: number, r: number, fn: CompareFn<T>) => {
-  if (l < r) {
+const sort = <T>(data: T[], p: number, r: number, fn: CompareFn<T>): void => {
+  if (p < r) {
     // same as (l + r) / 2 but avoids overflow for large l
-    const m = Math.floor(l + (r - l) / 2)
-    sort(data, l, m, fn)
-    sort(data, m + 1, r, fn)
+    const q = Math.floor(p + (r - p) / 2)
+    sort(data, p, q, fn)
+    sort(data, q + 1, r, fn)
 
-    merge(data, l, m, r, fn)
+    merge(data, p, q, r, fn)
   }
 }
 
@@ -159,4 +159,4 @@ const sort = <T>(data: T[], l: number, r: number, fn: CompareFn<T>) => {
  * @param {T[]} data
  * @param {CompareFn<T>} fn
  */
-export const mergeSort = <T>(data: T[], fn: CompareFn<T>) => sort(data, 0, data.length - 1, fn)
+export const mergeSort = <T>(data: T[], fn: CompareFn<T>): void => sort(data, 0, data.length - 1, fn)
