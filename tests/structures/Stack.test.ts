@@ -30,8 +30,83 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export * from './sort/InsertionSort.test'
-export * from './sort/MergeSort.test'
-export * from './sort/SelectionSort.test'
+import test from 'ava'
 
-export * from './structures/Stack.test'
+import { Optional } from '@cosmicverse/foundation'
+
+import {
+  Stackable,
+  push,
+  pop,
+  clear,
+  createStack,
+} from '../../src'
+
+interface StackNode extends Stackable {
+  key: number
+  value: string
+}
+
+const createStackNode = (key: number, value: string): StackNode => ({
+  key,
+  value,
+})
+
+test('Stack: peek', t => {
+  const stack = createStack()
+
+  const n1 = createStackNode(1, 'a')
+  const n2 = createStackNode(2, 'b')
+  const n3 = createStackNode(3, 'c')
+
+  push(stack, n1)
+  push(stack, n2)
+  push(stack, n3)
+
+  const result: Optional<Stackable> = stack.top
+  const expected: StackNode = n3
+
+  t.is(result, expected)
+})
+
+test('Stack: push/pop', t => {
+  const stack = createStack()
+
+  const n1 = createStackNode(1, 'a')
+  const n2 = createStackNode(2, 'b')
+  const n3 = createStackNode(3, 'c')
+
+  push(stack, n1)
+  push(stack, n2)
+  push(stack, n3)
+
+  t.is(stack.count, 3)
+
+  const result: StackNode[] = [
+    pop(stack) as StackNode,
+    pop(stack) as StackNode,
+    pop(stack) as StackNode
+  ]
+
+  const expected: StackNode[] = [ n3, n2, n1 ]
+
+  t.deepEqual(result, expected)
+})
+
+test('Stack: clear', t => {
+  const stack = createStack()
+
+  const n1 = createStackNode(1, 'a')
+  const n2 = createStackNode(2, 'b')
+  const n3 = createStackNode(3, 'c')
+
+  push(stack, n1)
+  push(stack, n2)
+  push(stack, n3)
+
+  t.is(stack.count, 3)
+
+  clear(stack)
+
+  t.is(stack.count, 0)
+})
