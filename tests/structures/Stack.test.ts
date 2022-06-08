@@ -32,14 +32,14 @@
 
 import test from 'ava'
 
-import { Optional } from '@cosmicverse/foundation'
-
 import {
   Stackable,
-  push,
-  pop,
-  clear,
-  createStack,
+  stackCreate,
+  stackPeek,
+  stackPush,
+  stackPop,
+  stackClear,
+  stackIterator,
 } from '../../src'
 
 interface StackNode extends Stackable {
@@ -47,66 +47,90 @@ interface StackNode extends Stackable {
   value: string
 }
 
-const createStackNode = (key: number, value: string): StackNode => ({
+const stackCreateNode = (key: number, value: string): StackNode => ({
   key,
   value,
 })
 
 test('Stack: peek', t => {
-  const stack = createStack()
+  const stack = stackCreate<StackNode>()
 
-  const n1 = createStackNode(1, 'a')
-  const n2 = createStackNode(2, 'b')
-  const n3 = createStackNode(3, 'c')
+  const n1 = stackCreateNode(1, 'a')
+  const n2 = stackCreateNode(2, 'b')
+  const n3 = stackCreateNode(3, 'c')
 
-  push(stack, n1)
-  push(stack, n2)
-  push(stack, n3)
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
 
-  const result: Optional<Stackable> = stack.top
-  const expected: StackNode = n3
+  const result = stackPeek(stack)
+  const expected = n3
 
   t.is(result, expected)
 })
 
-test('Stack: push/pop', t => {
-  const stack = createStack()
+test('Stack: stackPush/stackPop', t => {
+  const stack = stackCreate<StackNode>()
 
-  const n1 = createStackNode(1, 'a')
-  const n2 = createStackNode(2, 'b')
-  const n3 = createStackNode(3, 'c')
+  const n1 = stackCreateNode(1, 'a')
+  const n2 = stackCreateNode(2, 'b')
+  const n3 = stackCreateNode(3, 'c')
 
-  push(stack, n1)
-  push(stack, n2)
-  push(stack, n3)
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
 
   t.is(stack.count, 3)
 
-  const result: StackNode[] = [
-    pop(stack) as StackNode,
-    pop(stack) as StackNode,
-    pop(stack) as StackNode
+  const result = [
+    stackPop(stack),
+    stackPop(stack),
+    stackPop(stack)
   ]
 
-  const expected: StackNode[] = [ n3, n2, n1 ]
+  const expected = [ n3, n2, n1 ]
 
   t.deepEqual(result, expected)
 })
 
-test('Stack: clear', t => {
-  const stack = createStack()
+test('Stack: stackClear', t => {
+  const stack = stackCreate<StackNode>()
 
-  const n1 = createStackNode(1, 'a')
-  const n2 = createStackNode(2, 'b')
-  const n3 = createStackNode(3, 'c')
+  const n1 = stackCreateNode(1, 'a')
+  const n2 = stackCreateNode(2, 'b')
+  const n3 = stackCreateNode(3, 'c')
 
-  push(stack, n1)
-  push(stack, n2)
-  push(stack, n3)
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
 
   t.is(stack.count, 3)
 
-  clear(stack)
+  stackClear(stack)
 
   t.is(stack.count, 0)
+})
+
+test('Stack: stackIterator', t => {
+  const stack = stackCreate<StackNode>()
+
+  const n1 = stackCreateNode(1, 'a')
+  const n2 = stackCreateNode(2, 'b')
+  const n3 = stackCreateNode(3, 'c')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.is(stack.count, 3)
+
+  const data: StackNode[] = []
+
+  for (const x of stackIterator(stack)) {
+    data.push(x)
+  }
+
+  const expected = [ n3, n2, n1 ]
+
+  t.deepEqual(data, expected)
 })

@@ -46,8 +46,10 @@ export { selectionSort } from './sort/SelectionSort'
 
 export type { Stackable } from './structures/Stack'
 export {
-  push,
-  pop,
-  clear,
-  createStack,
+  stackCreate,
+  stackPeek,
+  stackPush,
+  stackPop,
+  stackClear,
+  stackIterator,
 } from './structures/Stack'

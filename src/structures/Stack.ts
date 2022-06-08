@@ -39,7 +39,7 @@ import { Optional } from '@cosmicverse/foundation'
 /**
  * The `Stackable` interface defines a structure that moves
  * from parent to child, or child to parent. Advancing to the
- * `child`, or `parent` tree within its structure has a
+ * `child`, or `parent` element within its structure has a
  * performance runtime of O(1).
  *
  * @property {Stackable} [parent]
@@ -49,6 +49,8 @@ export interface Stackable {
 }
 
 /**
+ * @template T
+ *
  * The `Stack` interface is a linear data structure that
  * stores a single pointer to a `Stackable` tree called `top`.
  * It creates a `vertical` relationship between the `Stackable`
@@ -57,13 +59,13 @@ export interface Stackable {
  * @property {Stackable} [top]
  * @property {number} count
  */
-export class Stack {
+export class Stack<T extends Stackable> {
   /**
    * A reference to the `topmost` item.
    *
-   * @type {Stackable}
+   * @type {T}
    */
-  top?: Stackable
+  top?: T
 
   /**
    * A reference to the number of items
@@ -82,65 +84,90 @@ export class Stack {
 }
 
 /**
+ * @template T
+ *
  * Create a new `Stack` instance.
- * @returns {Stack}
+ *
+ * @returns {Stack<T>}
  */
-export const createStack = (): Stack => new Stack()
+export const stackCreate = <T extends Stackable>(): Stack<T> => new Stack<T>()
 
 /**
- * The `push` operation adds a `Stackable` tree to the
+ * @template T
+ *
+ * The `stackPeek` operation peeks at the `Stack.top` element
+ * within the `Stack` list.
+ *
+ * @performance O(1)
+ * @param {Stack<T>} stack
+ */
+export function stackPeek<T extends Stackable>(stack: Stack<T>): Optional<T> {
+  return stack.top
+}
+
+/**
+ * @template T
+ *
+ * The `stackPush` operation adds a `Stackable` tree to the
  * `top` position of the `Stack`.
  *
  * @performance O(1)
- * @param {Stack} stack
- * @param {Stackable} el
+ * @param {Stack<T>} stack
+ * @param {T} el
  */
-export function push(stack: Stack, el: Stackable): void {
+export function stackPush<T extends Stackable>(stack: Stack<T>, el: T): void {
   el.parent = stack.top
   stack.top = el
   ++stack.count
 }
 
 /**
- * The `pop` operation removes a `Stackable` tree from the
+ * @template T
+ *
+ * The `stackPop` operation removes a `Stackable` tree from the
  * `top` of the `Stack` and returns its value.
  *
  * @performance O(1)
- * @param {Stack} stack
- * @returns {Optional<Stackable>}
+ * @param {Stack<T>} stack
+ * @returns {Optional<T>}
  */
-export function pop(stack: Stack): Optional<Stackable> {
+export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
   const el = stack.top
-  stack.top = el?.parent
+  stack.top = el?.parent as T
   delete el?.parent
   --stack.count
   return el
 }
 
 /**
- * Clears the given `Stack` by removing all the
- * relationships within it.
+ * @template T
+ *
+ * The `stackClear` operation clears the given `Stack` by removing
+ * all the relationships within it.
  *
  * @performance O(n)
- * @param {Stack} stack
+ * @param {Stack<T>} stack
  */
-export function clear(stack: Stack): void {
+export function stackClear<T extends Stackable>(stack: Stack<T>): void {
   while (stack.top) {
-    pop(stack)
+    stackPop(stack)
   }
 }
 
 /**
- * Iterates from the `parent` property `Stackable` tree recursively.
+ * @template T
+ *
+ * The `stackIterator` operation iterates from the `Stack.top`
+ * property `Stackable` list iteratively.
  *
  * @performance O(n)
- * @param {Stackable} el
- * @returns {IterableIterator<Stackable>}
+ * @param {Stack<T>} stack
+ * @returns {IterableIterator<T>}
  */
-export function *fromParent(el: Stackable): IterableIterator<Stackable> {
-  let p: Optional<Stackable> = el
+export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
+  let p: Optional<T> = stack.top
   while (p) {
     yield p
-    p = p.parent
+    p = p.parent as T
   }
 }
