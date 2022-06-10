@@ -1,0 +1,456 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2022, Daniel Jonathan <daniel at cosmicverse dot org>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * @module List
+ */
+
+import {
+  Optional,
+  guardFor,
+} from '@cosmicverse/foundation'
+
+/**
+ * The `Listable` interface defines a structure that moves
+ * from a `previous` node to its `next` node, or a `next`
+ * node to its `previous` node within a `List` data
+ * structure.
+ *
+ * @property {Optional<Listable>} previous
+ * @property {Optional<Listable>} next
+ */
+export interface Listable {
+  previous?: Listable
+  next?: Listable
+}
+
+/**
+ * @template T
+ *
+ * The `List` class is a linear data structure that
+ * stores two references to `Listable` nodes called
+ * `first` and `last`. It creates a `horizontal`
+ * relationship between the nodes that exist within
+ * its structure.
+ */
+export class List<T extends Listable> {
+  /**
+   * A reference to the first node.
+   *
+   * @type {Optional<T>}
+   */
+  first?: T
+
+  /**
+   * A reference to the last node.
+   *
+   * @type {Optional<T>}
+   */
+  last?: T
+
+  /**
+   * A reference to the number of nodes
+   * within the structure.
+   *
+   * @type {number}
+   */
+  count: number
+
+  /**
+   * @constructor
+   */
+  constructor() {
+    this.count = 0
+  }
+}
+
+/**
+ * @template T
+ *
+ * Creates a new `List` instance.
+ *
+ * @returns {List<T>}
+ */
+export const listCreate = <T extends Listable>(): List<T> => new List<T>()
+
+/**
+ * @template T
+ *
+ * The `listInsert` operation adds a given node to the
+ * `first` position of the given list.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @param {T} insert
+ */
+export function listInsert<T extends Listable>(list: List<T>, insert: T): void {
+  if (guardFor<T>(list.first, 'next')) {
+    list.first.previous = insert
+    insert.next = list.first
+  }
+  else {
+    delete insert.next
+    list.last = insert
+  }
+  list.first = insert
+  ++list.count
+}
+
+/**
+ * @template T
+ *
+ * The `listRemoveFirst` operation removes the node
+ * from the `first` position of the given list and
+ * returns its reference. If the given list only has
+ * a single node within its structure, that node is
+ * removed from the `last` position as well.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @returns {Optional<T>}
+ */
+export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> {
+  const removed = list.first
+  if (guardFor<T>(removed, 'next')) {
+    const next = removed.next
+    if (guardFor<T>(next, 'next')) {
+      delete removed.next
+      delete next.previous
+      list.first = next
+    }
+    else {
+      delete list.first
+      delete list.last
+    }
+    --list.count
+  }
+  return removed
+}
+
+/**
+ * @template T
+ *
+ * The `listAppend` operation adds a given `append` node
+ * to the `last` position of the given list and returns
+ * its reference.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @param {T} append
+ */
+export function listAppend<T extends Listable>(list: List<T>, append: T): void {
+  if (guardFor<T>(list.last, 'next')) {
+    list.last.next = append
+    append.previous = list.last
+  }
+  else {
+    list.first = append
+  }
+  list.last = append
+  ++list.count
+}
+
+/**
+ * @template T
+ *
+ * The `removeLast` operation removes the node at the
+ * `last` position of the given list and returns its
+ * reference. If the given list only has a single node
+ * within its structure, then that node is removed from
+ * the `first` position as well.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @returns {Optional<T>}
+ */
+export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
+  const removed = list.last
+  if (guardFor<T>(removed, 'next')) {
+    const previous = removed.previous
+    if (guardFor<T>(previous, 'next')) {
+      delete removed.previous
+      delete previous.next
+      list.last = previous
+    }
+    else {
+      delete list.first
+      delete list.last
+    }
+    --list.count
+  }
+  return removed
+}
+
+/**
+ * @template T
+ *
+ * The `listInsertBefore` operation adds a given `insert`
+ * node to the `previous` position of the given `before`
+ * node within the given list. If the `before` node is at
+ * the `first` position of the given list, then that node
+ * reference is updated to the newly inserted node as
+ * well.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @param {T} insert
+ * @param {T} before
+ */
+export function listInsertBefore<T extends Listable>(list: List<T>, insert: T, before: T): void {
+  if (list.first === before) {
+    listInsert(list, insert)
+  }
+  else {
+    const previous = before.previous
+    if (guardFor<T>(previous, 'next')) {
+      previous.next = insert
+      insert.previous = previous
+      insert.next = before
+      before.previous = insert
+      ++list.count
+    }
+  }
+}
+
+/**
+ * @template T
+ *
+ * The `listRemoveBefore` operation removes a given node from
+ * the `previous` position of the given `before` node within
+ * the given list and returns its reference. If the `previous`
+ * position of the given `before` node is also the `first`
+ * node of the given list, then the `first` node is updated to
+ * the `before` reference.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @param {T} before
+ * @returns {Optional<T>}
+ */
+export function listRemoveBefore<T extends Listable>(list: List<T>, before: T): Optional<T> {
+  const removed = before.previous as Optional<T>
+  if (list.first === removed) {
+    listRemoveFirst(list)
+  }
+  else if (guardFor<T>(removed, 'next')) {
+    const previous = removed.previous
+    if (guardFor<T>(previous, 'next')) {
+      before.previous = previous
+      previous.next = before
+      delete removed.previous
+      delete removed.next
+      --list.count
+    }
+  }
+  return removed
+}
+
+/**
+ * @template T
+ *
+ * The `listInsertAfter` operation adds a given `insert`
+ * node to the `next` position of the given `after` node
+ * within the given list. If the `after` node is at the
+ * `last` position of the given list, then that node
+ * reference is updated to the newly inserted node as
+ * well.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @param {T} insert
+ * @param {T} after
+ */
+export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, after: T): void {
+  if (list.last === insert) {
+    listAppend(list, after)
+  }
+  else {
+    const next = insert.next
+    if (guardFor<T>(next, 'next')) {
+      next.previous = after
+      after.next = next
+      after.previous = insert
+      insert.next = after
+      ++list.count
+    }
+  }
+}
+
+/**
+ * @template T
+ *
+ * The `listRemoveBefore` operation removes a given node from
+ * the `next` position of the given `after` node within the
+ * given list and returns its reference. If the `next`
+ * position of the given `after` node is also the `last` node
+ * of the given list, then the `last` node is updated to
+ * the `after` reference.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @param {T} after
+ * @returns {Optional<T>}
+ */
+export function listRemoveAfter<T extends Listable>(list: List<T>, after: T): Optional<T> {
+  const removed = after.next as Optional<T>
+  if (list.last === removed) {
+    listRemoveLast(list)
+  }
+  else if (guardFor<T>(removed, 'next')) {
+    const next = removed.next
+    if (guardFor<T>(next, 'next')) {
+      next.previous = after
+      after.next = next
+      delete removed.previous
+      delete removed.next
+      --list.count
+    }
+  }
+  return removed
+}
+
+/**
+ * @template T
+ *
+ * The `listRemove` operation removes a given `remove` node from
+ * the given list. If the `remove` node is the `first` and or
+ * `last` positioned node within the given list, then those
+ * values are updated accordingly.
+ *
+ * @performance O(1)
+ *
+ * @param {List<T>} list
+ * @param {T} remove
+ */
+export function listRemove<T extends Listable>(list: List<T>, remove: T): void {
+  if (list.first === remove) {
+    listRemoveFirst(list)
+  }
+  else if (list.last === remove) {
+    listRemoveLast(list)
+  }
+  else {
+    const previous = remove.previous
+    const next = remove.next
+    if (guardFor<T>(previous, 'next') && guardFor<T>(next, 'next')) {
+      previous.next = next
+      next.previous = previous
+      delete remove.previous
+      delete remove.next
+      --list.count
+    }
+  }
+}
+
+/**
+ * @template T
+ *
+ * The `listClear` operation clears the given list by removing
+ * all relationships within it.
+ *
+ * @performance O(n)
+ *
+ * @param {List<T>} list
+ */
+export function listClear<T extends Listable>(list: List<T>): void {
+  while (list.first) {
+    listRemoveFirst(list)
+  }
+}
+
+/**
+ * @template T
+ *
+ * The `listIterateFromFirst` operation iterates from the `first`
+ * positioned node iteratively to the `last` positioned node
+ * within the given list.
+ *
+ * @performance O(n)
+ *
+ * @param {List<T>} list
+ * @returns {IterableIterator<T>}
+ */
+export function *listIterateFromFirst<T extends Listable>(list: List<T>): IterableIterator<T> {
+  let first = list.first
+  while (guardFor<T>(first, 'next')) {
+    yield first
+    first = first.next as Optional<T>
+  }
+}
+
+/**
+ * @template T
+ *
+ * The `listIterateToNext` operation iterates from the given
+ * node iteratively to the `next` positioned node until it
+ * reaches the final `next` node.
+ *
+ * @performance O(n)
+ *
+ * @param {Optional<T>} node
+ * @returns {IterableIterator<T>}
+ */
+export function *listIterateToNext<T extends Listable>(node: Optional<T>): IterableIterator<T> {
+  let next = node
+  while (next) {
+    yield next
+    next = next.next as Optional<T>
+  }
+}
+
+/**
+ * @template T
+ *
+ * The `listIterateToPrevious` operation iterates from the given
+ * node iteratively to the `previous` positioned node until it
+ * reaches the final `previous` node.
+ *
+ * @performance O(n)
+ *
+ * @param {Optional<T>} node
+ * @returns {IterableIterator<T>}
+ */
+export function *listIterateToPrevious<T extends Listable>(node: Optional<T>): IterableIterator<T> {
+  let previous = node
+  while (previous) {
+    yield previous
+    previous = previous.next as Optional<T>
+  }
+}

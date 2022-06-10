@@ -63,10 +63,7 @@ test('Stack: peek', t => {
   stackPush(stack, n2)
   stackPush(stack, n3)
 
-  const result = stackPeek(stack)
-  const expected = n3
-
-  t.is(result, expected)
+  t.is(stackPeek(stack), n3)
 })
 
 test('Stack: stackPush/stackPop', t => {
@@ -88,9 +85,7 @@ test('Stack: stackPush/stackPop', t => {
     stackPop(stack)
   ]
 
-  const expected = [ n3, n2, n1 ]
-
-  t.deepEqual(result, expected)
+  t.deepEqual(result, [ n3, n2, n1 ])
 })
 
 test('Stack: stackClear', t => {
@@ -130,7 +125,5 @@ test('Stack: stackIterator', t => {
     data.push(x)
   }
 
-  const expected = [ n3, n2, n1 ]
-
-  t.deepEqual(data, expected)
+  t.deepEqual(data, [ n3, n2, n1 ])
 })

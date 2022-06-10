@@ -33,41 +33,43 @@
 /**
  * @module MergeSort
  *
- * Run Time: O(n * log(n))
+ * @performance O(n * log(n))
  *
  * Merge sort is a sorting algorithm that is more generally suited for larger
- *  data sets. It is not an `in place` sorting algorithm, and requires double
- *  the size of memory to operate without any augmented memory management
- *  solutions.
+ * data sets. It is not an `in place` sorting algorithm, and requires double
+ * the size of memory to operate without any augmented memory management
+ * solutions.
  *
- *  Merge sort uses a recursive `divide and conquer` approach to sorting, by
- *  breaking its larger sequence into smaller sequences that are then sorted
- *  and reemerged back into a larger sequence. A sequence `S` of type `T` and
- *  size `n` will result after sorting to the form
+ * Merge sort uses a recursive `divide and conquer` approach to sorting, by
+ * breaking its larger sequence into smaller sequences that are then sorted
+ * and reemerged back into a larger sequence. A sequence `S` of type `T` and
+ * size `n` will result after sorting to the form
  *
- *     S[T] <= S[2] <= S[3] ... S[n -1] <= S[n]
- *  with performance O(n * log(n)), where `n = r - p + 1`, and `p`, `q`,
- *  and `r` are indices into the sequence that `p <= q < r`. The
- *  performance analysis is broken into two parts, the time to divide
- *  the initial sequence, which runs at O(log(n)) time, and the comparison
- *  of values in the sequence, which runs at O(n), resulting in
- *  O(n) * O(log(n)) = O(n * log(n)) performance.
- *  For example:
+ *    S[T] <= S[2] <= S[3] ... S[n -1] <= S[n]
+ * with performance O(n * log(n)), where `n = r - p + 1`, and `p`, `q`,
+ * and `r` are indices into the sequence that `p <= q < r`. The
+ * performance analysis is broken into two parts, the time to divide
+ * the initial sequence, which runs at O(log(n)) time, and the comparison
+ * of values in the sequence, which runs at O(n), resulting in
+ * O(n) * O(log(n)) = O(n * log(n)) performance.
+ * For example:
  *
- *     Consider a sequence of numbers `A`, where `A` = {8, 3, 9, 2, 10, 2, 4, 1}
- *                      {8, 3, 9, 2, 10, 2, 4, 1}
- *                 {8, 3, 9, 2}          {10, 2, 4, 1}
- *               {8, 3}    {9, 2}      {10, 2}    {4, 1}
- *              {8}  {3}  {9}  {2}    {10}  {2}  {4}  {1}
- *               {3, 8}    {2, 9}      {2, 10}    {1, 4}
- *                {2, 3, 8, 9}           {1, 2, 4, 10}
- *                      {1, 2, 2, 3, 4, 8, 9, 10}
+ *    Consider a sequence of numbers `A`, where `A` = {8, 3, 9, 2, 10, 2, 4, 1}
+ *                     {8, 3, 9, 2, 10, 2, 4, 1}
+ *                {8, 3, 9, 2}          {10, 2, 4, 1}
+ *              {8, 3}    {9, 2}      {10, 2}    {4, 1}
+ *             {8}  {3}  {9}  {2}    {10}  {2}  {4}  {1}
+ *              {3, 8}    {2, 9}      {2, 10}    {1, 4}
+ *               {2, 3, 8, 9}           {1, 2, 4, 10}
+ *                     {1, 2, 2, 3, 4, 8, 9, 10}
  */
 
 import { CompareFn } from '../utils/compare'
 
 /**
  * @template T
+ *
+ * @performance O(log(n))
  *
  * Performs the comparison and merge operations.
  *
@@ -135,6 +137,8 @@ const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>):
  *
  * Merge sort algorithm.
  *
+ * @performance O(n)
+ *
  * @param {T[]} data
  * @param {number} p
  * @param {number} r
@@ -142,11 +146,10 @@ const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>):
  */
 const sort = <T>(data: T[], p: number, r: number, fn: CompareFn<T>): void => {
   if (p < r) {
-    // same as (l + r) / 2 but avoids overflow for large l
+    // same as (p + r) / 2 but avoids overflow for large p
     const q = Math.floor(p + (r - p) / 2)
     sort(data, p, q, fn)
     sort(data, q + 1, r, fn)
-
     merge(data, p, q, r, fn)
   }
 }
@@ -155,6 +158,8 @@ const sort = <T>(data: T[], p: number, r: number, fn: CompareFn<T>): void => {
  * @template T
  *
  * Merge sort algorithm.
+ *
+ * @performance O(n*log(n))
  *
  * @param {T[]} data
  * @param {CompareFn<T>} fn

@@ -33,7 +33,7 @@
 /**
  * @module InsertionSort
  *
- * Run Time: O(n^2)
+ * @performance O(n^2)
  *
  * Insertion sort is an `in place` sorting algorithm that holds a constant number
  *  of keys outside the sequence at any given time.
@@ -73,6 +73,8 @@ import { CompareFn } from '../utils/compare'
  * allows for specific data types to be processed. A `CompareFn`
  * function is passed as a second parameter in order to specify more
  * complex comparison operations.
+ *
+ * @performance O(n^2)
  *
  * @param {T[]} data
  * @param {CompareFn<T>} fn
