@@ -111,18 +111,18 @@ export const listCreate = <T extends Listable>(): List<T> => new List<T>()
  * @performance O(1)
  *
  * @param {List<T>} list
- * @param {T} insert
+ * @param {T} node
  */
-export function listInsert<T extends Listable>(list: List<T>, insert: T): void {
+export function listInsert<T extends Listable>(list: List<T>, node: T): void {
   if (guardFor<T>(list.first, 'next')) {
-    list.first.previous = insert
-    insert.next = list.first
+    list.first.previous = node
+    node.next = list.first
   }
   else {
-    delete insert.next
-    list.last = insert
+    delete node.next
+    list.last = node
   }
-  list.first = insert
+  list.first = node
   ++list.count
 }
 
@@ -168,17 +168,17 @@ export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> 
  * @performance O(1)
  *
  * @param {List<T>} list
- * @param {T} append
+ * @param {T} node
  */
-export function listAppend<T extends Listable>(list: List<T>, append: T): void {
+export function listAppend<T extends Listable>(list: List<T>, node: T): void {
   if (guardFor<T>(list.last, 'next')) {
-    list.last.next = append
-    append.previous = list.last
+    list.last.next = node
+    node.previous = list.last
   }
   else {
-    list.first = append
+    list.first = node
   }
-  list.last = append
+  list.last = node
   ++list.count
 }
 
@@ -227,20 +227,20 @@ export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
  * @performance O(1)
  *
  * @param {List<T>} list
- * @param {T} insert
+ * @param {T} node
  * @param {T} before
  */
-export function listInsertBefore<T extends Listable>(list: List<T>, insert: T, before: T): void {
+export function listInsertBefore<T extends Listable>(list: List<T>, node: T, before: T): void {
   if (list.first === before) {
-    listInsert(list, insert)
+    listInsert(list, node)
   }
   else {
     const previous = before.previous
     if (guardFor<T>(previous, 'next')) {
-      previous.next = insert
-      insert.previous = previous
-      insert.next = before
-      before.previous = insert
+      previous.next = node
+      node.previous = previous
+      node.next = before
+      before.previous = node
       ++list.count
     }
   }
@@ -259,19 +259,19 @@ export function listInsertBefore<T extends Listable>(list: List<T>, insert: T, b
  * @performance O(1)
  *
  * @param {List<T>} list
- * @param {T} before
+ * @param {T} node
  * @returns {Optional<T>}
  */
-export function listRemoveBefore<T extends Listable>(list: List<T>, before: T): Optional<T> {
-  const removed = before.previous as Optional<T>
+export function listRemoveBefore<T extends Listable>(list: List<T>, node: T): Optional<T> {
+  const removed = node.previous as Optional<T>
   if (list.first === removed) {
     listRemoveFirst(list)
   }
   else if (guardFor<T>(removed, 'next')) {
     const previous = removed.previous
     if (guardFor<T>(previous, 'next')) {
-      before.previous = previous
-      previous.next = before
+      node.previous = previous
+      previous.next = node
       delete removed.previous
       delete removed.next
       --list.count
@@ -293,20 +293,20 @@ export function listRemoveBefore<T extends Listable>(list: List<T>, before: T): 
  * @performance O(1)
  *
  * @param {List<T>} list
- * @param {T} insert
+ * @param {T} node
  * @param {T} after
  */
-export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, after: T): void {
-  if (list.last === insert) {
-    listAppend(list, after)
+export function listInsertAfter<T extends Listable>(list: List<T>, node: T, after: T): void {
+  if (list.last === after) {
+    listAppend(list, node)
   }
   else {
-    const next = insert.next
+    const next = after.next
     if (guardFor<T>(next, 'next')) {
       next.previous = after
       after.next = next
-      after.previous = insert
-      insert.next = after
+      after.previous = node
+      node.next = after
       ++list.count
     }
   }
@@ -325,19 +325,19 @@ export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, af
  * @performance O(1)
  *
  * @param {List<T>} list
- * @param {T} after
+ * @param {T} node
  * @returns {Optional<T>}
  */
-export function listRemoveAfter<T extends Listable>(list: List<T>, after: T): Optional<T> {
-  const removed = after.next as Optional<T>
+export function listRemoveAfter<T extends Listable>(list: List<T>, node: T): Optional<T> {
+  const removed = node.next as Optional<T>
   if (list.last === removed) {
     listRemoveLast(list)
   }
   else if (guardFor<T>(removed, 'next')) {
     const next = removed.next
     if (guardFor<T>(next, 'next')) {
-      next.previous = after
-      after.next = next
+      next.previous = node
+      node.next = next
       delete removed.previous
       delete removed.next
       --list.count
@@ -357,23 +357,23 @@ export function listRemoveAfter<T extends Listable>(list: List<T>, after: T): Op
  * @performance O(1)
  *
  * @param {List<T>} list
- * @param {T} remove
+ * @param {T} node
  */
-export function listRemove<T extends Listable>(list: List<T>, remove: T): void {
-  if (list.first === remove) {
+export function listRemove<T extends Listable>(list: List<T>, node: T): void {
+  if (list.first === node) {
     listRemoveFirst(list)
   }
-  else if (list.last === remove) {
+  else if (list.last === node) {
     listRemoveLast(list)
   }
   else {
-    const previous = remove.previous
-    const next = remove.next
+    const previous = node.previous
+    const next = node.next
     if (guardFor<T>(previous, 'next') && guardFor<T>(next, 'next')) {
       previous.next = next
       next.previous = previous
-      delete remove.previous
-      delete remove.next
+      delete node.previous
+      delete node.next
       --list.count
     }
   }

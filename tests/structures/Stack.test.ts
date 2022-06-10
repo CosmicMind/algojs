@@ -32,7 +32,11 @@
 
 import test from 'ava'
 
+import { guardFor } from '@cosmicverse/foundation'
+
 import {
+  stackableCreate,
+  Stack,
   Stackable,
   stackCreate,
   stackPeek,
@@ -42,22 +46,63 @@ import {
   stackIterator,
 } from '../../src'
 
-interface StackNode extends Stackable {
+let sentinel: Readonly<undefined>
+
+class StackNode implements Stackable {
+  readonly parent?: Stackable
+  readonly key: number
+  readonly value: string
+  constructor(key: number, value: string) {
+    this.parent = sentinel
+    this.key = key
+    this.value = value
+  }
+}
+
+interface StackableNode extends Stackable {
   key: number
   value: string
 }
 
-const stackCreateNode = (key: number, value: string): StackNode => ({
-  key,
-  value,
+const createStackableNode = (key: number, value: string): Readonly<StackableNode> =>
+  stackableCreate<StackableNode>({
+    key,
+    value,
+  })
+
+test('Stack: stackableCreate', t => {
+  const node = stackableCreate({})
+  t.true(guardFor<Stackable>(node, 'parent'))
 })
 
-test('Stack: peek', t => {
+test('Stack: createStackableNode', t => {
+  const node = createStackableNode(1, 'a')
+
+  t.true(guardFor<StackableNode>(node, 'parent'))
+  t.true(guardFor<StackableNode>(node, 'key'))
+  t.true(guardFor<StackableNode>(node, 'value'))
+})
+
+test('Stack: new StackNode', t => {
+  const node = new StackNode(1, 'a')
+
+  t.true(node instanceof StackNode)
+  t.true(guardFor<StackNode>(node, 'parent'))
+  t.true(guardFor<StackNode>(node, 'key'))
+  t.true(guardFor<StackNode>(node, 'value'))
+})
+
+test('Stack: stackCreate', t => {
+  const stack = stackCreate<StackNode>()
+  t.true(stack instanceof Stack)
+})
+
+test('Stack: stackPeek', t => {
   const stack = stackCreate<StackNode>()
 
-  const n1 = stackCreateNode(1, 'a')
-  const n2 = stackCreateNode(2, 'b')
-  const n3 = stackCreateNode(3, 'c')
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
 
   stackPush(stack, n1)
   stackPush(stack, n2)
@@ -69,9 +114,9 @@ test('Stack: peek', t => {
 test('Stack: stackPush/stackPop', t => {
   const stack = stackCreate<StackNode>()
 
-  const n1 = stackCreateNode(1, 'a')
-  const n2 = stackCreateNode(2, 'b')
-  const n3 = stackCreateNode(3, 'c')
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
 
   stackPush(stack, n1)
   stackPush(stack, n2)
@@ -91,9 +136,9 @@ test('Stack: stackPush/stackPop', t => {
 test('Stack: stackClear', t => {
   const stack = stackCreate<StackNode>()
 
-  const n1 = stackCreateNode(1, 'a')
-  const n2 = stackCreateNode(2, 'b')
-  const n3 = stackCreateNode(3, 'c')
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
 
   stackPush(stack, n1)
   stackPush(stack, n2)
@@ -109,9 +154,9 @@ test('Stack: stackClear', t => {
 test('Stack: stackIterator', t => {
   const stack = stackCreate<StackNode>()
 
-  const n1 = stackCreateNode(1, 'a')
-  const n2 = stackCreateNode(2, 'b')
-  const n3 = stackCreateNode(3, 'c')
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
 
   stackPush(stack, n1)
   stackPush(stack, n2)
