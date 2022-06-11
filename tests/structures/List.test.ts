@@ -88,87 +88,72 @@ test('List: listableCreate', t => {
   t.true(guardFor<Listable>(node, 'next'))
 })
 
-// test('List: remove', t => {
-//   const list = createList()
+test('List: createListableNode', t => {
+  const node = createListableNode(1, 'a')
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+  t.true(guardFor<Listable>(node, 'previous'))
+  t.true(guardFor<Listable>(node, 'next'))
+  t.true(guardFor<ListableNode>(node, 'key'))
+  t.true(guardFor<ListableNode>(node, 'value'))
+})
 
-//   insert(list, n1)
-//   insertAfter(list, n1, n2)
-//   insertAfter(list, n1, n3)
-//   remove(list, n3)
+test('List: new ListNode', t => {
+  const node = new ListNode(1, 'a')
 
-//   const result: Array<ListNode> = []
-//   const expectation: Array<ListNode> = [ n1, n2 ]
+  t.true(node instanceof ListNode)
+  t.true(guardFor<Listable>(node, 'previous'))
+  t.true(guardFor<Listable>(node, 'next'))
+  t.true(guardFor<ListNode>(node, 'key'))
+  t.true(guardFor<ListNode>(node, 'value'))
+})
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+test('List: listCreate', t => {
+  const list = listCreate<ListNode>()
+  t.true(list instanceof List)
+})
 
-//   t.is(result[0], expectation[0])
-//   t.is(result[1], expectation[1])
-//   t.is(result.length, 2)
-// })
+test('List: listRemove', t => {
+  const list = listCreate<ListNode>()
 
-// test('List: insertBefore', t => {
-//   const list = createList()
+  const n1 = createListableNode(1, 'a')
+  const n2 = createListableNode(2, 'b')
+  const n3 = createListableNode(3, 'c')
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+  listInsert(list, n1)
+  listAppend(list, n2)
+  listAppend(list, n3)
+  // listRemove(list, n3)
 
-//   insert(list, n1)
-//   insertBefore(list, n1, n2)
-//   insertBefore(list, n1, n3)
+  const result: ListNode[] = []
+  const expectation = [ n1, n2 ]
 
-//   const result: Array<ListNode> = []
-//   const expectation: Array<ListNode> = [ n2, n3, n1 ]
+  for (const n of listIterateFromFirst(list)) {
+    // result.push(n)
+    console.log('NODE', n)
+  }
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+  console.log('LIST', list)
 
-//   t.is(result[0], expectation[0])
-//   t.is(result[1], expectation[1])
-//   t.is(result[2], expectation[2])
-//   t.is(result.length, 3)
-// })
+  t.is(result[0], expectation[0])
+  t.is(result[1], expectation[1])
+  t.is(result.length, 2)
+})
 
-// test('List: removeBefore', t => {
-//   const list = createList()
+// test('List: listInsertBefore', t => {
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
-//   insert(list, n1)
-//   insertBefore(list, n1, n2)
-//   insertBefore(list, n1, n3)
-//   removeBefore(list, n3)
+//   listInsert(list, n1)
+//   listInsertBefore(list, n1, n2)
+//   listInsertBefore(list, n1, n3)
 
-//   const result: Array<ListNode> = []
-//   const expectation: Array<ListNode> = [ n3, n1 ]
+//   const result: ListNode[] = []
+//   const expectation = [ n2, n3, n1 ]
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
-
-//   t.is(result[0], expectation[0])
-//   t.is(result[1], expectation[1])
-//   t.is(result.length, 2)
-// })
-
-// test('List: insertAfter', t => {
-//   const list = createList()
-
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
-
-//   insert(list, n1)
-//   insertAfter(list, n1, n2)
-//   insertAfter(list, n1, n3)
-
-//   const result: Array<ListNode> = []
-//   const expectation: Array<ListNode> = [ n1, n3, n2 ]
-
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
@@ -176,43 +161,43 @@ test('List: listableCreate', t => {
 //   t.is(result.length, 3)
 // })
 
-// test('List: removeAfter', t => {
-//   const list = createList()
+// test('List: listRemoveBefore', t => {
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
-//   insert(list, n1)
-//   insertAfter(list, n1, n2)
-//   insertAfter(list, n1, n3)
-//   removeAfter(list, n3)
+//   listInsert(list, n1)
+//   listInsertBefore(list, n1, n2)
+//   listInsertBefore(list, n1, n3)
+//   listRemoveBefore(list, n3)
 
-//   const result: Array<ListNode> = []
-//   const expectation: Array<ListNode> = [ n1, n3 ]
+//   const result: ListNode[] = []
+//   const expectation = [ n3, n1 ]
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
 //   t.is(result.length, 2)
 // })
 
-// test('List: fromFirst', t => {
-//   const list = createList()
+// test('List: listInsertAfter', t => {
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
-//   insert(list, n1)
-//   insert(list, n2)
-//   insert(list, n3)
+//   listInsert(list, n1)
+//   listInsertAfter(list, n1, n2)
+//   listInsertAfter(list, n1, n3)
 
-//   const result: Array<ListNode> = []
-//   const expectation: Array<ListNode> = [ n3, n2, n1 ]
+//   const result: ListNode[] = []
+//   const expectation = [ n1, n3, n2 ]
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
@@ -220,21 +205,65 @@ test('List: listableCreate', t => {
 //   t.is(result.length, 3)
 // })
 
-// test('List: fromLast', t => {
-//   const list = createList()
+// test('List: listRemoveAfter', t => {
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
+
+//   listInsert(list, n1)
+//   listInsertAfter(list, n1, n2)
+//   listInsertAfter(list, n1, n3)
+//   listRemoveAfter(list, n3)
+
+//   const result: ListNode[] = []
+//   const expectation = [ n1, n3 ]
+
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
+
+//   t.is(result[0], expectation[0])
+//   t.is(result[1], expectation[1])
+//   t.is(result.length, 2)
+// })
+
+// test('List: listIterateFromFirst', t => {
+//   const list = listCreate<ListNode>()
+
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
+
+//   listInsert(list, n1)
+//   listInsert(list, n2)
+//   listInsert(list, n3)
+
+//   const result: ListNode[] = []
+//   const expectation = [ n3, n2, n1 ]
+
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
+
+//   t.is(result[0], expectation[0])
+//   t.is(result[1], expectation[1])
+//   t.is(result[2], expectation[2])
+//   t.is(result.length, 3)
+// })
+
+// test('List: listIterateFromLast', t => {
+//   const list = listCreate<ListNode>()
+
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
 //   append(list, n1)
 //   append(list, n2)
 //   append(list, n3)
 
-//   const result: Array<ListNode> = []
-//   const expectation: Array<ListNode> = [ n3, n2, n1 ]
+//   const result: ListNode[] = []
+//   const expectation = [ n3, n2, n1 ]
 
-//   for (const n of fromLast(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromLast(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
@@ -242,32 +271,32 @@ test('List: listableCreate', t => {
 //   t.is(result.length, 3)
 // })
 
-// test('List: removeFirst', t => {
-//   const list = createList()
+// test('List: listRemoveFirst', t => {
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
 //   append(list, n1)
 //   append(list, n2)
 //   append(list, n3)
 
-//   let result: Array<ListNode> = []
-//   let expectation: Array<ListNode> = [ n1, n2, n3 ]
+//   let result: ListNode[] = []
+//   let expectation = [ n1, n2, n3 ]
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
 //   t.is(result[2], expectation[2])
 //   t.is(result.length, 3)
 
-//   removeFirst(list)
-//   removeFirst(list)
+//   listRemoveFirst(list)
+//   listRemoveFirst(list)
 
 //   result = []
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   expectation = [ n3 ]
 
@@ -275,32 +304,32 @@ test('List: listableCreate', t => {
 //   t.is(result.length, 1)
 // })
 
-// test('List: removeLast', t => {
-//   const list = createList()
+// test('List: listRemoveLast', t => {
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
 //   append(list, n1)
 //   append(list, n2)
 //   append(list, n3)
 
-//   let result: Array<ListNode> = []
-//   let expectation: Array<ListNode> = [ n1, n2, n3 ]
+//   let result: ListNode[] = []
+//   let expectation = [ n1, n2, n3 ]
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
 //   t.is(result[2], expectation[2])
 //   t.is(result.length, 3)
 
-//   removeLast(list)
-//   removeLast(list)
+//   listRemoveLast(list)
+//   listRemoveLast(list)
 
 //   result = []
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   expectation = [ n1 ]
 
@@ -308,12 +337,12 @@ test('List: listableCreate', t => {
 //   t.is(result.length, 1)
 // })
 
-// test('List: clear', t => {
-//   const list = createList()
+// test('List: listClear', t => {
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
 //   append(list, n1)
 //   append(list, n2)
@@ -321,17 +350,17 @@ test('List: listableCreate', t => {
 
 //   t.is(list.count, 3)
 
-//   clear(list)
+//   listClear(list)
 
 //   t.is(list.count, 0)
 // })
 
 // test('List: count', t => {
-//   const list = createList()
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
 
 //   append(list, n1)
 //   append(list, n2)
@@ -339,35 +368,35 @@ test('List: listableCreate', t => {
 
 //   t.is(list.count, 3)
 
-//   remove(list, n1)
-//   remove(list, n2)
+//   listRemove(list, n1)
+//   listRemove(list, n2)
 
 //   t.is(list.count, 1)
 // })
 
 // test('List: reverseOrder', t => {
-//   const list = createList()
+//   const list = listCreate<ListNode>()
 
-//   const n1 = createListNode(1, 'a')
-//   const n2 = createListNode(2, 'b')
-//   const n3 = createListNode(3, 'c')
-//   const n4 = createListNode(4, 'd')
-//   const n5 = createListNode(5, 'e')
-//   const n6 = createListNode(6, 'f')
-//   const n7 = createListNode(7, 'g')
+//   const n1 = createListableNode(1, 'a')
+//   const n2 = createListableNode(2, 'b')
+//   const n3 = createListableNode(3, 'c')
+//   const n4 = createListableNode(4, 'd')
+//   const n5 = createListableNode(5, 'e')
+//   const n6 = createListableNode(6, 'f')
+//   const n7 = createListableNode(7, 'g')
 
-//   insert(list, n1)
-//   insertAfter(list, n1, n2)
-//   insertAfter(list, n2, n3)
-//   insertAfter(list, n3, n4)
-//   insertAfter(list, n4, n5)
-//   insertAfter(list, n5, n6)
-//   insertAfter(list, n6, n7)
+//   listInsert(list, n1)
+//   listInsertAfter(list, n1, n2)
+//   listInsertAfter(list, n2, n3)
+//   listInsertAfter(list, n3, n4)
+//   listInsertAfter(list, n4, n5)
+//   listInsertAfter(list, n5, n6)
+//   listInsertAfter(list, n6, n7)
 
-//   let result: Array<ListNode> = []
-//   let expectation: Array<ListNode> = [ n1, n2, n3, n4, n5, n6, n7 ]
+//   let result: ListNode[] = []
+//   let expectation = [ n1, n2, n3, n4, n5, n6, n7 ]
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
@@ -382,7 +411,7 @@ test('List: listableCreate', t => {
 //   result = []
 //   expectation = [ n7, n6, n5, n4, n3, n2, n1 ]
 
-//   for (const n of fromFirst(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromFirst(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
@@ -395,7 +424,7 @@ test('List: listableCreate', t => {
 //   result = []
 //   expectation = [ n1, n2, n3, n4, n5, n6, n7 ]
 
-//   for (const n of fromLast(list)) result.push(n as ListNode)
+//   for (const n of listIterateFromLast(list)) result.push(n as ListNode)
 
 //   t.is(result[0], expectation[0])
 //   t.is(result[1], expectation[1])
