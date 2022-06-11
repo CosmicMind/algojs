@@ -159,8 +159,8 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
   if (guardFor<Stackable>(top, 'parent')) {
     stack.top = top.parent as Optional<T>
     delete top.parent
+    --stack.count
   }
-  --stack.count
   return top
 }
 
