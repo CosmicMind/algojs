@@ -30,8 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Stackable } from './structures/Stack'
-
 export type { CompareFn } from './utils/compare'
 export {
   stringCompare,
@@ -60,6 +58,7 @@ export {
 
 export type { Listable } from './structures/List'
 export {
+  listableCreate,
   List,
   listCreate,
   listInsert,
@@ -73,6 +72,7 @@ export {
   listRemove,
   listClear,
   listIterateFromFirst,
+  listIterateFromLast,
   listIterateToNext,
   listIterateToPrevious,
 } from './structures/List'

@@ -42,10 +42,8 @@ import {
 /**
  * The `sentinel` value is used to determine
  * leaf nodes within the `Stack`.
- *
- * @type {Readonly<undefined>}
  */
-let sentinel: Readonly<undefined>
+const sentinel = void 0
 
 /**
  * The `Stackable` interface defines a structure that moves
@@ -64,6 +62,7 @@ export interface Stackable {
  * Creates a `Stackable` instance of type `T` by using the
  * given node definition and returning a Readonly version
  * of the node.
+ *
  * @param {T} node
  * @returns {T}
  */
@@ -159,7 +158,7 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
   const top = stack.top
   if (guardFor<Stackable>(top, 'parent')) {
     stack.top = top.parent as Optional<T>
-    top.parent = sentinel
+    delete top.parent
   }
   --stack.count
   return top

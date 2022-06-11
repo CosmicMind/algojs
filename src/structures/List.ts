@@ -40,6 +40,12 @@ import {
 } from '@cosmicverse/foundation'
 
 /**
+ * The `sentinel` value is used to determine
+ * leaf nodes within the `List`.
+ */
+const sentinel = void 0
+
+/**
  * The `Listable` interface defines a structure that moves
  * from a `previous` node to its `next` node, or a `next`
  * node to its `previous` node within a `List` data
@@ -51,6 +57,22 @@ import {
 export interface Listable {
   previous?: Listable
   next?: Listable
+}
+
+/**
+ * @template T
+ *
+ * Creates a `Stackable` instance of type `T` by using the
+ * given node definition and returning a Readonly version
+ * of the node.
+ *
+ * @param {T} node
+ * @returns {T}
+ */
+export const listableCreate = <T extends Listable>(node: T): T => {
+  node.previous = sentinel
+  node.next = sentinel
+  return node
 }
 
 /**
@@ -98,9 +120,9 @@ export class List<T extends Listable> {
  *
  * Creates a new `List` instance.
  *
- * @returns {List<T>}
+ * @returns {Readonly<List<T>>}
  */
-export const listCreate = <T extends Listable>(): List<T> => new List<T>()
+export const listCreate = <T extends Listable>(): Readonly<List<T>> => new List<T>()
 
 /**
  * @template T
@@ -114,7 +136,7 @@ export const listCreate = <T extends Listable>(): List<T> => new List<T>()
  * @param {T} node
  */
 export function listInsert<T extends Listable>(list: List<T>, node: T): void {
-  if (guardFor<T>(list.first, 'next')) {
+  if (guardFor<Listable>(list.first, 'previous')) {
     list.first.previous = node
     node.next = list.first
   }
@@ -141,13 +163,13 @@ export function listInsert<T extends Listable>(list: List<T>, node: T): void {
  * @returns {Optional<T>}
  */
 export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> {
-  const removed = list.first
-  if (guardFor<T>(removed, 'next')) {
-    const next = removed.next
-    if (guardFor<T>(next, 'next')) {
-      delete removed.next
+  const first = list.first
+  if (guardFor<Listable>(first, 'next')) {
+    const next = first.next
+    if (guardFor<Listable>(next, 'previous')) {
+      list.first = next as Optional<T>
+      delete first.next
       delete next.previous
-      list.first = next
     }
     else {
       delete list.first
@@ -155,7 +177,7 @@ export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> 
     }
     --list.count
   }
-  return removed
+  return first
 }
 
 /**
@@ -171,7 +193,7 @@ export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> 
  * @param {T} node
  */
 export function listAppend<T extends Listable>(list: List<T>, node: T): void {
-  if (guardFor<T>(list.last, 'next')) {
+  if (guardFor<Listable>(list.last, 'next')) {
     list.last.next = node
     node.previous = list.last
   }
@@ -197,13 +219,13 @@ export function listAppend<T extends Listable>(list: List<T>, node: T): void {
  * @returns {Optional<T>}
  */
 export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
-  const removed = list.last
-  if (guardFor<T>(removed, 'next')) {
-    const previous = removed.previous
-    if (guardFor<T>(previous, 'next')) {
-      delete removed.previous
+  const node = list.last
+  if (guardFor<Listable>(node, 'previous')) {
+    const previous = node.previous
+    if (guardFor<Listable>(previous, 'next')) {
+      list.last = previous as Optional<T>
+      delete node.previous
       delete previous.next
-      list.last = previous
     }
     else {
       delete list.first
@@ -211,7 +233,7 @@ export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
     }
     --list.count
   }
-  return removed
+  return node
 }
 
 /**
@@ -236,7 +258,7 @@ export function listInsertBefore<T extends Listable>(list: List<T>, node: T, bef
   }
   else {
     const previous = before.previous
-    if (guardFor<T>(previous, 'next')) {
+    if (guardFor<Listable>(previous, 'next')) {
       previous.next = node
       node.previous = previous
       node.next = before
@@ -267,11 +289,11 @@ export function listRemoveBefore<T extends Listable>(list: List<T>, node: T): Op
   if (list.first === removed) {
     listRemoveFirst(list)
   }
-  else if (guardFor<T>(removed, 'next')) {
+  else if (guardFor<Listable>(removed, 'previous')) {
     const previous = removed.previous
-    if (guardFor<T>(previous, 'next')) {
+    if (guardFor<Listable>(previous, 'next')) {
       node.previous = previous
-      previous.next = node
+      previous.next = node as Optional<T>
       delete removed.previous
       delete removed.next
       --list.count
@@ -302,7 +324,7 @@ export function listInsertAfter<T extends Listable>(list: List<T>, node: T, afte
   }
   else {
     const next = after.next
-    if (guardFor<T>(next, 'next')) {
+    if (guardFor<Listable>(next, 'previous')) {
       next.previous = after
       after.next = next
       after.previous = node
@@ -333,9 +355,9 @@ export function listRemoveAfter<T extends Listable>(list: List<T>, node: T): Opt
   if (list.last === removed) {
     listRemoveLast(list)
   }
-  else if (guardFor<T>(removed, 'next')) {
+  else if (guardFor<Listable>(removed, 'next')) {
     const next = removed.next
-    if (guardFor<T>(next, 'next')) {
+    if (guardFor<Listable>(next, 'previous')) {
       next.previous = node
       node.next = next
       delete removed.previous
@@ -369,7 +391,7 @@ export function listRemove<T extends Listable>(list: List<T>, node: T): void {
   else {
     const previous = node.previous
     const next = node.next
-    if (guardFor<T>(previous, 'next') && guardFor<T>(next, 'next')) {
+    if (guardFor<Listable>(previous, 'next') && guardFor<Listable>(next, 'previous')) {
       previous.next = next
       next.previous = previous
       delete node.previous
@@ -390,7 +412,7 @@ export function listRemove<T extends Listable>(list: List<T>, node: T): void {
  * @param {List<T>} list
  */
 export function listClear<T extends Listable>(list: List<T>): void {
-  while (list.first) {
+  while (guardFor<Listable>(list.first, 'next')) {
     listRemoveFirst(list)
   }
 }
@@ -408,10 +430,30 @@ export function listClear<T extends Listable>(list: List<T>): void {
  * @returns {IterableIterator<T>}
  */
 export function *listIterateFromFirst<T extends Listable>(list: List<T>): IterableIterator<T> {
-  let first = list.first
-  while (guardFor<T>(first, 'next')) {
-    yield first
-    first = first.next as Optional<T>
+  let n: Optional<Listable> = list.first
+  while (guardFor<Listable>(n, 'next')) {
+    yield n as T
+    n = n.next
+  }
+}
+
+/**
+ * @template T
+ *
+ * The `listIterateFromLast` operation iterates from the `last`
+ * positioned node iteratively to the `first` positioned node
+ * within the given list.
+ *
+ * @performance O(n)
+ *
+ * @param {List<T>} list
+ * @returns {IterableIterator<T>}
+ */
+export function *listIterateFromLast<T extends Listable>(list: List<T>): IterableIterator<T> {
+  let n: Optional<Listable> = list.last
+  while (guardFor<Listable>(n, 'previous')) {
+    yield n as T
+    n = n.previous
   }
 }
 
@@ -428,10 +470,10 @@ export function *listIterateFromFirst<T extends Listable>(list: List<T>): Iterab
  * @returns {IterableIterator<T>}
  */
 export function *listIterateToNext<T extends Listable>(node: Optional<T>): IterableIterator<T> {
-  let next = node
-  while (next) {
-    yield next
-    next = next.next as Optional<T>
+  let n: Optional<Listable> = node
+  while (guardFor<Listable>(n, 'next')) {
+    yield n as T
+    n = n.next
   }
 }
 
@@ -448,9 +490,9 @@ export function *listIterateToNext<T extends Listable>(node: Optional<T>): Itera
  * @returns {IterableIterator<T>}
  */
 export function *listIterateToPrevious<T extends Listable>(node: Optional<T>): IterableIterator<T> {
-  let previous = node
-  while (previous) {
-    yield previous
-    previous = previous.next as Optional<T>
+  let n: Optional<Listable> = node
+  while (guardFor<Listable>(n, 'previous')) {
+    yield n as T
+    n = n.previous
   }
 }

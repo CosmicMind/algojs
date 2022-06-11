@@ -35,9 +35,9 @@ import test from 'ava'
 import { guardFor } from '@cosmicverse/foundation'
 
 import {
+  Stackable,
   stackableCreate,
   Stack,
-  Stackable,
   stackCreate,
   stackPeek,
   stackPush,
@@ -46,7 +46,7 @@ import {
   stackIterator,
 } from '../../src'
 
-let sentinel: Readonly<undefined>
+const sentinel = void 0
 
 class StackNode implements Stackable {
   readonly parent?: Stackable
@@ -72,6 +72,7 @@ const createStackableNode = (key: number, value: string): Readonly<StackableNode
 
 test('Stack: stackableCreate', t => {
   const node = stackableCreate({})
+
   t.true(guardFor<Stackable>(node, 'parent'))
 })
 
