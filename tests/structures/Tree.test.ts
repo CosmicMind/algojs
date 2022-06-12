@@ -39,25 +39,11 @@ import {
 
 import {
   Tree,
+  TreeChildren,
   treeCreate,
 } from '../../src'
 
 const sentinel = void 0
-
-// class TreeNode implements Tree {
-//   readonly parent: Optional<Tree>
-//   readonly previous: Optional<Tree>
-//   readonly next: Optional<Tree>
-//   readonly key: number
-//   readonly value: string
-//   constructor(key: number, value: string) {
-//     this.parent = sentinel
-//     this.previous = sentinel
-//     this.next = sentinel
-//     this.key = key
-//     this.value = value
-//   }
-// }
 
 interface TreeNode extends Tree {
   key: number
@@ -69,6 +55,25 @@ const createTreeNode = (key: number, value: string): ReturnType<typeof treeCreat
     key,
     value,
   })
+
+class TreeTrace implements Tree {
+  readonly parent: Optional<Tree>
+  readonly previous: Optional<Tree>
+  readonly next: Optional<Tree>
+  readonly children: Optional<TreeChildren<Tree>>
+  readonly size: number
+  readonly key: number
+  readonly value: string
+  constructor(key: number, value: string) {
+    this.parent = sentinel
+    this.previous = sentinel
+    this.next = sentinel
+    this.children = sentinel
+    this.size = 0
+    this.key = key
+    this.value = value
+  }
+}
 
 test('Tree: treeCreate', t => {
   const node = treeCreate({})
@@ -95,6 +100,26 @@ test('Tree: createTreeNode', t => {
   t.true(guardFor<TreeNode>(node, 'size'))
   t.true(guardFor<TreeNode>(node, 'key'))
   t.true(guardFor<TreeNode>(node, 'value'))
+  t.is(node.parent, sentinel)
+  t.is(node.previous, sentinel)
+  t.is(node.next, sentinel)
+  t.is(node.children, sentinel)
+  t.is(node.size, 0)
+  t.is(node.key, 1)
+  t.is(node.value, 'a')
+})
+
+test('Tree: new TreeTrace', t => {
+  const node = new TreeTrace(1, 'a')
+
+  t.true(node instanceof TreeTrace)
+  t.true(guardFor<TreeTrace>(node, 'parent'))
+  t.true(guardFor<TreeTrace>(node, 'previous'))
+  t.true(guardFor<TreeTrace>(node, 'next'))
+  t.true(guardFor<TreeTrace>(node, 'children'))
+  t.true(guardFor<TreeTrace>(node, 'size'))
+  t.true(guardFor<TreeTrace>(node, 'key'))
+  t.true(guardFor<TreeTrace>(node, 'value'))
   t.is(node.parent, sentinel)
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)

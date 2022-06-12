@@ -57,6 +57,7 @@ export {
   stackPop,
   stackIterator,
   stackClear,
+  stackIsTop,
 } from './structures/Stack'
 
 export type {
@@ -78,12 +79,19 @@ export {
   listRemove,
   listIterateFromFirst,
   listIterateFromLast,
-  listIterateToPrevious,
   listIterateToNext,
+  listIterateToPrevious,
   listClear,
+  listIsFirst,
+  listIsLast,
+  listIsNext,
+  listIsPrevious,
 } from './structures/List'
 
-export type { Tree } from './structures/Tree'
+export type {
+  Tree,
+  TreeChildren,
+} from './structures/Tree'
 
 export {
   treeCreate,

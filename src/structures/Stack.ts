@@ -163,10 +163,10 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
  * @returns {IterableIterator<T>}
  */
 export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
-  let node: Optional<Stackable> = stack.top
-  while (node) {
+  let node = stack.top
+  while (guardFor<Stackable>(node, 'parent')) {
     yield node as T
-    node = node.parent
+    node = node.parent as Optional<T>
   }
 }
 
@@ -184,4 +184,19 @@ export function stackClear<T extends Stackable>(stack: Stack<T>): void {
   while (guardFor<Stackable>(stack.top, 'parent')) {
     stackPop(stack)
   }
+}
+
+/**
+ * @template T
+ *
+ * The `stackIsTop` assertion looks at the `top` positioned
+ * node for the given stack, and determines if the given node
+ * is equal to that `top` positioned node.
+ *
+ * @param {Stack<T>} stack
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function stackIsTop<T extends Stackable>(stack: Stack<T>, node: T): boolean {
+  return stack.top === node
 }

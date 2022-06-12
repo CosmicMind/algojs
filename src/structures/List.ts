@@ -51,12 +51,12 @@ const sentinel = void 0
  * node to its `previous` node within a `List` data
  * structure.
  *
- * @property {Optional<Listable>} previous
  * @property {Optional<Listable>} next
+ * @property {Optional<Listable>} previous
  */
 export interface Listable {
-  previous: Optional<Listable>
   next: Optional<Listable>
+  previous: Optional<Listable>
 }
 
 /**
@@ -71,8 +71,8 @@ export interface Listable {
  */
 export function listableCreate<T extends Listable>(props: Omit<T, keyof Listable>): Readonly<T> {
   return Object.assign(props, {
-    previous: sentinel,
     next: sentinel,
+    previous: sentinel,
   }) as T
 }
 
@@ -427,26 +427,6 @@ export function *listIterateFromLast<T extends Listable>(list: List<T>): Iterabl
 /**
  * @template T
  *
- * The `listIterateToPrevious` operation iterates from the given
- * node iteratively to the `previous` positioned node until it
- * reaches the final `previous` node.
- *
- * @performance O(n)
- *
- * @param {Optional<T>} from
- * @returns {IterableIterator<T>}
- */
-export function *listIterateToPrevious<T extends Listable>(from: Optional<T>): IterableIterator<T> {
-  let node: Optional<Listable> = from
-  while (guardFor<Listable>(node, 'previous')) {
-    yield node as T
-    node = node.previous
-  }
-}
-
-/**
- * @template T
- *
  * The `listIterateToNext` operation iterates from the given
  * node iteratively to the `next` positioned node until it
  * reaches the final `next` node.
@@ -467,6 +447,26 @@ export function *listIterateToNext<T extends Listable>(from: Optional<T>): Itera
 /**
  * @template T
  *
+ * The `listIterateToPrevious` operation iterates from the given
+ * node iteratively to the `previous` positioned node until it
+ * reaches the final `previous` node.
+ *
+ * @performance O(n)
+ *
+ * @param {Optional<T>} from
+ * @returns {IterableIterator<T>}
+ */
+export function *listIterateToPrevious<T extends Listable>(from: Optional<T>): IterableIterator<T> {
+  let node: Optional<Listable> = from
+  while (guardFor<Listable>(node, 'previous')) {
+    yield node as T
+    node = node.previous
+  }
+}
+
+/**
+ * @template T
+ *
  * The `listClear` operation clears the given list by removing
  * all relationships within it.
  *
@@ -478,4 +478,64 @@ export function listClear<T extends Listable>(list: List<T>): void {
   while (guardFor<Listable>(list.first, 'next')) {
     listRemoveFirst(list)
   }
+}
+
+/**
+ * @template T
+ *
+ * The `listIsFirst` assertion looks at the `first` positioned
+ * node for the given list, and determines if the given node
+ * is equal to that `first` positioned node.
+ *
+ * @param {List<T>} list
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function listIsFirst<T extends Listable>(list: List<T>, node: T): boolean {
+  return list.first === node
+}
+
+/**
+ * @template T
+ *
+ * The `listIsLast` assertion looks at the `last` positioned
+ * node for the given list, and determines if the given node
+ * is equal to that `last` positioned node.
+ *
+ * @param {List<T>} list
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function listIsLast<T extends Listable>(list: List<T>, node: T): boolean {
+  return list.last === node
+}
+
+/**
+ * @template T
+ *
+ * The `listIsNext` assertion looks at the `next`
+ * positioned node for the given node, and determines if
+ * the given node is equal to that given node.
+ *
+ * @param {T} next
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function listIsNext<T extends Listable>(next: T, node: T): boolean {
+  return next === node.next
+}
+
+/**
+ * @template T
+ *
+ * The `listIsPrevious` assertion looks at the `previous`
+ * positioned node for the given node, and determines if
+ * the given node is equal to that given node.
+ *
+ * @param {T} previous
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function listIsPrevious<T extends Listable>(previous: T, node: T): boolean {
+  return previous === node.previous
 }

@@ -42,6 +42,7 @@ import {
   Stack,
   stackableCreate,
   stackCreate,
+  stackIsTop,
   stackPeek,
   stackPush,
   stackPop,
@@ -50,6 +51,17 @@ import {
 } from '../../src'
 
 const sentinel = void 0
+
+interface StackableNode extends Stackable {
+  key: number
+  value: string
+}
+
+const createStackableNode = (key: number, value: string): ReturnType<typeof stackableCreate<StackableNode>> =>
+  stackableCreate<StackableNode>({
+    key,
+    value,
+  })
 
 class StackNode implements Stackable {
   readonly parent: Optional<Stackable>
@@ -71,22 +83,20 @@ class StackTrace<T extends StackNode> implements Stack<T> {
   }
 }
 
-interface StackableNode extends Stackable {
-  key: number
-  value: string
-}
-
-const createStackableNode = (key: number, value: string): ReturnType<typeof stackableCreate<StackableNode>> =>
-  stackableCreate<StackableNode>({
-    key,
-    value,
-  })
-
 test('Stack: stackableCreate', t => {
   const node = stackableCreate({})
 
   t.true(guardFor<Stackable>(node, 'parent'))
   t.is(node.parent, sentinel)
+})
+
+test('Stack: stackCreate', t => {
+  const stack = stackCreate<StackableNode>()
+
+  t.true(guardFor<Stack<StackableNode>>(stack, 'top'))
+  t.true(guardFor<Stack<StackableNode>>(stack, 'count'))
+  t.is(stack.top, sentinel)
+  t.is(stack.count, 0)
 })
 
 test('Stack: createStackableNode', t => {
@@ -118,15 +128,6 @@ test('Stack: new StackTrace', t => {
   t.true(stack instanceof StackTrace)
   t.true(guardFor<StackTrace<StackNode>>(stack, 'top'))
   t.true(guardFor<StackTrace<StackNode>>(stack, 'count'))
-  t.is(stack.top, sentinel)
-  t.is(stack.count, 0)
-})
-
-test('Stack: stackCreate', t => {
-  const stack = stackCreate<StackableNode>()
-
-  t.true(guardFor<Stack<StackableNode>>(stack, 'top'))
-  t.true(guardFor<Stack<StackableNode>>(stack, 'count'))
   t.is(stack.top, sentinel)
   t.is(stack.count, 0)
 })
@@ -207,4 +208,19 @@ test('Stack: stackClear', t => {
   stackClear(stack)
 
   t.is(stack.count, 0)
+})
+
+test('Stack: stackIsTop', t => {
+  const stack = stackCreate<StackableNode>()
+
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.true(stackIsTop(stack, n3))
+  t.is(stack.count, 3)
 })

@@ -54,6 +54,7 @@ import { Stackable } from './Stack'
 const sentinel = void 0
 
 export type TreeChildren<T extends Listable> = List<T>
+
 export interface Tree extends Listable, Stackable {
   parent: Optional<Tree>
   previous: Optional<Tree>

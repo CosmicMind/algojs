@@ -53,21 +53,36 @@ import {
   listRemove,
   listIterateFromFirst,
   listIterateFromLast,
-  listIterateToPrevious,
   listIterateToNext,
+  listIterateToPrevious,
   listClear,
+  listIsFirst,
+  listIsLast,
+  listIsNext,
+  listIsPrevious,
 } from '../../src'
 
 const sentinel = void 0
 
+interface ListableNode extends Listable {
+  key: number
+  value: string
+}
+
+const createListableNode = (key: number, value: string): ReturnType<typeof listableCreate<ListableNode>> =>
+  listableCreate<ListableNode>({
+    key,
+    value,
+  })
+
 class ListNode implements Listable {
-  readonly previous: Optional<Listable>
   readonly next: Optional<Listable>
+  readonly previous: Optional<Listable>
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
-    this.previous = sentinel
     this.next = sentinel
+    this.previous = sentinel
     this.key = key
     this.value = value
   }
@@ -84,31 +99,31 @@ class ListTrace<T extends ListNode> implements List<T> {
   }
 }
 
-interface ListableNode extends Listable {
-  key: number
-  value: string
-}
-
-const createListableNode = (key: number, value: string): ReturnType<typeof listableCreate<ListableNode>> =>
-  listableCreate<ListableNode>({
-    key,
-    value,
-  })
-
 test('List: listableCreate', t => {
   const node = listableCreate({})
 
-  t.true(guardFor<Listable>(node, 'previous'))
   t.true(guardFor<Listable>(node, 'next'))
+  t.true(guardFor<Listable>(node, 'previous'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
+})
+
+test('List: listCreate', t => {
+  const list = listCreate<ListableNode>()
+
+  t.true(guardFor<List<ListableNode>>(list, 'first'))
+  t.true(guardFor<List<ListableNode>>(list, 'last'))
+  t.true(guardFor<List<ListableNode>>(list, 'count'))
+  t.is(list.first, sentinel)
+  t.is(list.last, sentinel)
+  t.is(list.count, 0)
 })
 
 test('List: createListableNode', t => {
   const node = createListableNode(1, 'a')
 
-  t.true(guardFor<ListableNode>(node, 'previous'))
   t.true(guardFor<ListableNode>(node, 'next'))
+  t.true(guardFor<ListableNode>(node, 'previous'))
   t.true(guardFor<ListableNode>(node, 'key'))
   t.true(guardFor<ListableNode>(node, 'value'))
   t.is(node.previous, sentinel)
@@ -121,8 +136,8 @@ test('List: new ListNode', t => {
   const node = new ListNode(1, 'a')
 
   t.true(node instanceof ListNode)
-  t.true(guardFor<ListNode>(node, 'previous'))
   t.true(guardFor<ListNode>(node, 'next'))
+  t.true(guardFor<ListNode>(node, 'previous'))
   t.true(guardFor<ListNode>(node, 'key'))
   t.true(guardFor<ListNode>(node, 'value'))
   t.is(node.previous, sentinel)
@@ -138,17 +153,6 @@ test('List: new ListTrace', t => {
   t.true(guardFor<ListTrace<ListNode>>(list, 'first'))
   t.true(guardFor<ListTrace<ListNode>>(list, 'last'))
   t.true(guardFor<ListTrace<ListNode>>(list, 'count'))
-  t.is(list.first, sentinel)
-  t.is(list.last, sentinel)
-  t.is(list.count, 0)
-})
-
-test('List: listCreate', t => {
-  const list = listCreate<ListableNode>()
-
-  t.true(guardFor<List<ListableNode>>(list, 'first'))
-  t.true(guardFor<List<ListableNode>>(list, 'last'))
-  t.true(guardFor<List<ListableNode>>(list, 'count'))
   t.is(list.first, sentinel)
   t.is(list.last, sentinel)
   t.is(list.count, 0)
@@ -510,4 +514,38 @@ test('List: listClear', t => {
   listClear(list)
 
   t.is(list.count, 0)
+})
+
+test('List: listIsFirst/listIsLast', t => {
+  const list = listCreate<ListableNode>()
+
+  const n1 = createListableNode(1, 'a')
+  const n2 = createListableNode(2, 'b')
+  const n3 = createListableNode(3, 'c')
+
+  listAppend(list, n1)
+  listAppend(list, n2)
+  listAppend(list, n3)
+
+  t.true(listIsFirst(list, n1))
+  t.false(listIsFirst(list, n2))
+  t.true(listIsLast(list, n3))
+  t.false(listIsLast(list, n2))
+})
+
+test('List: listIsNext/listIsPrevious', t => {
+  const list = listCreate<ListableNode>()
+
+  const n1 = createListableNode(1, 'a')
+  const n2 = createListableNode(2, 'b')
+  const n3 = createListableNode(3, 'c')
+
+  listAppend(list, n1)
+  listAppend(list, n2)
+  listAppend(list, n3)
+
+  t.true(listIsNext(n2, n1))
+  t.false(listIsNext(n3, n1))
+  t.true(listIsPrevious(n1, n2))
+  t.false(listIsNext(n1, n3))
 })
