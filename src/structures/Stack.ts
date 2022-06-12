@@ -64,11 +64,13 @@ export interface Stackable {
  * of the node.
  *
  * @param {Omit<T, 'parent'>} props
- * @returns {T}
+ * @returns {Readonly<T>}
  */
-export const stackableCreate = <T extends Stackable>(props: Omit<T, 'parent'>): T => Object.assign(props, {
-  parent: sentinel,
-}) as T
+export function stackableCreate<T extends Stackable>(props: Omit<T, 'parent'>): Readonly<T> {
+  return Object.assign(props, {
+    parent: sentinel,
+  }) as T
+}
 
 /**
  * @template T
@@ -77,30 +79,13 @@ export const stackableCreate = <T extends Stackable>(props: Omit<T, 'parent'>): 
  * stores a single reference to a `Stackable` node called
  * `top`. It creates a `vertical` relationship between the
  * nodes that exist within its structure.
+ *
+ * @property {Optional<T>} top
+ * @property {number} coount
  */
-export class Stack<T extends Stackable> {
-  /**
-   * A reference to the topmost node.
-   *
-   * @type {Optional<T>}
-   */
+export interface Stack<T extends Stackable> {
   top: Optional<T>
-
-  /**
-   * A reference to the number of nodes
-   * within the structure.
-   *
-   * @type {number}
-   */
   count: number
-
-  /**
-   * @constructor
-   */
-  constructor() {
-    this.top = sentinel
-    this.count = 0
-  }
 }
 
 /**
@@ -110,7 +95,10 @@ export class Stack<T extends Stackable> {
  *
  * @returns {Readonly<Stack<T>>}
  */
-export const stackCreate = <T extends Stackable>(): Readonly<Stack<T>> => new Stack<T>()
+export const stackCreate = <T extends Stackable>(): Readonly<Stack<T>> => ({
+  top: sentinel,
+  count: 0,
+})
 
 /**
  * @template T

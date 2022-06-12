@@ -39,8 +39,8 @@ import {
 
 import {
   Stackable,
-  stackableCreate,
   Stack,
+  stackableCreate,
   stackCreate,
   stackPeek,
   stackPush,
@@ -62,12 +62,21 @@ class StackNode implements Stackable {
   }
 }
 
+class StackTrace<T extends StackNode> implements Stack<T> {
+  readonly top: Optional<T>
+  readonly count: number
+  constructor() {
+    this.top = sentinel
+    this.count = 0
+  }
+}
+
 interface StackableNode extends Stackable {
   key: number
   value: string
 }
 
-const createStackableNode = (key: number, value: string): Readonly<StackableNode> =>
+const createStackableNode = (key: number, value: string): ReturnType<typeof stackableCreate<StackableNode>> =>
   stackableCreate<StackableNode>({
     key,
     value,
@@ -96,13 +105,25 @@ test('Stack: new StackNode', t => {
   t.true(guardFor<StackNode>(node, 'value'))
 })
 
+test('Stack: new StackTrace', t => {
+  const stack = new StackTrace<StackNode>()
+
+  t.true(stack instanceof StackTrace)
+  t.true(guardFor<StackTrace<StackNode>>(stack, 'top'))
+  t.true(guardFor<StackTrace<StackNode>>(stack, 'count'))
+})
+
 test('Stack: stackCreate', t => {
-  const stack = stackCreate<StackNode>()
-  t.true(stack instanceof Stack)
+  const stack = stackCreate<StackableNode>()
+
+  t.is(stack.top, sentinel)
+  t.is(stack.count, 0)
+  t.true(guardFor<Stack<StackableNode>>(stack, 'top'))
+  t.true(guardFor<Stack<StackableNode>>(stack, 'count'))
 })
 
 test('Stack: stackPeek', t => {
-  const stack = stackCreate<StackNode>()
+  const stack = stackCreate<StackableNode>()
 
   const n1 = createStackableNode(1, 'a')
   const n2 = createStackableNode(2, 'b')
@@ -117,7 +138,7 @@ test('Stack: stackPeek', t => {
 })
 
 test('Stack: stackPush/stackPop', t => {
-  const stack = stackCreate<StackNode>()
+  const stack = stackCreate<StackableNode>()
 
   const n1 = createStackableNode(1, 'a')
   const n2 = createStackableNode(2, 'b')
@@ -139,7 +160,7 @@ test('Stack: stackPush/stackPop', t => {
 })
 
 test('Stack: stackIterator', t => {
-  const stack = stackCreate<StackNode>()
+  const stack = stackCreate<StackableNode>()
 
   const n1 = createStackableNode(1, 'a')
   const n2 = createStackableNode(2, 'b')
@@ -151,7 +172,7 @@ test('Stack: stackIterator', t => {
 
   t.is(stack.count, 3)
 
-  const result: StackNode[] = []
+  const result: StackableNode[] = []
 
   for (const x of stackIterator(stack)) {
     result.push(x)
@@ -162,7 +183,7 @@ test('Stack: stackIterator', t => {
 })
 
 test('Stack: stackClear', t => {
-  const stack = stackCreate<StackNode>()
+  const stack = stackCreate<StackableNode>()
 
   const n1 = createStackableNode(1, 'a')
   const n2 = createStackableNode(2, 'b')

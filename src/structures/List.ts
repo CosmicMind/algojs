@@ -67,12 +67,14 @@ export interface Listable {
  * of the node.
  *
  * @param {Omit<T, 'previous' | 'next'>} props
- * @returns {T}
+ * @returns {Readonly<T>}
  */
-export const listableCreate = <T extends Listable>(props: Omit<T, 'previous' | 'next'>): T => Object.assign(props, {
-  previous: sentinel,
-  next: sentinel,
-}) as T
+export function listableCreate<T extends Listable>(props: Omit<T, 'previous' | 'next'>): Readonly<T> {
+  return Object.assign(props, {
+    previous: sentinel,
+    next: sentinel,
+  }) as T
+}
 
 /**
  * @template T
@@ -82,38 +84,15 @@ export const listableCreate = <T extends Listable>(props: Omit<T, 'previous' | '
  * `first` and `last`. It creates a `horizontal`
  * relationship between the nodes that exist within
  * its structure.
+ *
+ * @property {Optional<T>} first
+ * @property {Optional<T>} last
+ * @property {number} count
  */
-export class List<T extends Listable> {
-  /**
-   * A reference to the first node.
-   *
-   * @type {Optional<T>}
-   */
+export interface List<T extends Listable> {
   first: Optional<T>
-
-  /**
-   * A reference to the last node.
-   *
-   * @type {Optional<T>}
-   */
   last: Optional<T>
-
-  /**
-   * A reference to the number of nodes
-   * within the structure.
-   *
-   * @type {number}
-   */
   count: number
-
-  /**
-   * @constructor
-   */
-  constructor() {
-    this.first = sentinel
-    this.last = sentinel
-    this.count = 0
-  }
 }
 
 /**
@@ -123,7 +102,11 @@ export class List<T extends Listable> {
  *
  * @returns {Readonly<List<T>>}
  */
-export const listCreate = <T extends Listable>(): Readonly<List<T>> => new List<T>()
+export const listCreate = <T extends Listable>(): Readonly<List<T>> => ({
+  first: sentinel,
+  last: sentinel,
+  count: 0,
+})
 
 /**
  * @template T

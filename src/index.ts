@@ -44,10 +44,13 @@ export { insertionSort } from './sort/InsertionSort'
 export { mergeSort } from './sort/MergeSort'
 export { selectionSort } from './sort/SelectionSort'
 
-export type { Stackable } from './structures/Stack'
+export type {
+  Stackable,
+  Stack,
+} from './structures/Stack'
+
 export {
   stackableCreate,
-  Stack,
   stackCreate,
   stackPeek,
   stackPush,
@@ -56,10 +59,13 @@ export {
   stackClear,
 } from './structures/Stack'
 
-export type { Listable } from './structures/List'
+export type {
+  Listable,
+  List,
+} from './structures/List'
+
 export {
   listableCreate,
-  List,
   listCreate,
   listInsert,
   listRemoveFirst,
