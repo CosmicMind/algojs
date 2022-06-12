@@ -78,11 +78,7 @@ class TreeTrace implements Tree {
 test('Tree: treeCreate', t => {
   const node = treeCreate({})
 
-  t.true(guardFor<Tree>(node, 'parent'))
-  t.true(guardFor<Tree>(node, 'previous'))
-  t.true(guardFor<Tree>(node, 'next'))
-  t.true(guardFor<Tree>(node, 'children'))
-  t.true(guardFor<Tree>(node, 'size'))
+  t.true(guardFor(node, 'parent', 'previous', 'next', 'children', 'size'))
   t.is(node.parent, sentinel)
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
@@ -93,13 +89,7 @@ test('Tree: treeCreate', t => {
 test('Tree: createTreeNode', t => {
   const node = createTreeNode(1, 'a')
 
-  t.true(guardFor<TreeNode>(node, 'parent'))
-  t.true(guardFor<TreeNode>(node, 'previous'))
-  t.true(guardFor<TreeNode>(node, 'next'))
-  t.true(guardFor<TreeNode>(node, 'children'))
-  t.true(guardFor<TreeNode>(node, 'size'))
-  t.true(guardFor<TreeNode>(node, 'key'))
-  t.true(guardFor<TreeNode>(node, 'value'))
+  t.true(guardFor(node, 'parent', 'previous', 'next', 'children', 'size', 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
@@ -113,13 +103,7 @@ test('Tree: new TreeTrace', t => {
   const node = new TreeTrace(1, 'a')
 
   t.true(node instanceof TreeTrace)
-  t.true(guardFor<TreeTrace>(node, 'parent'))
-  t.true(guardFor<TreeTrace>(node, 'previous'))
-  t.true(guardFor<TreeTrace>(node, 'next'))
-  t.true(guardFor<TreeTrace>(node, 'children'))
-  t.true(guardFor<TreeTrace>(node, 'size'))
-  t.true(guardFor<TreeTrace>(node, 'key'))
-  t.true(guardFor<TreeTrace>(node, 'value'))
+  t.true(guardFor(node, 'parent', 'previous', 'next', 'children', 'size', 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)

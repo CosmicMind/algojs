@@ -88,15 +88,14 @@ class StackTrace<T extends StackNode> implements Stack<T> {
 test('Stack: stackableCreate', t => {
   const node = stackableCreate({})
 
-  t.true(guardFor<Stackable>(node, 'parent'))
+  t.true(guardFor(node, 'parent'))
   t.is(node.parent, sentinel)
 })
 
 test('Stack: stackCreate', t => {
   const stack = stackCreate<StackableNode>()
 
-  t.true(guardFor<Stack<StackableNode>>(stack, 'top'))
-  t.true(guardFor<Stack<StackableNode>>(stack, 'count'))
+  t.true(guardFor(stack, 'top', 'count'))
   t.is(stack.top, sentinel)
   t.is(stack.count, 0)
 })
@@ -104,9 +103,7 @@ test('Stack: stackCreate', t => {
 test('Stack: createStackableNode', t => {
   const node = createStackableNode(1, 'a')
 
-  t.true(guardFor<StackableNode>(node, 'parent'))
-  t.true(guardFor<StackableNode>(node, 'key'))
-  t.true(guardFor<StackableNode>(node, 'value'))
+  t.true(guardFor(node, 'parent', 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.key, 1)
   t.is(node.value, 'a')
@@ -116,9 +113,7 @@ test('Stack: new StackNode', t => {
   const node = new StackNode(1, 'a')
 
   t.true(node instanceof StackNode)
-  t.true(guardFor<StackNode>(node, 'parent'))
-  t.true(guardFor<StackNode>(node, 'key'))
-  t.true(guardFor<StackNode>(node, 'value'))
+  t.true(guardFor(node, 'parent', 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.key, 1)
   t.is(node.value, 'a')
@@ -128,8 +123,7 @@ test('Stack: new StackTrace', t => {
   const stack = new StackTrace<StackNode>()
 
   t.true(stack instanceof StackTrace)
-  t.true(guardFor<StackTrace<StackNode>>(stack, 'top'))
-  t.true(guardFor<StackTrace<StackNode>>(stack, 'count'))
+  t.true(guardFor(stack, 'top', 'count'))
   t.is(stack.top, sentinel)
   t.is(stack.count, 0)
 })

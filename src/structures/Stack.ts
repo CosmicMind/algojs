@@ -144,7 +144,7 @@ export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
  */
 export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
   const node = stack.top
-  if (guardFor<Stackable>(node, 'parent')) {
+  if (guardFor(node, 'parent')) {
     stack.top = node.parent as Optional<T>
     node.parent = sentinel
     --stack.count
@@ -163,10 +163,10 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
  * @returns {IterableIterator<T>}
  */
 export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
-  let node = stack.top
-  while (guardFor<Stackable>(node, 'parent')) {
+  let node: Optional<Stackable> = stack.top
+  while (guardFor(node, 'parent')) {
     yield node as T
-    node = node.parent as Optional<T>
+    node = node.parent
   }
 }
 
@@ -181,7 +181,7 @@ export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIt
  * @param {Stack<T>} stack
  */
 export function stackClear<T extends Stackable>(stack: Stack<T>): void {
-  while (guardFor<Stackable>(stack.top, 'parent')) {
+  while (guardFor(stack.top, 'parent')) {
     stackPop(stack)
   }
 }
@@ -210,7 +210,7 @@ export function stackIsTop<T extends Stackable>(stack: Stack<T>, node: T): boole
  */
 export function stackIsDescendant<T extends Stackable>(descendant: T, node: T): boolean {
   let n = descendant.parent
-  while (guardFor<Stackable>(n, 'parent')) {
+  while (guardFor(n, 'parent')) {
     if (n === node) {
       return true
     }

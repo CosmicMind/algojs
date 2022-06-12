@@ -104,8 +104,7 @@ class ListTrace<T extends ListNode> implements List<T> {
 test('List: listableCreate', t => {
   const node = listableCreate({})
 
-  t.true(guardFor<Listable>(node, 'next'))
-  t.true(guardFor<Listable>(node, 'previous'))
+  t.true(guardFor(node, 'next', 'previous'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
 })
@@ -113,9 +112,7 @@ test('List: listableCreate', t => {
 test('List: listCreate', t => {
   const list = listCreate<ListableNode>()
 
-  t.true(guardFor<List<ListableNode>>(list, 'first'))
-  t.true(guardFor<List<ListableNode>>(list, 'last'))
-  t.true(guardFor<List<ListableNode>>(list, 'count'))
+  t.true(guardFor(list, 'first', 'last', 'count'))
   t.is(list.first, sentinel)
   t.is(list.last, sentinel)
   t.is(list.count, 0)
@@ -124,10 +121,7 @@ test('List: listCreate', t => {
 test('List: createListableNode', t => {
   const node = createListableNode(1, 'a')
 
-  t.true(guardFor<ListableNode>(node, 'next'))
-  t.true(guardFor<ListableNode>(node, 'previous'))
-  t.true(guardFor<ListableNode>(node, 'key'))
-  t.true(guardFor<ListableNode>(node, 'value'))
+  t.true(guardFor(node, 'next', 'previous', 'key', 'value'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
   t.is(node.key, 1)
@@ -138,10 +132,7 @@ test('List: new ListNode', t => {
   const node = new ListNode(1, 'a')
 
   t.true(node instanceof ListNode)
-  t.true(guardFor<ListNode>(node, 'next'))
-  t.true(guardFor<ListNode>(node, 'previous'))
-  t.true(guardFor<ListNode>(node, 'key'))
-  t.true(guardFor<ListNode>(node, 'value'))
+  t.true(guardFor(node, 'next', 'previous', 'key', 'value'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
   t.is(node.key, 1)
@@ -152,9 +143,7 @@ test('List: new ListTrace', t => {
   const list = new ListTrace<ListNode>()
 
   t.true(list instanceof ListTrace)
-  t.true(guardFor<ListTrace<ListNode>>(list, 'first'))
-  t.true(guardFor<ListTrace<ListNode>>(list, 'last'))
-  t.true(guardFor<ListTrace<ListNode>>(list, 'count'))
+  t.true(guardFor(list, 'first', 'last', 'count'))
   t.is(list.first, sentinel)
   t.is(list.last, sentinel)
   t.is(list.count, 0)

@@ -120,7 +120,7 @@ export function treeCreate<T extends Tree>(props: Omit<T, keyof Tree>): Readonly
  * @returns {boolean}
  */
 export function treeIsRoot<T extends Tree>(tree: T): boolean {
-  return guardFor<T>(tree, 'parent') && sentinel === tree.parent
+  return guardFor(tree, 'parent') && sentinel === tree.parent
 }
 
 /**
@@ -130,7 +130,7 @@ export function treeIsRoot<T extends Tree>(tree: T): boolean {
  * @returns {boolean}
  */
 export function treeIsLeaf<T extends Tree>(tree: T): boolean {
-  return guardFor<T>(tree, 'children') && sentinel === tree.children
+  return guardFor(tree, 'children') && sentinel === tree.children
 }
 
 /**
@@ -140,9 +140,9 @@ export function treeIsLeaf<T extends Tree>(tree: T): boolean {
  * @returns {boolean}
  */
 export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor<T>(child, 'parent') &&
-         guardFor<T>(parent, 'children') &&
-         guardFor<TreeChildren<T>>(parent.children, 'first') &&
+  return guardFor(child, 'parent') &&
+         guardFor(parent, 'children') &&
+         guardFor(parent.children, 'first') &&
          listHas(parent.children, child)
 }
 
@@ -152,25 +152,11 @@ export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
  * @param {T} tree
  * @returns {boolean}
  */
-export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor<T>(child, 'parent') &&
-         guardFor<T>(parent, 'children') &&
-         guardFor<TreeChildren<T>>(parent.children as TreeChildren<T>, 'first', 'last') &&
-         listIsFirst(parent.children as TreeChildren<T>, child) &&
-         listIsLast(parent.children as TreeChildren<T>, child)
-}
-
-/**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
- */
 export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor<T>(child, 'parent') &&
-         guardFor<T>(parent, 'children') &&
-         guardFor<TreeChildren<T>>(parent.children as TreeChildren<T>, 'first') &&
-         listIsFirst(parent.children as TreeChildren<T>, child)
+  return guardFor(child, 'parent') &&
+         guardFor(parent, 'children') &&
+         guardFor(parent.children, 'first') &&
+         listIsFirst(parent.children, child)
 }
 
 /**
@@ -180,10 +166,24 @@ export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
  * @returns {boolean}
  */
 export function treeIsLastChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor<T>(child, 'parent') &&
-         guardFor<T>(parent, 'children') &&
-         guardFor<TreeChildren<T>>(parent.children as TreeChildren<T>, 'last') &&
-         listIsLast(parent.children as TreeChildren<T>, child)
+  return guardFor(child, 'parent') &&
+         guardFor(parent, 'children') &&
+         guardFor(parent.children, 'last') &&
+         listIsLast(parent.children, child)
+}
+
+/**
+ * @template T
+ *
+ * @param {T} tree
+ * @returns {boolean}
+ */
+export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
+  return guardFor(child, 'parent') &&
+         guardFor(parent, 'children') &&
+         guardFor(parent.children, 'first', 'last') &&
+         listIsFirst(parent.children, child) &&
+         listIsLast(parent.children, child)
 }
 
 /**
