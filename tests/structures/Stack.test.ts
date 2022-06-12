@@ -32,7 +32,10 @@
 
 import test from 'ava'
 
-import { guardFor } from '@cosmicverse/foundation'
+import {
+  Optional,
+  guardFor,
+} from '@cosmicverse/foundation'
 
 import {
   Stackable,
@@ -42,14 +45,14 @@ import {
   stackPeek,
   stackPush,
   stackPop,
-  stackClear,
   stackIterator,
+  stackClear,
 } from '../../src'
 
 const sentinel = void 0
 
 class StackNode implements Stackable {
-  readonly parent?: Stackable
+  readonly parent: Optional<Stackable>
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
@@ -110,6 +113,7 @@ test('Stack: stackPeek', t => {
   stackPush(stack, n3)
 
   t.is(stackPeek(stack), n3)
+  t.is(stack.count, 3)
 })
 
 test('Stack: stackPush/stackPop', t => {
@@ -123,15 +127,38 @@ test('Stack: stackPush/stackPop', t => {
   stackPush(stack, n2)
   stackPush(stack, n3)
 
-  t.is(stack.count, 3)
-
   const result = [
     stackPop(stack),
     stackPop(stack),
     stackPop(stack)
   ]
 
+  t.is(stack.count, 0)
+
   t.deepEqual(result, [ n3, n2, n1 ])
+})
+
+test('Stack: stackIterator', t => {
+  const stack = stackCreate<StackNode>()
+
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.is(stack.count, 3)
+
+  const result: StackNode[] = []
+
+  for (const x of stackIterator(stack)) {
+    result.push(x)
+  }
+
+  t.deepEqual(result, [ n3, n2, n1 ])
+  t.is(result.length, stack.count)
 })
 
 test('Stack: stackClear', t => {
@@ -150,26 +177,4 @@ test('Stack: stackClear', t => {
   stackClear(stack)
 
   t.is(stack.count, 0)
-})
-
-test('Stack: stackIterator', t => {
-  const stack = stackCreate<StackNode>()
-
-  const n1 = createStackableNode(1, 'a')
-  const n2 = createStackableNode(2, 'b')
-  const n3 = createStackableNode(3, 'c')
-
-  stackPush(stack, n1)
-  stackPush(stack, n2)
-  stackPush(stack, n3)
-
-  t.is(stack.count, 3)
-
-  const data: StackNode[] = []
-
-  for (const x of stackIterator(stack)) {
-    data.push(x)
-  }
-
-  t.deepEqual(data, [ n3, n2, n1 ])
 })

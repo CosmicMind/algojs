@@ -52,8 +52,8 @@ export {
   stackPeek,
   stackPush,
   stackPop,
-  stackClear,
   stackIterator,
+  stackClear,
 } from './structures/Stack'
 
 export type { Listable } from './structures/List'
@@ -70,9 +70,9 @@ export {
   listInsertAfter,
   listRemoveAfter,
   listRemove,
-  listClear,
   listIterateFromFirst,
   listIterateFromLast,
-  listIterateToNext,
   listIterateToPrevious,
+  listIterateToNext,
+  listClear,
 } from './structures/List'

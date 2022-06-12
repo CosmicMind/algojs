@@ -53,7 +53,7 @@ const sentinel = void 0
  * @property {Optional<Stackable>} parent
  */
 export interface Stackable {
-  parent?: Stackable
+  parent: Optional<Stackable>
 }
 
 /**
@@ -63,13 +63,12 @@ export interface Stackable {
  * given node definition and returning a Readonly version
  * of the node.
  *
- * @param {T} node
+ * @param {Omit<T, 'parent'>} props
  * @returns {T}
  */
-export const stackableCreate = <T extends Stackable>(node: T): T => {
-  node.parent = sentinel
-  return node
-}
+export const stackableCreate = <T extends Stackable>(props: Omit<T, 'parent'>): T => Object.assign(props, {
+  parent: sentinel,
+}) as T
 
 /**
  * @template T
@@ -85,7 +84,7 @@ export class Stack<T extends Stackable> {
    *
    * @type {Optional<T>}
    */
-  top?: T
+  top: Optional<T>
 
   /**
    * A reference to the number of nodes
@@ -99,6 +98,7 @@ export class Stack<T extends Stackable> {
    * @constructor
    */
   constructor() {
+    this.top = sentinel
     this.count = 0
   }
 }
@@ -155,13 +155,31 @@ export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
  * @returns {Optional<T>}
  */
 export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
-  const top = stack.top
-  if (guardFor<Stackable>(top, 'parent')) {
-    stack.top = top.parent as Optional<T>
-    delete top.parent
+  const node = stack.top
+  if (guardFor<Stackable>(node, 'parent')) {
+    stack.top = node.parent as Optional<T>
+    node.parent = sentinel
     --stack.count
   }
-  return top
+  return node
+}
+
+/**
+ * @template T
+ *
+ * The `stackIterator` operation iterates from the `top`positioned * iteratively to the final node within the given stack.
+ *
+ * @performance O(n)
+ *
+ * @param {Stack<T>} stack
+ * @returns {IterableIterator<T>}
+ */
+export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
+  let node: Optional<Stackable> = stack.top
+  while (node) {
+    yield node as T
+    node = node.parent
+  }
 }
 
 /**
@@ -177,23 +195,5 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
 export function stackClear<T extends Stackable>(stack: Stack<T>): void {
   while (guardFor<Stackable>(stack.top, 'parent')) {
     stackPop(stack)
-  }
-}
-
-/**
- * @template T
- *
- * The `stackIterator` operation iterates from the `top`positioned * iteratively to the final node within the given stack.
- *
- * @performance O(n)
- *
- * @param {Stack<T>} stack
- * @returns {IterableIterator<T>}
- */
-export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
-  let top: Optional<Stackable> = stack.top
-  while (top) {
-    yield top as T
-    top = top.parent
   }
 }
