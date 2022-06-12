@@ -30,10 +30,64 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export * from './sort/InsertionSort.test'
-export * from './sort/MergeSort.test'
-export * from './sort/SelectionSort.test'
+import test from 'ava'
 
-export * from './structures/List.test'
-export * from './structures/Stack.test'
-export * from './structures/Tree.test'
+import {
+  Optional,
+  guardFor,
+} from '@cosmicverse/foundation'
+
+import {
+  Tree,
+  treeCreate,
+} from '../../src'
+
+const sentinel = void 0
+
+// class TreeNode implements Tree {
+//   readonly parent: Optional<Tree>
+//   readonly previous: Optional<Tree>
+//   readonly next: Optional<Tree>
+//   readonly key: number
+//   readonly value: string
+//   constructor(key: number, value: string) {
+//     this.parent = sentinel
+//     this.previous = sentinel
+//     this.next = sentinel
+//     this.key = key
+//     this.value = value
+//   }
+// }
+
+interface TreeNode extends Tree {
+  key: number
+  value: string
+}
+
+const createTreeNode = (key: number, value: string): ReturnType<typeof treeCreate<TreeNode>> =>
+  treeCreate<TreeNode>({
+    key,
+    value,
+  })
+
+test('Tree: treeCreate', t => {
+  const node = treeCreate({})
+
+  t.true(guardFor<Tree>(node, 'parent'))
+  t.true(guardFor<Tree>(node, 'previous'))
+  t.true(guardFor<Tree>(node, 'next'))
+  t.true(guardFor<Tree>(node, 'children'))
+  t.true(guardFor<Tree>(node, 'size'))
+})
+
+test('Tree: createTreeNode', t => {
+  const node = createTreeNode(1, 'a')
+
+  t.true(guardFor<TreeNode>(node, 'parent'))
+  t.true(guardFor<TreeNode>(node, 'previous'))
+  t.true(guardFor<TreeNode>(node, 'next'))
+  t.true(guardFor<TreeNode>(node, 'children'))
+  t.true(guardFor<TreeNode>(node, 'size'))
+  t.true(guardFor<TreeNode>(node, 'key'))
+  t.true(guardFor<TreeNode>(node, 'value'))
+})

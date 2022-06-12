@@ -82,3 +82,9 @@ export {
   listIterateToNext,
   listClear,
 } from './structures/List'
+
+export type { Tree } from './structures/Tree'
+
+export {
+  treeCreate,
+} from './structures/Tree'

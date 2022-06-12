@@ -66,10 +66,10 @@ export interface Listable {
  * given node definition and returning a Readonly version
  * of the node.
  *
- * @param {Omit<T, 'previous' | 'next'>} props
+ * @param {Omit<T, keyof Listable>} props
  * @returns {Readonly<T>}
  */
-export function listableCreate<T extends Listable>(props: Omit<T, 'previous' | 'next'>): Readonly<T> {
+export function listableCreate<T extends Listable>(props: Omit<T, keyof Listable>): Readonly<T> {
   return Object.assign(props, {
     previous: sentinel,
     next: sentinel,

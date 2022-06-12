@@ -30,10 +30,50 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export * from './sort/InsertionSort.test'
-export * from './sort/MergeSort.test'
-export * from './sort/SelectionSort.test'
+/**
+ * @module Tree
+ */
 
-export * from './structures/List.test'
-export * from './structures/Stack.test'
-export * from './structures/Tree.test'
+import {
+  Optional,
+  guardFor,
+} from '@cosmicverse/foundation'
+
+import {
+  Listable,
+  List,
+  listCreate,
+} from './List'
+
+import { Stackable } from './Stack'
+
+/**
+ * The `sentinel` value is used to determine
+ * leaf nodes within the `Tree`.
+ */
+const sentinel = void 0
+
+export interface Tree extends Listable, Stackable {
+  parent: Optional<Tree>
+  previous: Optional<Tree>
+  next: Optional<Tree>
+  children: List<Tree>
+  size: number
+}
+
+/**
+ * @template T
+ *
+ *
+ * @param {Omit<T, keyof Tree>} props
+ * @returns {Readonly<T>}
+ */
+export function treeCreate<T extends Tree>(props: Omit<T, keyof Tree>): Readonly<T> {
+  return Object.assign(props, {
+    parent: sentinel,
+    previous: sentinel,
+    next: sentinel,
+    children: listCreate<T>(),
+    size: 0,
+  }) as T
+}
