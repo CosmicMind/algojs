@@ -427,40 +427,32 @@ export function *listIterateFromLast<T extends Listable>(list: List<T>): Iterabl
 /**
  * @template T
  *
- * The `listIterateToNext` operation iterates from the given
- * node iteratively to the `next` positioned node until it
- * reaches the final `next` node.
- *
  * @performance O(n)
  *
- * @param {Optional<T>} from
+ * @param {T} node
  * @returns {IterableIterator<T>}
  */
-export function *listIterateToNext<T extends Listable>(from: Optional<T>): IterableIterator<T> {
-  let node: Optional<Listable> = from
-  while (guardFor<Listable>(node, 'next')) {
-    yield node as T
-    node = node.next
+export function *listIterateToNext<T extends Listable>(node: T): IterableIterator<T> {
+  let n: Optional<Listable> = node.next
+  while (guardFor<Listable>(n, 'next')) {
+    yield n as T
+    n = n.next
   }
 }
 
 /**
  * @template T
  *
- * The `listIterateToPrevious` operation iterates from the given
- * node iteratively to the `previous` positioned node until it
- * reaches the final `previous` node.
- *
  * @performance O(n)
  *
- * @param {Optional<T>} from
+ * @param {T} node
  * @returns {IterableIterator<T>}
  */
-export function *listIterateToPrevious<T extends Listable>(from: Optional<T>): IterableIterator<T> {
-  let node: Optional<Listable> = from
-  while (guardFor<Listable>(node, 'previous')) {
-    yield node as T
-    node = node.previous
+export function *listIterateToPrevious<T extends Listable>(node: T): IterableIterator<T> {
+  let n: Optional<Listable> = node.previous
+  while (guardFor<Listable>(n, 'previous')) {
+    yield n as T
+    n = n.previous
   }
 }
 
@@ -538,4 +530,41 @@ export function listIsNext<T extends Listable>(next: T, node: T): boolean {
  */
 export function listIsPrevious<T extends Listable>(previous: T, node: T): boolean {
   return previous === node.previous
+}
+
+/**
+ * @template T
+ *
+ * @param {T} sibling
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function listIsSibling<T extends Listable>(sibling: T, node: T): boolean {
+  for (const n of listIterateToNext(node)) {
+    if (n === sibling) {
+      return true
+    }
+  }
+  for (const n of listIterateToPrevious(node)) {
+    if (n === sibling) {
+      return true
+    }
+  }
+  return false
+}
+
+/**
+ * @template T
+ *
+ * @param {List<T>} list
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function listHas<T extends Listable>(list: List<T>, node: T): boolean {
+  for (const n of listIterateFromFirst(list)) {
+    if (n === node) {
+      return true
+    }
+  }
+  return false
 }

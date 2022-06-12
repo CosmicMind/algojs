@@ -42,12 +42,14 @@ import {
   Stack,
   stackableCreate,
   stackCreate,
-  stackIsTop,
   stackPeek,
   stackPush,
   stackPop,
   stackIterator,
   stackClear,
+  stackIsTop,
+  stackIsDescendant,
+  stackHas,
 } from '../../src'
 
 const sentinel = void 0
@@ -223,4 +225,40 @@ test('Stack: stackIsTop', t => {
 
   t.true(stackIsTop(stack, n3))
   t.is(stack.count, 3)
+})
+
+test('Stack: stackIsDescendant', t => {
+  const stack = stackCreate<StackableNode>()
+
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
+  const n4 = createStackableNode(4, 'd')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.true(stackIsDescendant(n3, n1))
+  t.false(stackIsDescendant(n1, n3))
+  t.false(stackIsDescendant(n4, n1))
+  t.false(stackIsDescendant(n4, n3))
+})
+
+test('Stack: stackHas', t => {
+  const stack = stackCreate<StackableNode>()
+
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
+  const n4 = createStackableNode(3, 'd')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.true(stackHas(stack, n1))
+  t.true(stackHas(stack, n2))
+  t.true(stackHas(stack, n3))
+  t.false(stackHas(stack, n4))
 })

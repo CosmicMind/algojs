@@ -200,3 +200,37 @@ export function stackClear<T extends Stackable>(stack: Stack<T>): void {
 export function stackIsTop<T extends Stackable>(stack: Stack<T>, node: T): boolean {
   return stack.top === node
 }
+
+/**
+ * @template T
+ *
+ * @param {T} descendant
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function stackIsDescendant<T extends Stackable>(descendant: T, node: T): boolean {
+  let n = descendant.parent
+  while (guardFor<Stackable>(n, 'parent')) {
+    if (n === node) {
+      return true
+    }
+    n = n.parent
+  }
+  return false
+}
+
+/**
+ * @template T
+ *
+ * @param {Stack<T>} stack
+ * @param {T} node
+ * @returns {boolean}
+ */
+export function stackHas<T extends Stackable>(stack: Stack<T>, node: T): boolean {
+  for (const n of stackIterator(stack)) {
+    if (n === node) {
+      return true
+    }
+  }
+  return false
+}

@@ -58,6 +58,8 @@ export {
   stackIterator,
   stackClear,
   stackIsTop,
+  stackIsDescendant,
+  stackHas,
 } from './structures/Stack'
 
 export type {
@@ -86,6 +88,8 @@ export {
   listIsLast,
   listIsNext,
   listIsPrevious,
+  listIsSibling,
+  listHas,
 } from './structures/List'
 
 export type {
