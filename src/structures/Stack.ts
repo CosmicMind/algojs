@@ -81,7 +81,7 @@ export function stackableCreate<T extends Stackable>(props: Omit<T, keyof Stacka
  * nodes that exist within its structure.
  *
  * @property {Optional<T>} top
- * @property {number} coount
+ * @property {number} count
  */
 export interface Stack<T extends Stackable> {
   top: Optional<T>

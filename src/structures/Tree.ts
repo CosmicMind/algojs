@@ -76,6 +76,7 @@ import {
   stackIterator,
   stackClear,
   stackIsTop,
+  stackIsDescendant,
   stackHas,
 } from './Stack'
 
@@ -138,7 +139,7 @@ export function treeIsLeaf<T extends Tree>(tree: T): boolean {
  * @param {T} tree
  * @returns {boolean}
  */
-export function treeIsChildOfParent<T extends Tree>(child: T, parent: T): boolean {
+export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
   return guardFor<T>(child, 'parent') &&
          guardFor<T>(parent, 'children') &&
          guardFor<TreeChildren<T>>(parent.children, 'first') &&
@@ -151,34 +152,46 @@ export function treeIsChildOfParent<T extends Tree>(child: T, parent: T): boolea
  * @param {T} tree
  * @returns {boolean}
  */
+export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
+  return guardFor<T>(child, 'parent') &&
+         guardFor<T>(parent, 'children') &&
+         guardFor<TreeChildren<T>>(parent.children as TreeChildren<T>, 'first', 'last') &&
+         listIsFirst(parent.children as TreeChildren<T>, child) &&
+         listIsLast(parent.children as TreeChildren<T>, child)
+}
+
+/**
+ * @template T
+ *
+ * @param {T} tree
+ * @returns {boolean}
+ */
+export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
+  return guardFor<T>(child, 'parent') &&
+         guardFor<T>(parent, 'children') &&
+         guardFor<TreeChildren<T>>(parent.children as TreeChildren<T>, 'first') &&
+         listIsFirst(parent.children as TreeChildren<T>, child)
+}
+
+/**
+ * @template T
+ *
+ * @param {T} tree
+ * @returns {boolean}
+ */
+export function treeIsLastChild<T extends Tree>(child: T, parent: T): boolean {
+  return guardFor<T>(child, 'parent') &&
+         guardFor<T>(parent, 'children') &&
+         guardFor<TreeChildren<T>>(parent.children as TreeChildren<T>, 'last') &&
+         listIsLast(parent.children as TreeChildren<T>, child)
+}
+
+/**
+ * @template T
+ *
+ * @param {T} tree
+ * @returns {boolean}
+ */
 export function treeIsDescendantOfParent<T extends Tree>(descendant: T, tree: T): boolean {
-  return guardFor<T>(descendant, 'parent') &&
-         guardFor<T>(tree, 'children') &&
-         stackHas(tree, descendant)
-}
-
-/**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
- */
-export function treeIsFirstChild<T extends Tree>(tree: T): boolean {
-  return guardFor<T>(tree, 'parent') &&
-         guardFor<T>(tree.parent, 'children') &&
-         guardFor<TreeChildren<T>>(tree.parent.children, 'first') &&
-         listIsFirst(tree.parent.children, tree)
-}
-
-/**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
- */
-export function treeIsLastChild<T extends Tree>(tree: T): boolean {
-  return guardFor<T>(tree, 'parent') &&
-         guardFor<T>(tree.parent, 'children') &&
-         guardFor<TreeChildren<T>>(tree.parent.children, 'last') &&
-         listIsLast(tree.parent.children, tree)
+  return stackIsDescendant(descendant, tree)
 }
