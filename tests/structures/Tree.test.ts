@@ -78,6 +78,11 @@ test('Tree: treeCreate', t => {
   t.true(guardFor<Tree>(node, 'next'))
   t.true(guardFor<Tree>(node, 'children'))
   t.true(guardFor<Tree>(node, 'size'))
+  t.is(node.parent, sentinel)
+  t.is(node.previous, sentinel)
+  t.is(node.next, sentinel)
+  t.is(node.children, sentinel)
+  t.is(node.size, 0)
 })
 
 test('Tree: createTreeNode', t => {
@@ -90,4 +95,11 @@ test('Tree: createTreeNode', t => {
   t.true(guardFor<TreeNode>(node, 'size'))
   t.true(guardFor<TreeNode>(node, 'key'))
   t.true(guardFor<TreeNode>(node, 'value'))
+  t.is(node.parent, sentinel)
+  t.is(node.previous, sentinel)
+  t.is(node.next, sentinel)
+  t.is(node.children, sentinel)
+  t.is(node.size, 0)
+  t.is(node.key, 1)
+  t.is(node.value, 'a')
 })

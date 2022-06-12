@@ -100,6 +100,8 @@ test('List: listableCreate', t => {
 
   t.true(guardFor<Listable>(node, 'previous'))
   t.true(guardFor<Listable>(node, 'next'))
+  t.is(node.previous, sentinel)
+  t.is(node.next, sentinel)
 })
 
 test('List: createListableNode', t => {
@@ -109,6 +111,10 @@ test('List: createListableNode', t => {
   t.true(guardFor<ListableNode>(node, 'next'))
   t.true(guardFor<ListableNode>(node, 'key'))
   t.true(guardFor<ListableNode>(node, 'value'))
+  t.is(node.previous, sentinel)
+  t.is(node.next, sentinel)
+  t.is(node.key, 1)
+  t.is(node.value, 'a')
 })
 
 test('List: new ListNode', t => {
@@ -119,6 +125,10 @@ test('List: new ListNode', t => {
   t.true(guardFor<ListNode>(node, 'next'))
   t.true(guardFor<ListNode>(node, 'key'))
   t.true(guardFor<ListNode>(node, 'value'))
+  t.is(node.previous, sentinel)
+  t.is(node.next, sentinel)
+  t.is(node.key, 1)
+  t.is(node.value, 'a')
 })
 
 test('List: new ListTrace', t => {
@@ -128,17 +138,20 @@ test('List: new ListTrace', t => {
   t.true(guardFor<ListTrace<ListNode>>(list, 'first'))
   t.true(guardFor<ListTrace<ListNode>>(list, 'last'))
   t.true(guardFor<ListTrace<ListNode>>(list, 'count'))
+  t.is(list.first, sentinel)
+  t.is(list.last, sentinel)
+  t.is(list.count, 0)
 })
 
 test('List: listCreate', t => {
   const list = listCreate<ListableNode>()
 
-  t.is(list.first, sentinel)
-  t.is(list.last, sentinel)
-  t.is(list.count, 0)
   t.true(guardFor<List<ListableNode>>(list, 'first'))
   t.true(guardFor<List<ListableNode>>(list, 'last'))
   t.true(guardFor<List<ListableNode>>(list, 'count'))
+  t.is(list.first, sentinel)
+  t.is(list.last, sentinel)
+  t.is(list.count, 0)
 })
 
 test('List: listInsert', t => {
