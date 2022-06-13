@@ -38,6 +38,7 @@ import {
 } from '@cosmicverse/foundation'
 
 import {
+  TreeKeys,
   Tree,
   TreeChildren,
   treeCreate,
@@ -58,16 +59,16 @@ const createTreeNode = (key: number, value: string): ReturnType<typeof treeCreat
 
 class TreeTrace implements Tree {
   readonly parent: Optional<Tree>
-  readonly previous: Optional<Tree>
   readonly next: Optional<Tree>
+  readonly previous: Optional<Tree>
   readonly children: Optional<TreeChildren<Tree>>
   readonly size: number
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
     this.parent = sentinel
-    this.previous = sentinel
     this.next = sentinel
+    this.previous = sentinel
     this.children = sentinel
     this.size = 0
     this.key = key
@@ -78,10 +79,10 @@ class TreeTrace implements Tree {
 test('Tree: treeCreate', t => {
   const node = treeCreate({})
 
-  t.true(guardFor(node, 'parent', 'previous', 'next', 'children', 'size'))
+  t.true(guardFor(node, ...TreeKeys))
   t.is(node.parent, sentinel)
-  t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
+  t.is(node.previous, sentinel)
   t.is(node.children, sentinel)
   t.is(node.size, 0)
 })
@@ -89,10 +90,10 @@ test('Tree: treeCreate', t => {
 test('Tree: createTreeNode', t => {
   const node = createTreeNode(1, 'a')
 
-  t.true(guardFor(node, 'parent', 'previous', 'next', 'children', 'size', 'key', 'value'))
+  t.true(guardFor(node, ...TreeKeys, 'key', 'value'))
   t.is(node.parent, sentinel)
-  t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
+  t.is(node.previous, sentinel)
   t.is(node.children, sentinel)
   t.is(node.size, 0)
   t.is(node.key, 1)
@@ -103,10 +104,10 @@ test('Tree: new TreeTrace', t => {
   const node = new TreeTrace(1, 'a')
 
   t.true(node instanceof TreeTrace)
-  t.true(guardFor(node, 'parent', 'previous', 'next', 'children', 'size', 'key', 'value'))
+  t.true(guardFor(node, ...TreeKeys, 'key', 'value'))
   t.is(node.parent, sentinel)
-  t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
+  t.is(node.previous, sentinel)
   t.is(node.children, sentinel)
   t.is(node.size, 0)
   t.is(node.key, 1)

@@ -50,6 +50,8 @@ export type {
 } from './structures/Stack'
 
 export {
+  StackableKeys,
+  StackKeys,
   stackableCreate,
   stackCreate,
   stackPeek,
@@ -68,6 +70,8 @@ export type {
 } from './structures/List'
 
 export {
+  ListableKeys,
+  ListKeys,
   listableCreate,
   listCreate,
   listInsert,
@@ -98,5 +102,14 @@ export type {
 } from './structures/Tree'
 
 export {
+  TreeKeys,
   treeCreate,
+  treeInsertChild,
+  treeIsRoot,
+  treeIsLeaf,
+  treeIsChild,
+  treeIsFirstChild,
+  treeIsLastChild,
+  treeIsOnlyChild,
+  treeIsDescendant,
 } from './structures/Tree'

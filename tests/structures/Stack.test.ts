@@ -38,6 +38,8 @@ import {
 } from '@cosmicverse/foundation'
 
 import {
+  StackableKeys,
+  StackKeys,
   Stackable,
   Stack,
   stackableCreate,
@@ -88,14 +90,14 @@ class StackTrace<T extends StackNode> implements Stack<T> {
 test('Stack: stackableCreate', t => {
   const node = stackableCreate({})
 
-  t.true(guardFor(node, 'parent'))
+  t.true(guardFor(node, ...StackableKeys))
   t.is(node.parent, sentinel)
 })
 
 test('Stack: stackCreate', t => {
   const stack = stackCreate<StackableNode>()
 
-  t.true(guardFor(stack, 'top', 'count'))
+  t.true(guardFor(stack, ...StackKeys))
   t.is(stack.top, sentinel)
   t.is(stack.count, 0)
 })
@@ -103,7 +105,7 @@ test('Stack: stackCreate', t => {
 test('Stack: createStackableNode', t => {
   const node = createStackableNode(1, 'a')
 
-  t.true(guardFor(node, 'parent', 'key', 'value'))
+  t.true(guardFor(node, ...StackableKeys, 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.key, 1)
   t.is(node.value, 'a')
@@ -113,7 +115,7 @@ test('Stack: new StackNode', t => {
   const node = new StackNode(1, 'a')
 
   t.true(node instanceof StackNode)
-  t.true(guardFor(node, 'parent', 'key', 'value'))
+  t.true(guardFor(node, ...StackableKeys, 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.key, 1)
   t.is(node.value, 'a')
@@ -123,7 +125,7 @@ test('Stack: new StackTrace', t => {
   const stack = new StackTrace<StackNode>()
 
   t.true(stack instanceof StackTrace)
-  t.true(guardFor(stack, 'top', 'count'))
+  t.true(guardFor(stack, ...StackKeys))
   t.is(stack.top, sentinel)
   t.is(stack.count, 0)
 })

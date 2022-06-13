@@ -38,6 +38,8 @@ import {
 } from '@cosmicverse/foundation'
 
 import {
+  ListableKeys,
+  ListKeys,
   Listable,
   List,
   listableCreate,
@@ -104,7 +106,7 @@ class ListTrace<T extends ListNode> implements List<T> {
 test('List: listableCreate', t => {
   const node = listableCreate({})
 
-  t.true(guardFor(node, 'next', 'previous'))
+  t.true(guardFor(node, ...ListableKeys))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
 })
@@ -112,7 +114,7 @@ test('List: listableCreate', t => {
 test('List: listCreate', t => {
   const list = listCreate<ListableNode>()
 
-  t.true(guardFor(list, 'first', 'last', 'count'))
+  t.true(guardFor(list, ...ListKeys))
   t.is(list.first, sentinel)
   t.is(list.last, sentinel)
   t.is(list.count, 0)
@@ -121,7 +123,7 @@ test('List: listCreate', t => {
 test('List: createListableNode', t => {
   const node = createListableNode(1, 'a')
 
-  t.true(guardFor(node, 'next', 'previous', 'key', 'value'))
+  t.true(guardFor(node, ...ListableKeys, 'key', 'value'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
   t.is(node.key, 1)
@@ -132,7 +134,7 @@ test('List: new ListNode', t => {
   const node = new ListNode(1, 'a')
 
   t.true(node instanceof ListNode)
-  t.true(guardFor(node, 'next', 'previous', 'key', 'value'))
+  t.true(guardFor(node, ...ListableKeys, 'key', 'value'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
   t.is(node.key, 1)
@@ -143,7 +145,7 @@ test('List: new ListTrace', t => {
   const list = new ListTrace<ListNode>()
 
   t.true(list instanceof ListTrace)
-  t.true(guardFor(list, 'first', 'last', 'count'))
+  t.true(guardFor(list, ...ListKeys))
   t.is(list.first, sentinel)
   t.is(list.last, sentinel)
   t.is(list.count, 0)

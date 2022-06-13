@@ -40,44 +40,21 @@ import {
 } from '@cosmicverse/foundation'
 
 import {
+  ListableKeys,
+  ListKeys,
   Listable,
   List,
-  listableCreate,
   listCreate,
-  listInsert,
-  listRemoveFirst,
-  listAppend,
-  listRemoveLast,
-  listInsertBefore,
-  listRemoveBefore,
-  listInsertAfter,
-  listRemoveAfter,
-  listRemove,
-  listIterateFromFirst,
-  listIterateFromLast,
-  listIterateToNext,
-  listIterateToPrevious,
-  listClear,
   listIsFirst,
   listIsLast,
-  listIsNext,
-  listIsPrevious,
   listHas,
+  listInsert,
 } from './List'
 
 import {
+  StackableKeys,
   Stackable,
-  Stack,
-  stackableCreate,
-  stackCreate,
-  stackPeek,
-  stackPush,
-  stackPop,
-  stackIterator,
-  stackClear,
-  stackIsTop,
   stackIsDescendant,
-  stackHas,
 } from './Stack'
 
 /**
@@ -86,12 +63,14 @@ import {
  */
 const sentinel = void 0
 
+export const TreeKeys = [ ...StackableKeys, ...ListableKeys, 'children', 'size' ] as const
+
 export type TreeChildren<T extends Listable> = List<T>
 
 export interface Tree extends Listable, Stackable {
   parent: Optional<Tree>
-  previous: Optional<Tree>
   next: Optional<Tree>
+  previous: Optional<Tree>
   children: Optional<TreeChildren<Tree>>
   size: number
 }
@@ -100,17 +79,30 @@ export interface Tree extends Listable, Stackable {
  * @template T
  *
  *
- * @param {Omit<T, keyof Tree>} props
+ * @param {Exclude<T, keyof Tree>} props
  * @returns {Readonly<T>}
  */
-export function treeCreate<T extends Tree>(props: Omit<T, keyof Tree>): Readonly<T> {
+export function treeCreate<T extends Tree>(props: Exclude<T, keyof Tree>): Readonly<T> {
   return Object.assign(props, {
     parent: sentinel,
-    previous: sentinel,
     next: sentinel,
+    previous: sentinel,
     children: sentinel,
     size: 0,
-  }) as T
+  })
+}
+
+/**
+ * @template T
+ *
+ * @param {T} tree
+ * @returns {boolean}
+ */
+export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
+  if (!guardFor(node.children, ...ListKeys)) {
+    node.children = listCreate<T>()
+  }
+  listInsert(node.children, insert)
 }
 
 /**
@@ -120,7 +112,7 @@ export function treeCreate<T extends Tree>(props: Omit<T, keyof Tree>): Readonly
  * @returns {boolean}
  */
 export function treeIsRoot<T extends Tree>(tree: T): boolean {
-  return guardFor(tree, 'parent') && sentinel === tree.parent
+  return guardFor(tree, ...TreeKeys) && sentinel === tree.parent
 }
 
 /**
@@ -130,7 +122,7 @@ export function treeIsRoot<T extends Tree>(tree: T): boolean {
  * @returns {boolean}
  */
 export function treeIsLeaf<T extends Tree>(tree: T): boolean {
-  return guardFor(tree, 'children') && sentinel === tree.children
+  return guardFor(tree, ...TreeKeys) && sentinel === tree.children
 }
 
 /**
@@ -140,9 +132,9 @@ export function treeIsLeaf<T extends Tree>(tree: T): boolean {
  * @returns {boolean}
  */
 export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, 'parent') &&
-         guardFor(parent, 'children') &&
-         guardFor(parent.children, 'first') &&
+  return guardFor(child, ...TreeKeys) &&
+         guardFor(parent, ...TreeKeys) &&
+         guardFor(parent.children, ...ListKeys) &&
          listHas(parent.children, child)
 }
 
@@ -153,9 +145,9 @@ export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
  * @returns {boolean}
  */
 export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, 'parent') &&
-         guardFor(parent, 'children') &&
-         guardFor(parent.children, 'first') &&
+  return guardFor(child, ...TreeKeys) &&
+         guardFor(parent, ...TreeKeys) &&
+         guardFor(parent.children, ...ListKeys) &&
          listIsFirst(parent.children, child)
 }
 
@@ -166,9 +158,9 @@ export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
  * @returns {boolean}
  */
 export function treeIsLastChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, 'parent') &&
-         guardFor(parent, 'children') &&
-         guardFor(parent.children, 'last') &&
+  return guardFor(child, ...TreeKeys) &&
+         guardFor(parent, ...TreeKeys) &&
+         guardFor(parent.children, ...ListKeys) &&
          listIsLast(parent.children, child)
 }
 
@@ -179,9 +171,9 @@ export function treeIsLastChild<T extends Tree>(child: T, parent: T): boolean {
  * @returns {boolean}
  */
 export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, 'parent') &&
-         guardFor(parent, 'children') &&
-         guardFor(parent.children, 'first', 'last') &&
+  return guardFor(child, ...TreeKeys) &&
+         guardFor(parent, ...TreeKeys) &&
+         guardFor(parent.children, ...ListKeys) &&
          listIsFirst(parent.children, child) &&
          listIsLast(parent.children, child)
 }
@@ -192,6 +184,6 @@ export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
  * @param {T} tree
  * @returns {boolean}
  */
-export function treeIsDescendantOfParent<T extends Tree>(descendant: T, tree: T): boolean {
+export function treeIsDescendant<T extends Tree>(descendant: T, tree: T): boolean {
   return stackIsDescendant(descendant, tree)
 }
