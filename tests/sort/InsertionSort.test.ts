@@ -37,9 +37,8 @@ import {
   stringKeyCompare,
   numericCompare,
   numericKeyCompare,
-} from '../../src'
-
-import { insertionSort } from '../../src'
+  insertionSort,
+} from '../../src/internal'
 
 test('InsertionSort: string', t => {
   const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]

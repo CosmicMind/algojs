@@ -54,7 +54,7 @@ import {
   stackIsTop,
   stackIsDescendant,
   stackHas,
-} from '../../src'
+} from '../../src/internal'
 
 const sentinel = void 0
 

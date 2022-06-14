@@ -45,7 +45,7 @@ import {
   treeInsertChild,
   treeIsFirstChild,
   treeIsLastChild,
-} from '../../src'
+} from '../../src/internal'
 
 const sentinel = void 0
 

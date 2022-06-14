@@ -37,9 +37,8 @@ import {
   stringKeyCompare,
   numericCompare,
   numericKeyCompare,
-} from '../../src'
-
-import { mergeSort } from '../../src'
+  mergeSort,
+} from '../../src/internal'
 
 test('mergeSort: string', t => {
   const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]

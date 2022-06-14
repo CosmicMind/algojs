@@ -166,7 +166,7 @@ export function treeIsDescendant<T extends Tree>(descendant: T, tree: T): boolea
 /**
  * @performance O(n)
  */
-function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
+export function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
   assert(0 < size, 'size must be greater than 0')
   for (const n of stackIterateFrom(node)) {
     n.size += size
@@ -176,7 +176,7 @@ function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
 /**
  * @performance O(n)
  */
-function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
+export function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
   assert(0 < size, 'size must be greater than 0')
   for (const n of stackIterateFrom(node)) {
     n.size -= size
