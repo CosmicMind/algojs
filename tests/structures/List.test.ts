@@ -73,7 +73,7 @@ interface ListableNode extends Listable {
   value: string
 }
 
-const createListableNode = (key: number, value: string): ReturnType<typeof listableCreate<ListableNode>> =>
+const createListableNode = (key: number, value: string): Readonly<ListableNode> =>
   listableCreate<ListableNode>({
     key,
     value,

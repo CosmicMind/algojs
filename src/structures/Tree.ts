@@ -35,6 +35,7 @@
  */
 
 import {
+  assert,
   Optional,
   guardFor,
 } from '@cosmicverse/foundation'
@@ -75,32 +76,14 @@ export interface Tree extends Listable, Stackable {
   size: number
 }
 
-export function treeCreate<T extends Tree>(props: Exclude<T, keyof Tree>): Readonly<T> {
+export function treeCreate<T extends Tree>(props: Omit<T, keyof Tree>): Readonly<T> {
   return Object.assign(props, {
     parent: sentinel,
     next: sentinel,
     previous: sentinel,
     children: sentinel,
     size: 1,
-  })
-}
-
-/**
- * @performance O(n)
- */
-export function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
-  for (const n of stackIterateFrom(node)) {
-    n.size += size
-  }
-}
-
-/**
- * @performance O(n)
- */
-export function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
-  for (const n of stackIterateFrom(node)) {
-    n.size -= size
-  }
+  }) as T
 }
 
 /**
@@ -114,6 +97,18 @@ export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
   listInsert(node.children, insert)
   treeIncreaseSize(node, insert.size)
 }
+
+// /**
+//  * @performance O(1)
+//  */
+// export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
+//   if (!guardFor(node.children, ...ListKeys)) {
+//     node.children = listCreate<T>()
+//   }
+//   insert.parent = node
+//   listInsert(node.children, insert)
+//   treeIncreaseSize(node, insert.size)
+// }
 
 /**
  * @performance O(1)
@@ -166,4 +161,24 @@ export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
  */
 export function treeIsDescendant<T extends Tree>(descendant: T, tree: T): boolean {
   return stackIsDescendant(descendant, tree)
+}
+
+/**
+ * @performance O(n)
+ */
+function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
+  assert(0 < size, 'size must be greater than 0')
+  for (const n of stackIterateFrom(node)) {
+    n.size += size
+  }
+}
+
+/**
+ * @performance O(n)
+ */
+function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
+  assert(0 < size, 'size must be greater than 0')
+  for (const n of stackIterateFrom(node)) {
+    n.size -= size
+  }
 }

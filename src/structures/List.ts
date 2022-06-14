@@ -64,11 +64,11 @@ export interface Listable {
  * given node definition and returning a Readonly version
  * of the node.
  */
-export function listableCreate<T extends Listable>(props: Exclude<T, keyof Listable>): Readonly<T> {
+export function listableCreate<T extends Listable>(props: Omit<T, keyof Listable>): Readonly<T> {
   return Object.assign(props, {
     next: sentinel,
     previous: sentinel,
-  })
+  }) as T
 }
 
 /**

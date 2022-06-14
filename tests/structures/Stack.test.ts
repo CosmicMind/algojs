@@ -63,7 +63,7 @@ interface StackableNode extends Stackable {
   value: string
 }
 
-const createStackableNode = (key: number, value: string): ReturnType<typeof stackableCreate<StackableNode>> =>
+const createStackableNode = (key: number, value: string): Readonly<StackableNode> =>
   stackableCreate<StackableNode>({
     key,
     value,

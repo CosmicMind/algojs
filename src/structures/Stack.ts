@@ -62,10 +62,10 @@ export interface Stackable {
  * given node definition and returning a Readonly version
  * of the node.
  */
-export function stackableCreate<T extends Stackable>(props: Exclude<T, keyof Stackable>): Readonly<T> {
+export function stackableCreate<T extends Stackable>(props: Omit<T, keyof Stackable>): Readonly<T> {
   return Object.assign(props, {
     parent: sentinel,
-  })
+  }) as T
 }
 
 /**
