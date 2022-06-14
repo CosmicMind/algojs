@@ -52,22 +52,15 @@ export const StackKeys = [ 'top', 'count' ] as const
  * The `Stackable` interface defines a structure that moves
  * from a child node to its parent node within a `Stack`
  * data structure.
- *
- * @property {Optional<Stackable>} parent
  */
 export interface Stackable {
   parent: Optional<Stackable>
 }
 
 /**
- * @template T
- *
  * Creates a `Stackable` instance of type `T` by using the
  * given node definition and returning a Readonly version
  * of the node.
- *
- * @param {Exclude<T, keyof Stackable>} props
- * @returns {Readonly<T>}
  */
 export function stackableCreate<T extends Stackable>(props: Exclude<T, keyof Stackable>): Readonly<T> {
   return Object.assign(props, {
@@ -76,15 +69,10 @@ export function stackableCreate<T extends Stackable>(props: Exclude<T, keyof Sta
 }
 
 /**
- * @template T
- *
  * The `Stack` class represents a linear data structure that
  * stores a single reference to a `Stackable` node called
  * `top`. It creates a `vertical` relationship between the
  * nodes that exist within its structure.
- *
- * @property {Optional<T>} top
- * @property {number} count
  */
 export interface Stack<T extends Stackable> {
   top: Optional<T>
@@ -92,11 +80,7 @@ export interface Stack<T extends Stackable> {
 }
 
 /**
- * @template T
- *
  * Creates a new `Stack` instance.
- *
- * @returns {Readonly<Stack<T>>}
  */
 export const stackCreate = <T extends Stackable>(): Readonly<Stack<T>> => ({
   top: sentinel,
@@ -104,29 +88,20 @@ export const stackCreate = <T extends Stackable>(): Readonly<Stack<T>> => ({
 })
 
 /**
- * @template T
- *
  * The `stackPeek` operation looks at the `top` positioned
  * node within the given stack.
  *
  * @performance O(1)
- *
- * @param {Stack<T>} stack
  */
 export function stackPeek<T extends Stackable>(stack: Stack<T>): Optional<T> {
   return stack.top
 }
 
 /**
- * @template T
- *
  * The `stackPush` operation adds a given node to the `top`
  * position of the given stack.
  *
  * @performance O(1)
- *
- * @param {Stack<T>} stack
- * @param {T} node
  */
 export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
   node.parent = stack.top
@@ -135,15 +110,10 @@ export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
 }
 
 /**
- * @template T
- *
  * The `stackPop` operation removes the `top` positioned
  * node from the given stack and returns its reference.
  *
  * @performance O(1)
- *
- * @param {Stack<T>} stack
- * @returns {Optional<T>}
  */
 export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
   const node = stack.top
@@ -156,15 +126,10 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
 }
 
 /**
- * @template T
- *
  * The `stackIterator` operation iterates from the `top` positioned
  * iteratively to the final node within the given stack.
  *
  * @performance O(n)
- *
- * @param {Stack<T>} stack
- * @returns {IterableIterator<T>}
  */
 export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
   let node: Optional<Stackable> = stack.top
@@ -175,14 +140,32 @@ export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIt
 }
 
 /**
- * @template T
- *
+ * @performance O(n)
+ */
+export function *stackIterateFrom<T extends Stackable>(node: T): IterableIterator<T> {
+  let n: Optional<Stackable> = node
+  while (guardFor(n, ...StackableKeys)) {
+    yield n as T
+    n = n.parent
+  }
+}
+
+/**
+ * @performance O(n)
+ */
+export function *stackIterateToParent<T extends Stackable>(node: T): IterableIterator<T> {
+  let n = node.parent
+  while (guardFor(n, ...StackableKeys)) {
+    yield n as T
+    n = n.parent
+  }
+}
+
+/**
  * The `stackClear` operation clears the given stack by removing
  * all the relationships between its nodes.
  *
  * @performance O(n)
- *
- * @param {Stack<T>} stack
  */
 export function stackClear<T extends Stackable>(stack: Stack<T>): void {
   while (guardFor(stack.top, ...StackableKeys)) {
@@ -191,44 +174,30 @@ export function stackClear<T extends Stackable>(stack: Stack<T>): void {
 }
 
 /**
- * @template T
- *
  * The `stackIsTop` assertion looks at the `top` positioned
  * node for the given stack, and determines if the given node
  * is equal to that `top` positioned node.
  *
- * @param {Stack<T>} stack
- * @param {T} node
- * @returns {boolean}
+ * @performance O(1)
  */
 export function stackIsTop<T extends Stackable>(stack: Stack<T>, node: T): boolean {
   return stack.top === node
 }
 
 /**
- * @template T
- *
- * @param {T} descendant
- * @param {T} node
- * @returns {boolean}
+ * @performance O(n)
  */
 export function stackIsDescendant<T extends Stackable>(descendant: T, node: T): boolean {
-  let n = descendant.parent
-  while (guardFor(n, ...StackableKeys)) {
+  for (const n of stackIterateToParent(descendant)) {
     if (n === node) {
       return true
     }
-    n = n.parent
   }
   return false
 }
 
 /**
- * @template T
- *
- * @param {Stack<T>} stack
- * @param {T} node
- * @returns {boolean}
+ * @performance O(n)
  */
 export function stackHas<T extends Stackable>(stack: Stack<T>, node: T): boolean {
   for (const n of stackIterator(stack)) {

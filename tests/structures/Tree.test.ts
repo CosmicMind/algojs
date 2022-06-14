@@ -42,6 +42,9 @@ import {
   Tree,
   TreeChildren,
   treeCreate,
+  treeInsertChild,
+  treeIsFirstChild,
+  treeIsLastChild,
 } from '../../src'
 
 const sentinel = void 0
@@ -70,7 +73,7 @@ class TreeTrace implements Tree {
     this.next = sentinel
     this.previous = sentinel
     this.children = sentinel
-    this.size = 0
+    this.size = 1
     this.key = key
     this.value = value
   }
@@ -84,7 +87,7 @@ test('Tree: treeCreate', t => {
   t.is(node.next, sentinel)
   t.is(node.previous, sentinel)
   t.is(node.children, sentinel)
-  t.is(node.size, 0)
+  t.is(node.size, 1)
 })
 
 test('Tree: createTreeNode', t => {
@@ -95,7 +98,7 @@ test('Tree: createTreeNode', t => {
   t.is(node.next, sentinel)
   t.is(node.previous, sentinel)
   t.is(node.children, sentinel)
-  t.is(node.size, 0)
+  t.is(node.size, 1)
   t.is(node.key, 1)
   t.is(node.value, 'a')
 })
@@ -109,7 +112,24 @@ test('Tree: new TreeTrace', t => {
   t.is(node.next, sentinel)
   t.is(node.previous, sentinel)
   t.is(node.children, sentinel)
-  t.is(node.size, 0)
+  t.is(node.size, 1)
   t.is(node.key, 1)
   t.is(node.value, 'a')
+})
+
+test('Tree: treeInsertChild', t => {
+  const n1 = createTreeNode(1, 'b')
+  const n2 = createTreeNode(2, 'b')
+  const n3 = createTreeNode(3, 'c')
+  const n4 = createTreeNode(4, 'd')
+
+  treeInsertChild(n2, n1)
+  treeInsertChild(n3, n1)
+  treeInsertChild(n4, n1)
+
+  t.false(treeIsFirstChild(n2, n1))
+  t.false(treeIsFirstChild(n3, n1))
+  t.true(treeIsFirstChild(n4, n1))
+  t.true(treeIsLastChild(n2, n1))
+  t.is(n1.size, 4)
 })

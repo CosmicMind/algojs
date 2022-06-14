@@ -24,7 +24,7 @@
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * SERVICES LOSS OF USE, DATA, OR PROFITS OR BUSINESS INTERRUPTION) HOWEVER
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -47,13 +47,13 @@ import {
   listCreate,
   listIsFirst,
   listIsLast,
-  listHas,
   listInsert,
 } from './List'
 
 import {
   StackableKeys,
   Stackable,
+  stackIterateFrom,
   stackIsDescendant,
 } from './Stack'
 
@@ -75,114 +75,94 @@ export interface Tree extends Listable, Stackable {
   size: number
 }
 
-/**
- * @template T
- *
- *
- * @param {Exclude<T, keyof Tree>} props
- * @returns {Readonly<T>}
- */
 export function treeCreate<T extends Tree>(props: Exclude<T, keyof Tree>): Readonly<T> {
   return Object.assign(props, {
     parent: sentinel,
     next: sentinel,
     previous: sentinel,
     children: sentinel,
-    size: 0,
+    size: 1,
   })
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(n)
+ */
+export function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
+  for (const n of stackIterateFrom(node)) {
+    n.size += size
+  }
+}
+
+/**
+ * @performance O(n)
+ */
+export function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
+  for (const n of stackIterateFrom(node)) {
+    n.size -= size
+  }
+}
+
+/**
+ * @performance O(1)
  */
 export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
   if (!guardFor(node.children, ...ListKeys)) {
     node.children = listCreate<T>()
   }
+  insert.parent = node
   listInsert(node.children, insert)
+  treeIncreaseSize(node, insert.size)
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(1)
  */
 export function treeIsRoot<T extends Tree>(tree: T): boolean {
   return guardFor(tree, ...TreeKeys) && sentinel === tree.parent
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(1)
  */
 export function treeIsLeaf<T extends Tree>(tree: T): boolean {
   return guardFor(tree, ...TreeKeys) && sentinel === tree.children
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(1)
  */
 export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, ...TreeKeys) &&
-         guardFor(parent, ...TreeKeys) &&
-         guardFor(parent.children, ...ListKeys) &&
-         listHas(parent.children, child)
+  return child.parent === parent && child.parent !== sentinel
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(1)
  */
 export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, ...TreeKeys) &&
-         guardFor(parent, ...TreeKeys) &&
-         guardFor(parent.children, ...ListKeys) &&
+  return guardFor(parent.children, ...ListKeys) &&
          listIsFirst(parent.children, child)
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(1)
  */
 export function treeIsLastChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, ...TreeKeys) &&
-         guardFor(parent, ...TreeKeys) &&
-         guardFor(parent.children, ...ListKeys) &&
+  return guardFor(parent.children, ...ListKeys) &&
          listIsLast(parent.children, child)
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(1)
  */
 export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
-  return guardFor(child, ...TreeKeys) &&
-         guardFor(parent, ...TreeKeys) &&
-         guardFor(parent.children, ...ListKeys) &&
+  return guardFor(parent.children, ...ListKeys) &&
          listIsFirst(parent.children, child) &&
          listIsLast(parent.children, child)
 }
 
 /**
- * @template T
- *
- * @param {T} tree
- * @returns {boolean}
+ * @performance O(n)
  */
 export function treeIsDescendant<T extends Tree>(descendant: T, tree: T): boolean {
   return stackIsDescendant(descendant, tree)

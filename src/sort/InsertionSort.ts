@@ -33,8 +33,6 @@
 /**
  * @module InsertionSort
  *
- * @performance O(n^2)
- *
  * Insertion sort is an `in place` sorting algorithm that holds a constant number
  *  of keys outside the sequence at any given time.
  *
@@ -61,23 +59,20 @@
  *  than subsequent insertions and sorts will perform at O(n), thus making
  *  insertion sort a suitable sorting algorithm for sequential input of data that
  *  has a small size `n`.
+ *
+ * @performance O(n^2)
  */
 
 import { LinearSort } from '../utils/sort'
 import { CompareFn } from '../utils/compare'
 
 /**
- * @template T
- *
  * The `insertionSort` algorithm is implemented using generics, which
  * allows for specific data types to be processed. A `CompareFn`
  * function is passed as a second parameter in order to specify more
  * complex comparison operations.
  *
  * @performance O(n^2)
- *
- * @param {T[]} data
- * @param {CompareFn<T>} fn
  */
 export const insertionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void => {
   for (let i = 1, n = data.length; i < n; ++i) {

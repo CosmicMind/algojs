@@ -58,6 +58,8 @@ export {
   stackPush,
   stackPop,
   stackIterator,
+  stackIterateFrom,
+  stackIterateToParent,
   stackClear,
   stackIsTop,
   stackIsDescendant,

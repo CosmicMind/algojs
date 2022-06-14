@@ -33,8 +33,6 @@
 /**
  * @module MergeSort
  *
- * @performance O(n * log(n))
- *
  * Merge sort is a sorting algorithm that is more generally suited for larger
  * data sets. It is not an `in place` sorting algorithm, and requires double
  * the size of memory to operate without any augmented memory management
@@ -62,22 +60,16 @@
  *              {3, 8}    {2, 9}      {2, 10}    {1, 4}
  *               {2, 3, 8, 9}           {1, 2, 4, 10}
  *                     {1, 2, 2, 3, 4, 8, 9, 10}
+ *
+ * @performance O(n * log(n))
  */
 
 import { CompareFn } from '../utils/compare'
 
 /**
- * @template T
- *
- * @performance O(log(n))
- *
  * Performs the comparison and merge operations.
  *
- * @param {T[]} data
- * @param {number} p
- * @param {number} q
- * @param {number} r
- * @param {CompareFn} fn
+ * @performance O(log(n))
  */
 const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>): void => {
   const n1 = q - p + 1
@@ -133,16 +125,9 @@ const merge = <T>(data: T[], p: number, q: number, r: number, fn: CompareFn<T>):
 }
 
 /**
- * @template T
- *
  * Merge sort algorithm.
  *
  * @performance O(n)
- *
- * @param {T[]} data
- * @param {number} p
- * @param {number} r
- * @param {CompareFn<T>} fn
  */
 const sort = <T>(data: T[], p: number, r: number, fn: CompareFn<T>): void => {
   if (p < r) {
@@ -155,13 +140,8 @@ const sort = <T>(data: T[], p: number, r: number, fn: CompareFn<T>): void => {
 }
 
 /**
- * @template T
- *
  * Merge sort algorithm.
  *
  * @performance O(n*log(n))
- *
- * @param {T[]} data
- * @param {CompareFn<T>} fn
  */
 export const mergeSort = <T>(data: T[], fn: CompareFn<T>): void => sort(data, 0, data.length - 1, fn)

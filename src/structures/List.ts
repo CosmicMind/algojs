@@ -53,9 +53,6 @@ export const ListKeys = [ 'first', 'last', 'count' ] as const
  * from a `previous` node to its `next` node, or a `next`
  * node to its `previous` node within a `List` data
  * structure.
- *
- * @property {Optional<Listable>} next
- * @property {Optional<Listable>} previous
  */
 export interface Listable {
   next: Optional<Listable>
@@ -63,14 +60,9 @@ export interface Listable {
 }
 
 /**
- * @template T
- *
  * Creates a `Stackable` instance of type `T` by using the
  * given node definition and returning a Readonly version
  * of the node.
- *
- * @param {Exclude<T, keyof Listable>} props
- * @returns {Readonly<T>}
  */
 export function listableCreate<T extends Listable>(props: Exclude<T, keyof Listable>): Readonly<T> {
   return Object.assign(props, {
@@ -80,17 +72,11 @@ export function listableCreate<T extends Listable>(props: Exclude<T, keyof Lista
 }
 
 /**
- * @template T
- *
  * The `List` class is a linear data structure that
  * stores two references to `Listable` nodes called
  * `first` and `last`. It creates a `horizontal`
  * relationship between the nodes that exist within
  * its structure.
- *
- * @property {Optional<T>} first
- * @property {Optional<T>} last
- * @property {number} count
  */
 export interface List<T extends Listable> {
   first: Optional<T>
@@ -99,11 +85,7 @@ export interface List<T extends Listable> {
 }
 
 /**
- * @template T
- *
  * Creates a new `List` instance.
- *
- * @returns {Readonly<List<T>>}
  */
 export const listCreate = <T extends Listable>(): Readonly<List<T>> => ({
   first: sentinel,
@@ -112,15 +94,10 @@ export const listCreate = <T extends Listable>(): Readonly<List<T>> => ({
 })
 
 /**
- * @template T
- *
  * The `listInsert` operation adds a given node to the
  * `first` position of the given list.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @param {T} node
  */
 export function listInsert<T extends Listable>(list: List<T>, node: T): void {
   if (guardFor(list.first, ...ListableKeys)) {
@@ -135,8 +112,6 @@ export function listInsert<T extends Listable>(list: List<T>, node: T): void {
 }
 
 /**
- * @template T
- *
  * The `listRemoveFirst` operation removes the node
  * from the `first` position of the given list and
  * returns its reference. If the given list only has
@@ -144,9 +119,6 @@ export function listInsert<T extends Listable>(list: List<T>, node: T): void {
  * removed from the `last` position as well.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @returns {Optional<T>}
  */
 export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> {
   const first = list.first
@@ -167,16 +139,11 @@ export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> 
 }
 
 /**
- * @template T
- *
  * The `listAppend` operation adds a given `append` node
  * to the `last` position of the given list and returns
  * its reference.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @param {T} node
  */
 export function listAppend<T extends Listable>(list: List<T>, node: T): void {
   if (guardFor(list.last, ...ListableKeys)) {
@@ -191,8 +158,6 @@ export function listAppend<T extends Listable>(list: List<T>, node: T): void {
 }
 
 /**
- * @template T
- *
  * The `removeLast` operation removes the node at the
  * `last` position of the given list and returns its
  * reference. If the given list only has a single node
@@ -200,9 +165,6 @@ export function listAppend<T extends Listable>(list: List<T>, node: T): void {
  * the `first` position as well.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @returns {Optional<T>}
  */
 export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
   const node = list.last
@@ -223,8 +185,6 @@ export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
 }
 
 /**
- * @template T
- *
  * The `listInsertBefore` operation adds a given `insert`
  * node to the `previous` position of the given `before`
  * node within the given list. If the `before` node is at
@@ -233,10 +193,6 @@ export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
  * well.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @param {T} insert
- * @param {T} before
  */
 export function listInsertBefore<T extends Listable>(list: List<T>, insert: T, before: T): void {
   if (list.first === before) {
@@ -255,8 +211,6 @@ export function listInsertBefore<T extends Listable>(list: List<T>, insert: T, b
 }
 
 /**
- * @template T
- *
  * The `listRemoveBefore` operation removes a given node from
  * the `previous` position of the given `before` node within
  * the given list and returns its reference. If the `previous`
@@ -265,10 +219,6 @@ export function listInsertBefore<T extends Listable>(list: List<T>, insert: T, b
  * the `before` reference.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @param {T} before
- * @returns {Optional<T>}
  */
 export function listRemoveBefore<T extends Listable>(list: List<T>, before: T): Optional<T> {
   const node = before.previous as Optional<T>
@@ -289,8 +239,6 @@ export function listRemoveBefore<T extends Listable>(list: List<T>, before: T): 
 }
 
 /**
- * @template T
- *
  * The `listInsertAfter` operation adds a given `insert`
  * node to the `next` position of the given `after` node
  * within the given list. If the `after` node is at the
@@ -299,10 +247,6 @@ export function listRemoveBefore<T extends Listable>(list: List<T>, before: T): 
  * well.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @param {T} insert
- * @param {T} after
  */
 export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, after: T): void {
   if (list.last === after) {
@@ -321,8 +265,6 @@ export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, af
 }
 
 /**
- * @template T
- *
  * The `listRemoveBefore` operation removes a given node from
  * the `next` position of the given `after` node within the
  * given list and returns its reference. If the `next`
@@ -331,10 +273,6 @@ export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, af
  * the `after` reference.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @param {T} after
- * @returns {Optional<T>}
  */
 export function listRemoveAfter<T extends Listable>(list: List<T>, after: T): Optional<T> {
   const node = after.next as Optional<T>
@@ -355,17 +293,12 @@ export function listRemoveAfter<T extends Listable>(list: List<T>, after: T): Op
 }
 
 /**
- * @template T
- *
  * The `listRemove` operation removes a given `remove` node from
  * the given list. If the `remove` node is the `first` and or
  * `last` positioned node within the given list, then those
  * values are updated accordingly.
  *
  * @performance O(1)
- *
- * @param {List<T>} list
- * @param {T} node
  */
 export function listRemove<T extends Listable>(list: List<T>, node: T): void {
   if (list.first === node) {
@@ -388,16 +321,11 @@ export function listRemove<T extends Listable>(list: List<T>, node: T): void {
 }
 
 /**
- * @template T
- *
  * The `listIterateFromFirst` operation iterates from the `first`
  * positioned node iteratively to the `last` positioned node
  * within the given list.
  *
  * @performance O(n)
- *
- * @param {List<T>} list
- * @returns {IterableIterator<T>}
  */
 export function *listIterateFromFirst<T extends Listable>(list: List<T>): IterableIterator<T> {
   let node: Optional<Listable> = list.first
@@ -408,16 +336,7 @@ export function *listIterateFromFirst<T extends Listable>(list: List<T>): Iterab
 }
 
 /**
- * @template T
- *
- * The `listIterateFromLast` operation iterates from the `last`
- * positioned node iteratively to the `first` positioned node
- * within the given list.
- *
  * @performance O(n)
- *
- * @param {List<T>} list
- * @returns {IterableIterator<T>}
  */
 export function *listIterateFromLast<T extends Listable>(list: List<T>): IterableIterator<T> {
   let node: Optional<Listable> = list.last
@@ -428,12 +347,7 @@ export function *listIterateFromLast<T extends Listable>(list: List<T>): Iterabl
 }
 
 /**
- * @template T
- *
  * @performance O(n)
- *
- * @param {T} node
- * @returns {IterableIterator<T>}
  */
 export function *listIterateToNext<T extends Listable>(node: T): IterableIterator<T> {
   let n: Optional<Listable> = node.next
@@ -444,12 +358,7 @@ export function *listIterateToNext<T extends Listable>(node: T): IterableIterato
 }
 
 /**
- * @template T
- *
  * @performance O(n)
- *
- * @param {T} node
- * @returns {IterableIterator<T>}
  */
 export function *listIterateToPrevious<T extends Listable>(node: T): IterableIterator<T> {
   let n: Optional<Listable> = node.previous
@@ -460,14 +369,10 @@ export function *listIterateToPrevious<T extends Listable>(node: T): IterableIte
 }
 
 /**
- * @template T
- *
  * The `listClear` operation clears the given list by removing
  * all relationships within it.
  *
  * @performance O(n)
- *
- * @param {List<T>} list
  */
 export function listClear<T extends Listable>(list: List<T>): void {
   while (guardFor(list.first, ...ListableKeys)) {
@@ -476,71 +381,51 @@ export function listClear<T extends Listable>(list: List<T>): void {
 }
 
 /**
- * @template T
- *
  * The `listIsFirst` assertion looks at the `first` positioned
  * node for the given list, and determines if the given node
  * is equal to that `first` positioned node.
  *
- * @param {List<T>} list
- * @param {T} node
- * @returns {boolean}
+ * @performance O(1)
  */
 export function listIsFirst<T extends Listable>(list: List<T>, node: T): boolean {
-  return list.first === node
+  return list.first === node && list.first !== sentinel
 }
 
 /**
- * @template T
- *
  * The `listIsLast` assertion looks at the `last` positioned
  * node for the given list, and determines if the given node
  * is equal to that `last` positioned node.
  *
- * @param {List<T>} list
- * @param {T} node
- * @returns {boolean}
+ * @performance O(1)
  */
 export function listIsLast<T extends Listable>(list: List<T>, node: T): boolean {
-  return list.last === node
+  return list.last === node && list.last !== sentinel
 }
 
 /**
- * @template T
- *
  * The `listIsNext` assertion looks at the `next`
  * positioned node for the given node, and determines if
  * the given node is equal to that given node.
  *
- * @param {T} next
- * @param {T} node
- * @returns {boolean}
+ * @performance O(1)
  */
 export function listIsNext<T extends Listable>(next: T, node: T): boolean {
-  return next === node.next
+  return next === node.next && node.next !== sentinel
 }
 
 /**
- * @template T
- *
  * The `listIsPrevious` assertion looks at the `previous`
  * positioned node for the given node, and determines if
  * the given node is equal to that given node.
  *
- * @param {T} previous
- * @param {T} node
- * @returns {boolean}
+ * @performance O(1)
  */
 export function listIsPrevious<T extends Listable>(previous: T, node: T): boolean {
-  return previous === node.previous
+  return previous === node.previous && node.previous !== sentinel
 }
 
 /**
- * @template T
- *
- * @param {T} sibling
- * @param {T} node
- * @returns {boolean}
+ * @performance O(n)
  */
 export function listIsSibling<T extends Listable>(sibling: T, node: T): boolean {
   for (const n of listIterateToNext(node)) {
@@ -557,11 +442,7 @@ export function listIsSibling<T extends Listable>(sibling: T, node: T): boolean 
 }
 
 /**
- * @template T
- *
- * @param {List<T>} list
- * @param {T} node
- * @returns {boolean}
+ * @performance O(n)
  */
 export function listHas<T extends Listable>(list: List<T>, node: T): boolean {
   for (const n of listIterateFromFirst(list)) {

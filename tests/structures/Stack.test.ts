@@ -48,6 +48,8 @@ import {
   stackPush,
   stackPop,
   stackIterator,
+  stackIterateFrom,
+  stackIterateToParent,
   stackClear,
   stackIsTop,
   stackIsDescendant,
@@ -187,7 +189,50 @@ test('Stack: stackIterator', t => {
   }
 
   t.deepEqual(result, [ n3, n2, n1 ])
-  t.is(result.length, stack.count)
+})
+
+test('Stack: stackIterateFrom', t => {
+  const stack = stackCreate<StackableNode>()
+
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.is(stack.count, 3)
+
+  const result: StackableNode[] = []
+
+  for (const x of stackIterateFrom(n3)) {
+    result.push(x)
+  }
+
+  t.deepEqual(result, [ n3, n2, n1 ])
+})
+
+test('Stack: stackIterateToParent', t => {
+  const stack = stackCreate<StackableNode>()
+
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.is(stack.count, 3)
+
+  const result: StackableNode[] = []
+
+  for (const x of stackIterateToParent(n3)) {
+    result.push(x)
+  }
+
+  t.deepEqual(result, [ n2, n1 ])
 })
 
 test('Stack: stackClear', t => {
