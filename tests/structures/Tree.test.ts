@@ -55,7 +55,7 @@ interface TreeNode extends Tree {
   value: string
 }
 
-const createTreeNode = (key: number, value: string): Readonly<TreeNode> =>
+const createTreeNode = (key: number, value: string): ReturnType<typeof treeCreate<TreeNode>> =>
   treeCreate<TreeNode>({
     key,
     value,
