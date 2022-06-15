@@ -174,6 +174,19 @@ export function stackClear<T extends Stackable>(stack: Stack<T>): void {
 }
 
 /**
+ * @performance O(n)
+ */
+export function stackDepth<T extends Stackable>(node: T): number {
+  let n = node.parent
+  let depth = 0
+  while (guardFor(n, ...StackableKeys)) {
+    ++depth
+    n = n.parent
+  }
+  return depth
+}
+
+/**
  * The `stackIsTop` assertion looks at the `top` positioned
  * node for the given stack, and determines if the given node
  * is equal to that `top` positioned node.

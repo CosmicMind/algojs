@@ -55,6 +55,7 @@ import {
   StackableKeys,
   Stackable,
   stackIterateFrom,
+  stackDepth,
   stackIsDescendant,
 } from './Stack'
 
@@ -98,17 +99,11 @@ export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
   treeIncreaseSize(node, insert.size)
 }
 
-// /**
-//  * @performance O(1)
-//  */
-// export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
-//   if (!guardFor(node.children, ...ListKeys)) {
-//     node.children = listCreate<T>()
-//   }
-//   insert.parent = node
-//   listInsert(node.children, insert)
-//   treeIncreaseSize(node, insert.size)
-// }
+/**
+ * @performance O(n)
+ */
+export const treeDepth = <T extends Tree>(node: T): ReturnType<typeof stackDepth> =>
+  stackDepth(node)
 
 /**
  * @performance O(1)

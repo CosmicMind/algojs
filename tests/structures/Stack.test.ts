@@ -51,6 +51,7 @@ import {
   stackIterateFrom,
   stackIterateToParent,
   stackClear,
+  stackDepth,
   stackIsTop,
   stackIsDescendant,
   stackHas,
@@ -251,6 +252,22 @@ test('Stack: stackClear', t => {
   stackClear(stack)
 
   t.is(stack.count, 0)
+})
+
+test('Stack: stackDepth', t => {
+  const stack = stackCreate<StackableNode>()
+
+  const n1 = createStackableNode(1, 'a')
+  const n2 = createStackableNode(2, 'b')
+  const n3 = createStackableNode(3, 'c')
+
+  stackPush(stack, n1)
+  stackPush(stack, n2)
+  stackPush(stack, n3)
+
+  t.is(stackDepth(n1), 0)
+  t.is(stackDepth(n2), 1)
+  t.is(stackDepth(n3), 2)
 })
 
 test('Stack: stackIsTop', t => {

@@ -43,6 +43,7 @@ import {
   TreeChildren,
   treeCreate,
   treeInsertChild,
+  treeDepth,
   treeIsFirstChild,
   treeIsLastChild,
 } from '../../src/internal'
@@ -118,7 +119,7 @@ test('Tree: new TreeTrace', t => {
 })
 
 test('Tree: treeInsertChild', t => {
-  const n1 = createTreeNode(1, 'b')
+  const n1 = createTreeNode(1, 'a')
   const n2 = createTreeNode(2, 'b')
   const n3 = createTreeNode(3, 'c')
   const n4 = createTreeNode(4, 'd')
@@ -132,4 +133,51 @@ test('Tree: treeInsertChild', t => {
   t.true(treeIsFirstChild(n4, n1))
   t.true(treeIsLastChild(n2, n1))
   t.is(n1.size, 4)
+})
+
+test('Tree: node.size', t => {
+  const n1 = createTreeNode(1, 'a')
+  const n2 = createTreeNode(2, 'b')
+  const n3 = createTreeNode(3, 'c')
+  const n4 = createTreeNode(4, 'd')
+  const n5 = createTreeNode(5, 'e')
+  const n6 = createTreeNode(6, 'f')
+  const n7 = createTreeNode(7, 'g')
+
+  treeInsertChild(n2, n1)
+  treeInsertChild(n3, n1)
+  treeInsertChild(n4, n1)
+  treeInsertChild(n5, n1)
+  treeInsertChild(n6, n1)
+  treeInsertChild(n7, n2)
+
+  t.is(n1.size, 7)
+  t.is(n2.size, 2)
+  t.is(n3.size, 1)
+  t.is(n4.size, 1)
+})
+
+test('Tree: treeDepth', t => {
+  const n1 = createTreeNode(1, 'a')
+  const n2 = createTreeNode(2, 'b')
+  const n3 = createTreeNode(3, 'c')
+  const n4 = createTreeNode(4, 'd')
+  const n5 = createTreeNode(5, 'e')
+  const n6 = createTreeNode(6, 'f')
+  const n7 = createTreeNode(7, 'g')
+
+  treeInsertChild(n2, n1)
+  treeInsertChild(n3, n1)
+  treeInsertChild(n4, n1)
+  treeInsertChild(n5, n1)
+  treeInsertChild(n6, n2)
+  treeInsertChild(n7, n2)
+
+  t.is(treeDepth(n1), 0)
+  t.is(treeDepth(n2), 1)
+  t.is(treeDepth(n3), 1)
+  t.is(treeDepth(n4), 1)
+  t.is(treeDepth(n5), 1)
+  t.is(treeDepth(n6), 2)
+  t.is(treeDepth(n7), 2)
 })
