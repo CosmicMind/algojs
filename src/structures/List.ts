@@ -60,16 +60,15 @@ export interface Listable {
 }
 
 /**
- * Creates a `Stackable` instance of type `T` by using the
+ * Creates a `Listable` instance of type `T` by using the
  * given node definition and returning a Readonly version
  * of the node.
  */
-export function listableCreate<T extends Listable>(props: Omit<T, keyof Listable>): Readonly<T> {
-  return Object.assign(props, {
+export const listableCreate = <T extends Listable>(props: Omit<T, keyof Listable>): Readonly<T> =>
+  Object.assign(props, {
     next: sentinel,
     previous: sentinel,
   }) as T
-}
 
 /**
  * The `List` class is a linear data structure that

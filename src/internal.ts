@@ -49,23 +49,37 @@ export type {
   Stack,
 } from './structures/Stack'
 
+export type {
+  Dequeable,
+  Deque,
+} from './structures/Deque'
+
 export {
-  StackableKeys,
-  StackKeys,
-  stackableCreate,
-  stackCreate,
-  stackPeek,
-  stackPush,
-  stackPop,
-  stackIterator,
-  stackIterateFrom,
-  stackIterateToParent,
-  stackClear,
-  stackDepth,
-  stackIsTop,
-  stackIsDescendant,
-  stackHas,
-} from './structures/Stack'
+  DequeableKeys,
+  DequeKeys,
+  dequeableCreate,
+  dequeCreate,
+  dequeInsert,
+  dequeRemoveFirst,
+  dequeAppend,
+  dequeRemoveLast,
+  dequeInsertBefore,
+  dequeRemoveBefore,
+  dequeInsertAfter,
+  dequeRemoveAfter,
+  dequeRemove,
+  dequeIterateFromFirst,
+  dequeIterateFromLast,
+  dequeIterateToNext,
+  dequeIterateToPrevious,
+  dequeClear,
+  dequeIsFirst,
+  dequeIsLast,
+  dequeIsNext,
+  dequeIsPrevious,
+  dequeIsSibling,
+  dequeHas,
+} from './structures/Deque'
 
 export type {
   Listable,
@@ -98,6 +112,24 @@ export {
   listIsSibling,
   listHas,
 } from './structures/List'
+
+export {
+  StackableKeys,
+  StackKeys,
+  stackableCreate,
+  stackCreate,
+  stackPeek,
+  stackPush,
+  stackPop,
+  stackIterator,
+  stackIterateFrom,
+  stackIterateToParent,
+  stackClear,
+  stackDepth,
+  stackIsTop,
+  stackIsDescendant,
+  stackHas,
+} from './structures/Stack'
 
 export type {
   Tree,

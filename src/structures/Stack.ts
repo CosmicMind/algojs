@@ -62,11 +62,10 @@ export interface Stackable {
  * given node definition and returning a Readonly version
  * of the node.
  */
-export function stackableCreate<T extends Stackable>(props: Omit<T, keyof Stackable>): Readonly<T> {
-  return Object.assign(props, {
+export const stackableCreate = <T extends Stackable>(props: Omit<T, keyof Stackable>): Readonly<T> =>
+  Object.assign(props, {
     parent: sentinel,
   }) as T
-}
 
 /**
  * The `Stack` class represents a linear data structure that

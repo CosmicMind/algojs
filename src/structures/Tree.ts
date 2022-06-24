@@ -77,15 +77,14 @@ export interface Tree extends Listable, Stackable {
   size: number
 }
 
-export function treeCreate<T extends Tree>(props: Omit<T, keyof Tree>): Readonly<T> {
-  return Object.assign(props, {
+export const treeCreate = <T extends Tree>(props: Omit<T, keyof Tree>): Readonly<T> =>
+  Object.assign(props, {
     parent: sentinel,
     next: sentinel,
     previous: sentinel,
     children: sentinel,
     size: 1,
   }) as T
-}
 
 /**
  * @performance O(1)
