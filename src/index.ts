@@ -143,4 +143,8 @@ export {
   treeIsLastChild,
   treeIsOnlyChild,
   treeIsDescendant,
+
+  // Deque
+  Deque,
+  Dequeable,
 } from './internal'

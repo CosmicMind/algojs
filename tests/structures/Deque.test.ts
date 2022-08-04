@@ -64,16 +64,16 @@ import {
   dequeIsPrevious,
   dequeIsSibling,
   dequeHas,
-} from '../../src/internal'
+} from '../../src'
 
 const sentinel = void 0
 
-interface DequeableNode extends Dequeable {
+type DequeableNode = Dequeable & {
   key: number
   value: string
 }
 
-const createDequeableNode = (key: number, value: string): ReturnType<typeof dequeableCreate<DequeableNode>> =>
+const createDequeableNode = (key: number, value: string): DequeableNode =>
   dequeableCreate<DequeableNode>({
     key,
     value,
@@ -133,7 +133,6 @@ test('Deque: createDequeableNode', t => {
 test('Deque: new DequeNode', t => {
   const node = new DequeNode(1, 'a')
 
-  t.true(node instanceof DequeNode)
   t.true(guardFor(node, ...DequeableKeys, 'key', 'value'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
@@ -144,7 +143,6 @@ test('Deque: new DequeNode', t => {
 test('Deque: new DequeTrace', t => {
   const deque = new DequeTrace<DequeNode>()
 
-  t.true(deque instanceof DequeTrace)
   t.true(guardFor(deque, ...DequeKeys))
   t.is(deque.first, sentinel)
   t.is(deque.last, sentinel)

@@ -55,16 +55,16 @@ import {
   stackIsTop,
   stackIsDescendant,
   stackHas,
-} from '../../src/internal'
+} from '../../src'
 
 const sentinel = void 0
 
-interface StackableNode extends Stackable {
+type StackableNode = Stackable & {
   key: number
   value: string
 }
 
-const createStackableNode = (key: number, value: string): ReturnType<typeof stackableCreate<StackableNode>> =>
+const createStackableNode = (key: number, value: string): StackableNode =>
   stackableCreate<StackableNode>({
     key,
     value,
@@ -117,7 +117,6 @@ test('Stack: createStackableNode', t => {
 test('Stack: new StackNode', t => {
   const node = new StackNode(1, 'a')
 
-  t.true(node instanceof StackNode)
   t.true(guardFor(node, ...StackableKeys, 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.key, 1)
@@ -127,7 +126,6 @@ test('Stack: new StackNode', t => {
 test('Stack: new StackTrace', t => {
   const stack = new StackTrace<StackNode>()
 
-  t.true(stack instanceof StackTrace)
   t.true(guardFor(stack, ...StackKeys))
   t.is(stack.top, sentinel)
   t.is(stack.count, 0)

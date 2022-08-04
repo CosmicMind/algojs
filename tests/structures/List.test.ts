@@ -64,16 +64,16 @@ import {
   listIsPrevious,
   listIsSibling,
   listHas,
-} from '../../src/internal'
+} from '../../src'
 
 const sentinel = void 0
 
-interface ListableNode extends Listable {
+type ListableNode = Listable & {
   key: number
   value: string
 }
 
-const createListableNode = (key: number, value: string): ReturnType<typeof listableCreate<ListableNode>> =>
+const createListableNode = (key: number, value: string): ListableNode =>
   listableCreate<ListableNode>({
     key,
     value,
@@ -133,7 +133,6 @@ test('List: createListableNode', t => {
 test('List: new ListNode', t => {
   const node = new ListNode(1, 'a')
 
-  t.true(node instanceof ListNode)
   t.true(guardFor(node, ...ListableKeys, 'key', 'value'))
   t.is(node.previous, sentinel)
   t.is(node.next, sentinel)
@@ -144,7 +143,6 @@ test('List: new ListNode', t => {
 test('List: new ListTrace', t => {
   const list = new ListTrace<ListNode>()
 
-  t.true(list instanceof ListTrace)
   t.true(guardFor(list, ...ListKeys))
   t.is(list.first, sentinel)
   t.is(list.last, sentinel)

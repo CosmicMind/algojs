@@ -46,16 +46,16 @@ import {
   treeDepth,
   treeIsFirstChild,
   treeIsLastChild,
-} from '../../src/internal'
+} from '../../src'
 
 const sentinel = void 0
 
-interface TreeNode extends Tree {
+type TreeNode = Tree & {
   key: number
   value: string
 }
 
-const createTreeNode = (key: number, value: string): ReturnType<typeof treeCreate<TreeNode>> =>
+const createTreeNode = (key: number, value: string): TreeNode =>
   treeCreate<TreeNode>({
     key,
     value,
@@ -107,7 +107,6 @@ test('Tree: createTreeNode', t => {
 test('Tree: new TreeTrace', t => {
   const node = new TreeTrace(1, 'a')
 
-  t.true(node instanceof TreeTrace)
   t.true(guardFor(node, ...TreeKeys, 'key', 'value'))
   t.is(node.parent, sentinel)
   t.is(node.next, sentinel)
