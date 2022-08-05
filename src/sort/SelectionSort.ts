@@ -53,10 +53,9 @@ import { CompareFn } from '../utils/compare'
 export const selectionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void => {
   let q = 0
 
-  for (let i = 0, n = data.length; i < n; ++i) {
+  for (let i = 0, l = data.length; i < l; ++i) {
     q = i
-
-    for (let j = i + 1; j < n; ++j) {
+    for (let j = i + 1; j < l; ++j) {
       if (0 < fn(data[q], data[j])) {
         q = j
       }

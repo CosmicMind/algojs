@@ -38,7 +38,20 @@ import {
   numericCompare,
   numericKeyCompare,
   insertionSort,
-} from '../../src/internal'
+  Tree,
+  treeCreate,
+} from '../../src'
+
+type TreeNode = Tree & {
+  key: number
+  value: string
+}
+
+const createTreeNode = (key: number, value: string): TreeNode =>
+  treeCreate<TreeNode>({
+    key,
+    value,
+  })
 
 test('InsertionSort: string', t => {
   const data = [ 'a', 'b', '1', 'cde', '77', 'efg' ]
@@ -174,6 +187,30 @@ test('InsertionSort: number key with duplicates', t => {
     { key: 5 },
     { key: 6 },
     { key: 6 }
+  ]
+
+  insertionSort(data, numericKeyCompare)
+  t.deepEqual(data, expected)
+})
+
+test('InsertionSort: tree sorting', t => {
+  const n1 = createTreeNode(1, 'a')
+  const n2 = createTreeNode(2, 'b')
+  const n3 = createTreeNode(3, 'c')
+  const n4 = createTreeNode(4, 'd')
+
+  const data = [
+    n1,
+    n3,
+    n4,
+    n2
+  ]
+
+  const expected = [
+    n1,
+    n2,
+    n3,
+    n4
   ]
 
   insertionSort(data, numericKeyCompare)

@@ -75,15 +75,13 @@ import { CompareFn } from '../utils/compare'
  * @performance O(n^2)
  */
 export const insertionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void => {
-  for (let i = 1, n = data.length; i < n; ++i) {
+  for (let i = 1, l = data.length; i < l; ++i) {
     const key = data[i]
     let j = i - 1
-
     while (0 <= j && 0 < fn(data[j], key)) {
       data[j + 1] = data[j]
       --j
     }
-
     data[j + 1] = key
   }
 }
