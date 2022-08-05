@@ -48,6 +48,10 @@ export type {
   // Tree
   Tree,
   TreeChildren,
+
+  // Deque
+  Deque,
+  Dequeable,
 } from './internal'
 
 export {
@@ -143,8 +147,4 @@ export {
   treeIsLastChild,
   treeIsOnlyChild,
   treeIsDescendant,
-
-  // Deque
-  Deque,
-  Dequeable,
 } from './internal'
