@@ -43,9 +43,9 @@
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
-    "@types/node": "^18.7.9",
-    "@typescript-eslint/eslint-plugin": "^5.33.1",
-    "@typescript-eslint/parser": "^5.33.1",
+    "@types/node": "^18.7.13",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
     "@vitejs/plugin-vue": "^3.0.3",
     "@vue/compiler-sfc": "^3.2.37",
     "@vue/eslint-config-typescript": "^11.0.0",
@@ -60,7 +60,6 @@
     "vite-tsconfig-paths": "^3.5.0"
   },
   "dependencies": {
-    "@cosmicmind/foundation": "^0.0.1-rc-zn",
-    "dotenv": "^16.0.1"
+    "@cosmicmind/foundation": "^0.0.1-rc-zn"
   }
 }
