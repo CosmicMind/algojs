@@ -37,7 +37,7 @@
 import {
   Optional,
   guardFor,
-} from '@libs/foundation'
+} from '@cosmicmind/lib-foundation'
 
 /**
  * The `sentinel` value is used to determine

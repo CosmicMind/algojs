@@ -37,7 +37,7 @@
 import {
   Optional,
   guardFor,
-} from '@libs/foundation'
+} from '@cosmicmind/lib-foundation'
 
 import {
   ListableKeys,

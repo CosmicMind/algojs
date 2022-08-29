@@ -35,7 +35,7 @@ import test from 'ava'
 import {
   Optional,
   guardFor,
-} from '@libs/foundation'
+} from '@cosmicmind/lib-foundation'
 
 import {
   TreeKeys,
