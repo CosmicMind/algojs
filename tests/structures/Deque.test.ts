@@ -35,7 +35,7 @@ import test from 'ava'
 import {
   Optional,
   guardFor,
-} from '@cosmicmind/foundation'
+} from '@libs/foundation'
 
 import {
   DequeableKeys,
