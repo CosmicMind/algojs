@@ -28,8 +28,7 @@
       "esnext"
     ],
     "rootDir": ".",
-    "baseUrl": ".",
-    "outDir": "dist"
+    "baseUrl": "."
   },
   "include": [
     "src/**/*.ts",

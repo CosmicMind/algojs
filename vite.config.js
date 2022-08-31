@@ -30,19 +30,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { join } from 'path'
+
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import dts from 'vite-plugin-dts'
 
-const main = 'src/index.ts'
-const fileName = format => `lib.${format}.js`
 const name = process.env.npm_package_name
-const entry = main
 const formats = [ 'es' ]
 const external = [
-  'eslint'
+  '@cosmicmind/lib-foundation'
 ]
 const globals = {}
+
+const dirname = process.cwd()
+const dirPath = (path = '') => join(dirname, path)
+const srcDir = (path = '') => join(dirPath('src'), path)
+const rootDir = srcDir()
+const assetsDir = false
+const publicDir = false
+const outDir = dirPath('dist')
+const entry = 'index.ts'
+const fileName = format => `lib.${format}.js`
 
 const isWatch = mode => 'watch' === mode
 const isDev = mode => 'development' === mode || isWatch(mode)
@@ -57,12 +66,20 @@ export default ({ mode }) => {
   const watch = isWatch(mode)
 
   return defineConfig({
+    root: rootDir,
+    assetsDir,
+    publicDir,
     plugins: [
-      tsconfigPaths(),
-      dts()
+      tsconfigPaths({
+        root: dirPath(),
+      }),
+      dts({
+        root: dirPath(),
+      })
     ],
     build: {
       manifest,
+      outDir,
       emptyOutDir,
       cssCodeSplit,
       sourcemap,

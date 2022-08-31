@@ -39,8 +39,7 @@ const name = process.env.npm_package_name
 const entry = main
 const formats = [ 'es' ]
 const external = [
-  'ava',
-  'eslint'
+  'ava'
 ]
 const globals = {}
 
