@@ -12,8 +12,7 @@ extends:
   - 'plugin:@typescript-eslint/recommended'
   - 'plugin:yml/standard'
 overrides:
-  -
-    files: '**/*.js'
+  - files: '**/*.js'
     rules:
       '@typescript-eslint/no-inferrable-types':
         - 0
@@ -146,4 +145,3 @@ rules:
     - 2
   require-await:
     - 2
-  

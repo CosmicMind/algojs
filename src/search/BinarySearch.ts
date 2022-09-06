@@ -63,12 +63,12 @@
  * @performance O(log(n))
  */
 
-import { CompareFn } from '../utils/compare'
-import { LogarithmicSearch } from '../utils/search'
+// import { CompareFn } from '../utils/compare'
+// import { LogarithmicSearch } from '../utils/search'
 
 /**
  * @performance O(log(n))
  */
-export const binarySearch: LogarithmicSearch = <T>(data: T[], fn: CompareFn<T>): void => {
-  
-}
+// export const binarySearch: LogarithmicSearch = <T>(data: T[], fn: CompareFn<T>): void => {
+//
+// }
