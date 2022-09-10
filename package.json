@@ -1,5 +1,5 @@
 {
-  "name": "@cosmicmind/lib-algo",
+  "name": "@cosmicverse/algo",
   "version": "v0.0.1-rc-11722-1",
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
@@ -10,7 +10,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cosmicmind/lib-algo.git"
+    "url": "https://github.com/cosmicmind/algo.git"
   },
   "type": "module",
   "main": "dist/lib.es.js",
@@ -25,7 +25,7 @@
     "tsconfig.json"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "private"
   },
   "scripts": {
     "lint:exec": "eslint . --ext .ts",
@@ -34,8 +34,7 @@
     "tests:build": "vite build --config vite.config.tests.js --mode development",
     "tests:watch": "vite build --config vite.config.tests.js --mode watch",
     "tests:exec": "c8 ava dist/lib.es.tests.js",
-    "dev:build:lib": "vite build --config vite.config.lib.js --mode development",
-    "dev:build": "npm run dev:build:lib",
+    "dev:build": "vite build --config vite.config.lib.js --mode development",
     "dev:watch": "vite build --config vite.config.lib.js --mode watch",
     "release:build:lib": "vite build --config vite.config.lib.js --mode production",
     "release:build": "npm run release:build:lib",
@@ -61,6 +60,6 @@
     "vite-tsconfig-paths": "^3.5.0"
   },
   "dependencies": {
-    "@cosmicmind/lib-foundation": "^0.0.1-rc-11722-1"
+    "@cosmicverse/foundation": "^0.0.1-rc-11722-1"
   }
 }

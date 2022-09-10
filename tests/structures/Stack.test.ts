@@ -35,7 +35,7 @@ import test from 'ava'
 import {
   Optional,
   guardFor,
-} from '@cosmicmind/lib-foundation'
+} from '@cosmicverse/foundation'
 
 import {
   StackableKeys,
