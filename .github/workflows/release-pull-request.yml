@@ -10,7 +10,6 @@ jobs:
     uses: cosmicverse/actions/.github/workflows/lint.yml@release
     secrets:
       npm_token: ${{ secrets.npm_token }}
-      gh_token: ${{ secrets.github_token }}
   codeql:
     needs: lint
     uses: cosmicverse/actions/.github/workflows/codeql.yml@release
@@ -19,10 +18,8 @@ jobs:
     uses: cosmicverse/actions/.github/workflows/release-build.yml@release
     secrets:
       npm_token: ${{ secrets.npm_token }}
-      gh_token: ${{ secrets.github_token }}
   test:
     needs: release-build
     uses: cosmicverse/actions/.github/workflows/test.yml@release
     secrets:
       npm_token: ${{ secrets.npm_token }}
-      gh_token: ${{ secrets.github_token }}

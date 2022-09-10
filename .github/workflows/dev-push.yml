@@ -10,10 +10,8 @@ jobs:
     uses: cosmicverse/actions/.github/workflows/dev-build.yml@release
     secrets:
       npm_token: ${{ secrets.npm_token }}
-      gh_token: ${{ secrets.github_token }}
   test:
     needs: dev-build
     uses: cosmicverse/actions/.github/workflows/test.yml@release
     secrets:
       npm_token: ${{ secrets.npm_token }}
-      gh_token: ${{ secrets.github_token }}
