@@ -31,8 +31,8 @@
     "baseUrl": "."
   },
   "include": [
-    "src/**/*",
-    "tests/**/*"
+    "src/**/*.ts",
+    "tests/**/*.ts"
   ],
   "exclude": [
     "dist",
