@@ -58,6 +58,8 @@
     "vite-tsconfig-paths": "^3.5.0"
   },
   "dependencies": {
-    "@cosmicverse/foundation": "^0.0.1-rc-11722-5"
+    "@cosmicverse/foundation": "^0.0.1-rc-11722-5",
+    "i": "^0.3.7",
+    "npm": "^8.19.2"
   }
 }
