@@ -7,7 +7,7 @@
 import {
   Optional,
   guardFor,
-} from '@cosmicverse/foundation'
+} from '@cosmicmind/foundation'
 
 /**
  * The `sentinel` value is used to determine

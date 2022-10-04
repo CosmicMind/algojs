@@ -5,7 +5,7 @@ import test from 'ava'
 import {
   Optional,
   guardFor,
-} from '@cosmicverse/foundation'
+} from '@cosmicmind/foundation'
 
 import {
   TreeKeys,

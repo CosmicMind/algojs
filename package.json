@@ -1,11 +1,11 @@
 {
-  "name": "@cosmicverse/algo",
+  "name": "@cosmicmind/algo",
   "version": "0.0.1-rc-11722-3",
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
   "author": {
     "name": "Daniel Jonathan",
-    "email": "daniel@cosmicverse.org"
+    "email": "daniel@cosmicmind.org"
   },
   "license": "UNLICENSED",
   "repository": {
@@ -59,6 +59,6 @@
     "vitest": "^0.23.0"
   },
   "dependencies": {
-    "@cosmicverse/foundation": "latest"
+    "@cosmicmind/foundation": "latest"
   }
 }

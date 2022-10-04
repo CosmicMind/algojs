@@ -7,7 +7,7 @@
 import {
   Optional,
   guardFor,
-} from '@cosmicverse/foundation'
+} from '@cosmicmind/foundation'
 
 import {
   ListableKeys,

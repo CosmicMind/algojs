@@ -11,7 +11,7 @@ var __vite_injected_original_import_meta_url = "file:///Users/daniel/Repos/cosmi
 var packageName = process.env.npm_package_name;
 var packageVersion = JSON.stringify(process.env.npm_package_version);
 var external = [
-  "@cosmicverse/foundation"
+  "@cosmicmind/foundation"
 ];
 var globals = {};
 var emptyOutDir = true;
