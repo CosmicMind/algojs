@@ -1,6 +1,6 @@
 {
   "name": "@cosmicmind/algo",
-  "version": "0.0.1-rc-11722-3",
+  "version": "0.0.1-rc-100422-1",
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
   "author": {
@@ -59,6 +59,6 @@
     "vitest": "^0.23.0"
   },
   "dependencies": {
-    "@cosmicmind/foundation": "latest"
+    "@cosmicmind/foundation": "workspace:0.0.1-rc-100422-1"
   }
 }
