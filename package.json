@@ -59,6 +59,6 @@
     "vitest": "^0.23.0"
   },
   "dependencies": {
-    "@cosmicmind/foundation": "workspace:0.0.1-rc-100422-1"
+    "@cosmicmind/foundation": "workspace:*"
   }
 }
