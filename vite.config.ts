@@ -23,7 +23,7 @@ const formats: LibraryFormats[] = [ 'es' ]
 export default defineConfig(({ mode }) => {
   const watch = 'watch' === mode ? {
     include: [
-      'src/**/*'
+      './src/**/*'
     ],
   }: undefined
 
@@ -44,7 +44,7 @@ export default defineConfig(({ mode }) => {
       emptyOutDir,
       lib: {
         name: packageName,
-        entry: 'src/index.ts',
+        entry: './src/index.ts',
         formats,
         fileName: 'lib.es',
       },
