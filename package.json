@@ -51,6 +51,6 @@
     "vitest": "^0.23.0"
   },
   "dependencies": {
-    "@cosmicmind/foundation": "^0.0.1-rc-100422-1"
+    "@cosmicmind/foundation": "^0.0.1-rc-110822-2"
   }
 }
