@@ -1,12 +1,6 @@
-import {
-  URL,
-  fileURLToPath,
-} from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 
-import {
-  defineConfig,
-  LibraryFormats,
-} from 'vite'
+import { defineConfig, LibraryFormats } from 'vite'
 
 import dts from 'vite-plugin-dts'
 

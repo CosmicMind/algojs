@@ -31,9 +31,9 @@
  */
 
 import {
-  it,
-  expect,
-  describe,
+it,
+expect,
+describe
 } from 'vitest'
 
 import {

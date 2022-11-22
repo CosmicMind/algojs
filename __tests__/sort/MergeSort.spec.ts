@@ -31,17 +31,17 @@
  */
 
 import {
-  it,
-  expect,
-  describe,
+it,
+expect,
+describe
 } from 'vitest'
 
 import {
-  stringCompare,
-  stringKeyCompare,
-  numericCompare,
-  numericKeyCompare,
-  mergeSort,
+stringCompare,
+stringKeyCompare,
+numericCompare,
+numericKeyCompare,
+mergeSort
 } from '../../src'
 
 describe('MergeSort', () => {
