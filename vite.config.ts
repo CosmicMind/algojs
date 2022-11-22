@@ -10,9 +10,6 @@ import {
 
 import dts from 'vite-plugin-dts'
 
-const packageName = process.env.npm_package_name
-const packageVersion = JSON.stringify(process.env.npm_package_version)
-
 const external = [
   '@cosmicmind/foundation'
 ]
@@ -28,10 +25,6 @@ export default defineConfig(({ mode }) => {
   }: undefined
 
   return {
-    define: {
-      '__PACKAGE_NAME__': packageVersion,
-      '__PACKAGE_VERSION__': packageVersion,
-    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -43,7 +36,7 @@ export default defineConfig(({ mode }) => {
     build: {
       emptyOutDir,
       lib: {
-        name: packageName,
+        name: process.env.npm_package_name,
         entry: './src/index.ts',
         formats,
         fileName: 'lib.es',
