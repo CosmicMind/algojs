@@ -35,8 +35,8 @@
  */
 
 import {
-Optional,
-guardFor
+  Optional,
+  guardFor,
 } from '@cosmicmind/foundation'
 
 import {
