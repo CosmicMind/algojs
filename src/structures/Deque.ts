@@ -48,7 +48,7 @@ import {
   listCreate,
   listInsert,
   listRemoveFirst,
-} from './List'
+} from '@/structures/List'
 
 /**
  * The `sentinel` value is used to determine

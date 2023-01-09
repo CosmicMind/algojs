@@ -39,8 +39,8 @@
  * @performance O(n^2)
  */
 
-import { LinearSort } from '../utils/sort'
-import { CompareFn } from '../utils/compare'
+import { LinearSort } from '@/utils/sort'
+import { CompareFn } from '@/utils/compare'
 
 /**
  * The `selectionSort` algorithm is implemented using generics, which
@@ -55,6 +55,7 @@ export const selectionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void 
 
   for (let i = 0, l = data.length; i < l; ++i) {
     q = i
+
     for (let j = i + 1; j < l; ++j) {
       if (0 < fn(data[q], data[j])) {
         q = j

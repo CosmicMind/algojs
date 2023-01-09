@@ -31,14 +31,14 @@
  */
 
 import {
-it,
-expect,
-describe
+  it,
+  expect,
+  describe,
 } from 'vitest'
 
 import {
-Optional,
-guardFor
+  Optional,
+  guardFor,
 } from '@cosmicmind/foundation'
 
 import {

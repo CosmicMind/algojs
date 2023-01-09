@@ -34,6 +34,6 @@
  * @module Sort
  */
 
-import { CompareFn } from './compare'
+import { CompareFn } from '@/utils/compare'
 
 export type LogarithmicSearch = <T>(data: T[], fn: CompareFn<T>) => void

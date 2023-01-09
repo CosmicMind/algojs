@@ -35,9 +35,9 @@
  */
 
 import {
-assert,
-Optional,
-guardFor
+  assert,
+  Optional,
+  guardFor,
 } from '@cosmicmind/foundation'
 
 import {
@@ -52,11 +52,11 @@ import {
 } from './List'
 
 import {
-StackableKeys,
-Stackable,
-stackIterateFrom,
-stackDepth,
-stackIsDescendant
+  StackableKeys,
+  Stackable,
+  stackIterateFrom,
+  stackDepth,
+  stackIsDescendant,
 } from './Stack'
 
 /**

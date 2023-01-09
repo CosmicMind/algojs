@@ -63,8 +63,8 @@
  * @performance O(n^2)
  */
 
-import { LinearSort } from '../utils/sort'
-import { CompareFn } from '../utils/compare'
+import { LinearSort } from '@/utils/sort'
+import { CompareFn } from '@/utils/compare'
 
 /**
  * The `insertionSort` algorithm is implemented using generics, which
@@ -78,10 +78,12 @@ export const insertionSort: LinearSort = <T>(data: T[], fn: CompareFn<T>): void 
   for (let i = 1, l = data.length; i < l; ++i) {
     const key = data[i]
     let j = i - 1
+
     while (0 <= j && 0 < fn(data[j], key)) {
       data[j + 1] = data[j]
       --j
     }
+
     data[j + 1] = key
   }
 }

@@ -30,43 +30,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export type {
-  // Compare
-  CompareFn,
-
-  // Sort
-  LinearSort,
-
-  // Stack
-  Stackable,
-  Stack,
-
-  // List
-  Listable,
-  List,
-
-  // Tree
-  Tree,
-  TreeChildren,
-
-  // Deque
-  Deque,
-  Dequeable,
-} from './internal'
-
+export type { CompareFn } from '@/utils/compare'
 export {
-  // Compare
   stringCompare,
   numericCompare,
   stringKeyCompare,
   numericKeyCompare,
+} from '@/utils/compare'
 
-  // Sorting
-  insertionSort,
-  mergeSort,
-  selectionSort,
+export type { LinearSort } from '@/utils/sort'
 
-  // Deque
+export { insertionSort } from '@/sort/InsertionSort'
+export { mergeSort } from '@/sort/MergeSort'
+export { selectionSort } from '@/sort/SelectionSort'
+
+export type {
+  Stackable,
+  Stack,
+} from '@/structures/Stack'
+
+export type {
+  Dequeable,
+  Deque,
+} from '@/structures/Deque'
+
+export {
   DequeableKeys,
   DequeKeys,
   dequeableCreate,
@@ -91,8 +79,14 @@ export {
   dequeIsPrevious,
   dequeIsSibling,
   dequeHas,
+} from '@/structures/Deque'
 
-  // List
+export type {
+  Listable,
+  List,
+} from '@/structures/List'
+
+export {
   ListableKeys,
   ListKeys,
   listableCreate,
@@ -117,8 +111,9 @@ export {
   listIsPrevious,
   listIsSibling,
   listHas,
+} from '@/structures/List'
 
-  // Stack
+export {
   StackableKeys,
   StackKeys,
   stackableCreate,
@@ -134,8 +129,14 @@ export {
   stackIsTop,
   stackIsDescendant,
   stackHas,
+} from '@/structures/Stack'
 
-  // Tree
+export type {
+  Tree,
+  TreeChildren,
+} from '@/structures/Tree'
+
+export {
   TreeKeys,
   treeCreate,
   treeInsertChild,
@@ -147,4 +148,6 @@ export {
   treeIsLastChild,
   treeIsOnlyChild,
   treeIsDescendant,
-} from './internal'
+  treeIncreaseSize,
+  treeDecreaseSize,
+} from '@/structures/Tree'
