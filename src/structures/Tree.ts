@@ -38,7 +38,7 @@ import {
   assert,
   Optional,
   guardFor,
-} from '@cosmicmind/foundation'
+} from '@cosmicmind/foundationjs'
 
 import {
   ListableKeys,

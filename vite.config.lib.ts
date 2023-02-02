@@ -12,7 +12,7 @@ import {
 import dts from 'vite-plugin-dts'
 
 const external = [
-  '@cosmicmind/foundation'
+  '@cosmicmind/foundationjs'
 ]
 
 const srcDir = './src'

@@ -39,7 +39,7 @@ import {
 import {
   Optional,
   guardFor,
-} from '@cosmicmind/foundation'
+} from '@cosmicmind/foundationjs'
 
 import {
   TreeKeys,
