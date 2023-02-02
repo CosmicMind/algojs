@@ -14,7 +14,7 @@ import dts from 'vite-plugin-dts'
 const external = [
   '@cosmicmind/foundation'
 ]
-const globals = {}
+
 const srcDir = './src'
 const emptyOutDir = false
 const formats: LibraryFormats[] = [ 'es' ]
@@ -42,9 +42,6 @@ export default defineConfig(({
       },
       rollupOptions: {
         external,
-        output: {
-          globals,
-        },
       },
       minify,
     },

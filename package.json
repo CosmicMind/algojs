@@ -1,6 +1,6 @@
 {
   "name": "@cosmicmind/algo",
-  "version": "0.0.1-rc-120822-2",
+  "version": "0.0.1-rc-020123-1",
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
   "author": {
@@ -11,6 +11,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/cosmicmind/algo.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "type": "module",
   "main": "dist/lib.es.js",
@@ -25,11 +28,20 @@
   ],
   "scripts": {
     "lint": "eslint --fix --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
-    "build": "vite build --mode production",
-    "watch": "vite build --watch --mode development",
+    "build": "run-s build:lib",
+    "build:lib": "vite build --config vite.config.lib.ts --mode production",
+    "watch": "run-p watch:lib",
+    "watch:lib": "vite build --watch --config vite.config.lib.ts --mode development",
+    "dev": "run-s dev:build",
+    "dev:build": "run-s dev:build:lib",
+    "dev:build:lib": "vite build --config vite.config.lib.ts --mode development",
+    "test": "run-s test:unit",
     "test:unit": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@cosmicmind/foundation": "^0.0.1-rc-020123-1"
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
@@ -49,8 +61,5 @@
     "vite": "^3.1.3",
     "vite-plugin-dts": "^1.4.1",
     "vitest": "^0.23.0"
-  },
-  "dependencies": {
-    "@cosmicmind/foundation": "^0.0.1-rc-121122-1"
   }
 }
