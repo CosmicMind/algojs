@@ -1,5 +1,5 @@
 {
-  "name": "@cosmicmind/algo",
+  "name": "@cosmicmind/algojs",
   "version": "0.0.1-rc-020123-1",
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
@@ -10,7 +10,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cosmicmind/algo.git"
+    "url": "https://github.com/cosmicmind/algojs.git"
   },
   "publishConfig": {
     "access": "public"
