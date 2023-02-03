@@ -68,7 +68,7 @@ import {
   dequeIsPrevious,
   dequeIsSibling,
   dequeHas,
-} from '../../src'
+} from '@/internal'
 
 const sentinel = void 0
 

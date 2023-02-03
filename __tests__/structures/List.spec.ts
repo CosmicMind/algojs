@@ -68,7 +68,7 @@ import {
   listIsPrevious,
   listIsSibling,
   listHas,
-} from '../../src'
+} from '@/internal'
 
 const sentinel = void 0
 

@@ -50,7 +50,7 @@ import {
   treeDepth,
   treeIsFirstChild,
   treeIsLastChild,
-} from '../../src'
+} from '@/internal'
 
 const sentinel = void 0
 
