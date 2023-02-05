@@ -37,16 +37,11 @@ import {
 } from 'vitest'
 
 import {
-  Optional,
-  guardFor,
+  guard,
 } from '@cosmicmind/foundationjs'
 
 import {
-  DequeableKeys,
-  DequeKeys,
-  Dequeable,
   Deque,
-  dequeableCreate,
   dequeCreate,
   dequeInsert,
   dequeRemoveFirst,
@@ -68,24 +63,26 @@ import {
   dequeIsPrevious,
   dequeIsSibling,
   dequeHas,
+  Listable,
+  listableCreate,
 } from '@/internal'
 
 const sentinel = void 0
 
-type DequeableNode = Dequeable & {
+type ListableNode = Listable & {
   key: number
   value: string
 }
 
-const createDequeableNode = (key: number, value: string): DequeableNode =>
-  dequeableCreate<DequeableNode>({
+const createListableNode = (key: number, value: string): ListableNode =>
+  listableCreate<ListableNode>({
     key,
     value,
   })
 
-class DequeNode implements Dequeable {
-  readonly next: Optional<Dequeable>
-  readonly previous: Optional<Dequeable>
+class DequeNode implements Listable {
+  readonly next?: Listable
+  readonly previous?: Listable
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
@@ -97,8 +94,8 @@ class DequeNode implements Dequeable {
 }
 
 class DequeTrace<T extends DequeNode> implements Deque<T> {
-  readonly first: Optional<T>
-  readonly last: Optional<T>
+  readonly first?: T
+  readonly last?: T
   readonly count: number
   constructor() {
     this.first = sentinel
@@ -108,27 +105,27 @@ class DequeTrace<T extends DequeNode> implements Deque<T> {
 }
 
 describe('Deque', () => {
-  it('dequeableCreate', () => {
-    const node = dequeableCreate({})
+  it('listableCreate', () => {
+    const node = listableCreate({})
 
-    expect(guardFor(node, ...DequeableKeys)).toBeTruthy()
+    expect(guard(node)).toBeTruthy()
     expect(node.previous).toBe(sentinel)
     expect(node.next).toBe(sentinel)
   })
 
   it('dequeCreate', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    expect(guardFor(deque, ...DequeKeys)).toBeTruthy()
+    expect(guard(deque)).toBeTruthy()
     expect(deque.first).toBe(sentinel)
     expect(deque.last).toBe(sentinel)
     expect(deque.count).toBe(0)
   })
 
-  it('createDequeableNode', () => {
-    const node = createDequeableNode(1, 'a')
+  it('createListableNode', () => {
+    const node = createListableNode(1, 'a')
 
-    expect(guardFor(node, ...DequeableKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node)).toBeTruthy()
     expect(node.previous).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.key).toBe(1)
@@ -138,7 +135,7 @@ describe('Deque', () => {
   it('new DequeNode', () => {
     const node = new DequeNode(1, 'a')
 
-    expect(guardFor(node, ...DequeableKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.previous).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.key).toBe(1)
@@ -148,24 +145,24 @@ describe('Deque', () => {
   it('new DequeTrace', () => {
     const deque = new DequeTrace<DequeNode>()
 
-    expect(guardFor(deque, ...DequeKeys)).toBeTruthy()
+    expect(guard(deque)).toBeTruthy()
     expect(deque.first).toBe(sentinel)
     expect(deque.last).toBe(sentinel)
     expect(deque.count).toBe(0)
   })
 
   it('dequeInsert', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeInsert(deque, n1)
     dequeInsert(deque, n2)
     dequeInsert(deque, n3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -179,17 +176,17 @@ describe('Deque', () => {
   })
 
   it('dequeRemoveFirst', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
     dequeAppend(deque, n3)
 
-    let result: DequeableNode[] = []
+    let result: ListableNode[] = []
     let expectation = [ n1, n2, n3 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -216,17 +213,17 @@ describe('Deque', () => {
   })
 
   it('dequeAppend', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
     dequeAppend(deque, n3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of dequeIterateFromLast(deque)) {
@@ -240,17 +237,17 @@ describe('Deque', () => {
   })
 
   it('dequeRemoveLast', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
     dequeAppend(deque, n3)
 
-    let result: DequeableNode[] = []
+    let result: ListableNode[] = []
     let expectation = [ n1, n2, n3 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -277,17 +274,17 @@ describe('Deque', () => {
   })
 
   it('dequeInsertBefore', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeInsert(deque, n1)
     dequeInsertBefore(deque, n2, n1)
     dequeInsertBefore(deque, n3, n1)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n2, n3, n1 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -301,18 +298,18 @@ describe('Deque', () => {
   })
 
   it('dequeRemoveBefore', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeInsert(deque, n1)
     dequeInsertBefore(deque, n2, n1)
     dequeInsertBefore(deque, n3, n1)
     dequeRemoveBefore(deque, n3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n3, n1 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -325,17 +322,17 @@ describe('Deque', () => {
   })
 
   it('dequeInsertAfter', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeInsert(deque, n1)
     dequeInsertAfter(deque, n2, n1)
     dequeInsertAfter(deque, n3, n2)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n1, n2, n3 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -349,18 +346,18 @@ describe('Deque', () => {
   })
 
   it('dequeRemoveAfter', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeInsert(deque, n1)
     dequeInsertAfter(deque, n2, n1)
     dequeInsertAfter(deque, n3, n2)
     dequeRemoveAfter(deque, n1)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n1, n3 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -373,18 +370,18 @@ describe('Deque', () => {
   })
 
   it('dequeRemove', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeInsert(deque, n1)
     dequeAppend(deque, n2)
     dequeAppend(deque, n3)
     dequeRemove(deque, n3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n1, n2 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -397,17 +394,17 @@ describe('Deque', () => {
   })
 
   it('dequeIterateFromFirst', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeInsert(deque, n1)
     dequeInsert(deque, n2)
     dequeInsert(deque, n3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of dequeIterateFromFirst(deque)) {
@@ -421,17 +418,17 @@ describe('Deque', () => {
   })
 
   it('dequeIterateFromLast', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
     dequeAppend(deque, n3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of dequeIterateFromLast(deque)) {
@@ -445,11 +442,11 @@ describe('Deque', () => {
   })
 
   it('dequeIterateToNext', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
@@ -457,7 +454,7 @@ describe('Deque', () => {
 
     expect(deque.count).toBe(3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n2, n3 ]
 
     for (const n of dequeIterateToNext(n1)) {
@@ -470,11 +467,11 @@ describe('Deque', () => {
   })
 
   it('dequeIterateToPrevious', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
@@ -482,7 +479,7 @@ describe('Deque', () => {
 
     expect(deque.count).toBe(3)
 
-    const result: DequeableNode[] = []
+    const result: ListableNode[] = []
     const expectation = [ n2, n1 ]
 
     for (const n of dequeIterateToPrevious(n3)) {
@@ -495,11 +492,11 @@ describe('Deque', () => {
   })
 
   it('dequeClear', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
@@ -513,11 +510,11 @@ describe('Deque', () => {
   })
 
   it('dequeIsFirst/dequeIsLast', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
@@ -530,12 +527,12 @@ describe('Deque', () => {
   })
 
   it('dequeIsNext', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
-    const n4 = createDequeableNode(4, 'd')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
+    const n4 = createListableNode(4, 'd')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
@@ -556,12 +553,12 @@ describe('Deque', () => {
   })
 
   it('dequeIsPrevious', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
-    const n4 = createDequeableNode(4, 'd')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
+    const n4 = createListableNode(4, 'd')
 
     dequeInsert(deque, n1)
     dequeInsert(deque, n2)
@@ -582,12 +579,12 @@ describe('Deque', () => {
   })
 
   it('dequeIsSibling', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
-    const n4 = createDequeableNode(3, 'd')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
+    const n4 = createListableNode(3, 'd')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)
@@ -610,12 +607,12 @@ describe('Deque', () => {
   })
 
   it('dequeHas', () => {
-    const deque = dequeCreate<DequeableNode>()
+    const deque = dequeCreate<ListableNode>()
 
-    const n1 = createDequeableNode(1, 'a')
-    const n2 = createDequeableNode(2, 'b')
-    const n3 = createDequeableNode(3, 'c')
-    const n4 = createDequeableNode(3, 'd')
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
+    const n4 = createListableNode(3, 'd')
 
     dequeAppend(deque, n1)
     dequeAppend(deque, n2)

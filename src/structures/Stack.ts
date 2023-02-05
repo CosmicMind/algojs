@@ -36,7 +36,7 @@
 
 import {
   Optional,
-  guardFor,
+  guard,
 } from '@cosmicmind/foundationjs'
 
 /**
@@ -45,16 +45,13 @@ import {
  */
 const sentinel = void 0
 
-export const StackableKeys = [ 'parent' ] as const
-export const StackKeys = [ 'top', 'count' ] as const
-
 /**
  * The `Stackable` interface defines a structure that moves
  * from a child node to its parent node within a `Stack`
  * data structure.
  */
-export interface Stackable {
-  parent: Optional<Stackable>
+export type Stackable = {
+  parent?: Stackable
 }
 
 /**
@@ -73,8 +70,8 @@ export const stackableCreate = <T extends Stackable>(props: Omit<T, keyof Stacka
  * `top`. It creates a `vertical` relationship between the
  * nodes that exist within its structure.
  */
-export interface Stack<T extends Stackable> {
-  top: Optional<T>
+export type Stack<T extends Stackable> = {
+  top?: T
   count: number
 }
 
@@ -116,8 +113,8 @@ export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
  */
 export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
   const node = stack.top
-  if (guardFor(node, ...StackableKeys)) {
-    stack.top = node.parent as Optional<T>
+  if (guard<T>(node)) {
+    stack.top = node.parent as T
     node.parent = sentinel
     --stack.count
   }
@@ -132,8 +129,8 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
  */
 export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
   let node: Optional<Stackable> = stack.top
-  while (guardFor(node, ...StackableKeys)) {
-    yield node as T
+  while (guard<T>(node)) {
+    yield node
     node = node.parent
   }
 }
@@ -143,8 +140,8 @@ export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIt
  */
 export function *stackIterateFrom<T extends Stackable>(node: T): IterableIterator<T> {
   let n: Optional<Stackable> = node
-  while (guardFor(n, ...StackableKeys)) {
-    yield n as T
+  while (guard<T>(n)) {
+    yield n
     n = n.parent
   }
 }
@@ -154,8 +151,8 @@ export function *stackIterateFrom<T extends Stackable>(node: T): IterableIterato
  */
 export function *stackIterateToParent<T extends Stackable>(node: T): IterableIterator<T> {
   let n = node.parent
-  while (guardFor(n, ...StackableKeys)) {
-    yield n as T
+  while (guard<T>(n)) {
+    yield n
     n = n.parent
   }
 }
@@ -167,7 +164,7 @@ export function *stackIterateToParent<T extends Stackable>(node: T): IterableIte
  * @performance O(n)
  */
 export function stackClear<T extends Stackable>(stack: Stack<T>): void {
-  while (guardFor(stack.top, ...StackableKeys)) {
+  while (guard<T>(stack.top)) {
     stackPop(stack)
   }
 }
@@ -178,7 +175,7 @@ export function stackClear<T extends Stackable>(stack: Stack<T>): void {
 export function stackDepth<T extends Stackable>(node: T): number {
   let n = node.parent
   let depth = 0
-  while (guardFor(n, ...StackableKeys)) {
+  while (guard<T>(n)) {
     ++depth
     n = n.parent
   }

@@ -38,11 +38,10 @@ import {
 
 import {
   Optional,
-  guardFor,
+  guard,
 } from '@cosmicmind/foundationjs'
 
 import {
-  TreeKeys,
   Tree,
   TreeChildren,
   treeCreate,
@@ -66,9 +65,9 @@ const createTreeNode = (key: number, value: string): TreeNode =>
   })
 
 class TreeTrace implements Tree {
-  readonly parent: Optional<Tree>
-  readonly next: Optional<Tree>
-  readonly previous: Optional<Tree>
+  readonly parent?: Tree
+  readonly next?: Tree
+  readonly previous?: Tree
   readonly children: Optional<TreeChildren<Tree>>
   readonly size: number
   readonly key: number
@@ -88,7 +87,7 @@ describe('Tree', () => {
   it('treeCreate', () => {
     const node = treeCreate({})
 
-    expect(guardFor(node, ...TreeKeys)).toBeTruthy()
+    expect(guard(node)).toBeTruthy()
     expect(node.parent).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.previous).toBe(sentinel)
@@ -99,7 +98,7 @@ describe('Tree', () => {
   it('createTreeNode', () => {
     const node = createTreeNode(1, 'a')
 
-    expect(guardFor(node, ...TreeKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.previous).toBe(sentinel)
@@ -112,7 +111,7 @@ describe('Tree', () => {
   it('new TreeTrace', () => {
     const node = new TreeTrace(1, 'a')
 
-    expect(guardFor(node, ...TreeKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.previous).toBe(sentinel)

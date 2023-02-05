@@ -30,32 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export type { CompareFn } from '@/utils'
-
-export {
-  stringCompare,
-  numericCompare,
-  stringKeyCompare,
-  numericKeyCompare,
-} from '@/utils'
-
-export type { LinearSort } from '@/utils'
-
-export {
-  insertionSort,
-  mergeSort,
-  selectionSort,
-} from '@/sort'
+export type {
+  Stackable,
+  Stack,
+} from '@/structures/Stack'
 
 export type {
   Deque,
-  Listable,
-  List,
-  Stackable,
-  Stack,
-  Tree,
-  TreeChildren,
-} from '@/structures'
+} from '@/structures/Deque'
 
 export {
   dequeCreate,
@@ -79,6 +61,14 @@ export {
   dequeIsPrevious,
   dequeIsSibling,
   dequeHas,
+} from '@/structures/Deque'
+
+export type {
+  Listable,
+  List,
+} from '@/structures/List'
+
+export {
   listableCreate,
   listCreate,
   listInsert,
@@ -101,6 +91,9 @@ export {
   listIsPrevious,
   listIsSibling,
   listHas,
+} from '@/structures/List'
+
+export {
   stackableCreate,
   stackCreate,
   stackPeek,
@@ -114,6 +107,14 @@ export {
   stackIsTop,
   stackIsDescendant,
   stackHas,
+} from '@/structures/Stack'
+
+export type {
+  Tree,
+  TreeChildren,
+} from '@/structures/Tree'
+
+export {
   treeCreate,
   treeInsertChild,
   treeDepth,
@@ -126,4 +127,4 @@ export {
   treeIsDescendant,
   treeIncreaseSize,
   treeDecreaseSize,
-} from '@/structures'
+} from '@/structures/Tree'

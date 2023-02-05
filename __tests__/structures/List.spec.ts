@@ -37,13 +37,10 @@ import {
 } from 'vitest'
 
 import {
-  Optional,
-  guardFor,
+  guard,
 } from '@cosmicmind/foundationjs'
 
 import {
-  ListableKeys,
-  ListKeys,
   Listable,
   List,
   listableCreate,
@@ -84,8 +81,8 @@ const createListableNode = (key: number, value: string): ListableNode =>
   })
 
 class ListNode implements Listable {
-  readonly next: Optional<Listable>
-  readonly previous: Optional<Listable>
+  readonly next?: Listable
+  readonly previous?: Listable
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
@@ -97,8 +94,8 @@ class ListNode implements Listable {
 }
 
 class ListTrace<T extends ListNode> implements List<T> {
-  readonly first: Optional<T>
-  readonly last: Optional<T>
+  readonly first?: T
+  readonly last?: T
   readonly count: number
   constructor() {
     this.first = sentinel
@@ -111,7 +108,7 @@ describe('List', () => {
   it('listableCreate', () => {
     const node = listableCreate({})
 
-    expect(guardFor(node, ...ListableKeys)).toBeTruthy()
+    expect(guard(node)).toBeTruthy()
     expect(node.previous).toBe(sentinel)
     expect(node.next).toBe(sentinel)
   })
@@ -119,7 +116,7 @@ describe('List', () => {
   it('listCreate', () => {
     const list = listCreate<ListableNode>()
 
-    expect(guardFor(list, ...ListKeys)).toBeTruthy()
+    expect(guard(list)).toBeTruthy()
     expect(list.first).toBe(sentinel)
     expect(list.last).toBe(sentinel)
     expect(list.count).toBe(0)
@@ -128,7 +125,7 @@ describe('List', () => {
   it('createListableNode', () => {
     const node = createListableNode(1, 'a')
 
-    expect(guardFor(node, ...ListableKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.previous).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.key).toBe(1)
@@ -138,7 +135,7 @@ describe('List', () => {
   it('new ListNode', () => {
     const node = new ListNode(1, 'a')
 
-    expect(guardFor(node, ...ListableKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.previous).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.key).toBe(1)
@@ -148,7 +145,7 @@ describe('List', () => {
   it('new ListTrace', () => {
     const list = new ListTrace<ListNode>()
 
-    expect(guardFor(list, ...ListKeys)).toBeTruthy()
+    expect(guard(list)).toBeTruthy()
     expect(list.first).toBe(sentinel)
     expect(list.last).toBe(sentinel)
     expect(list.count).toBe(0)

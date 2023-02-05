@@ -30,100 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export type { CompareFn } from '@/utils'
+export type { CompareFn } from '@/utils/compare'
 
 export {
   stringCompare,
   numericCompare,
   stringKeyCompare,
   numericKeyCompare,
-} from '@/utils'
+} from '@/utils/compare'
 
-export type { LinearSort } from '@/utils'
-
-export {
-  insertionSort,
-  mergeSort,
-  selectionSort,
-} from '@/sort'
-
-export type {
-  Deque,
-  Listable,
-  List,
-  Stackable,
-  Stack,
-  Tree,
-  TreeChildren,
-} from '@/structures'
-
-export {
-  dequeCreate,
-  dequeInsert,
-  dequeRemoveFirst,
-  dequeAppend,
-  dequeRemoveLast,
-  dequeInsertBefore,
-  dequeRemoveBefore,
-  dequeInsertAfter,
-  dequeRemoveAfter,
-  dequeRemove,
-  dequeIterateFromFirst,
-  dequeIterateFromLast,
-  dequeIterateToNext,
-  dequeIterateToPrevious,
-  dequeClear,
-  dequeIsFirst,
-  dequeIsLast,
-  dequeIsNext,
-  dequeIsPrevious,
-  dequeIsSibling,
-  dequeHas,
-  listableCreate,
-  listCreate,
-  listInsert,
-  listRemoveFirst,
-  listAppend,
-  listRemoveLast,
-  listInsertBefore,
-  listRemoveBefore,
-  listInsertAfter,
-  listRemoveAfter,
-  listRemove,
-  listIterateFromFirst,
-  listIterateFromLast,
-  listIterateToNext,
-  listIterateToPrevious,
-  listClear,
-  listIsFirst,
-  listIsLast,
-  listIsNext,
-  listIsPrevious,
-  listIsSibling,
-  listHas,
-  stackableCreate,
-  stackCreate,
-  stackPeek,
-  stackPush,
-  stackPop,
-  stackIterator,
-  stackIterateFrom,
-  stackIterateToParent,
-  stackClear,
-  stackDepth,
-  stackIsTop,
-  stackIsDescendant,
-  stackHas,
-  treeCreate,
-  treeInsertChild,
-  treeDepth,
-  treeIsRoot,
-  treeIsLeaf,
-  treeIsChild,
-  treeIsFirstChild,
-  treeIsLastChild,
-  treeIsOnlyChild,
-  treeIsDescendant,
-  treeIncreaseSize,
-  treeDecreaseSize,
-} from '@/structures'
+export type { LinearSort } from '@/utils/sort'
