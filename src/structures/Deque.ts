@@ -36,15 +36,12 @@
 
 import {
   Optional,
-  guardFor,
+  guard,
 } from '@cosmicmind/foundationjs'
 
 import {
-  ListableKeys,
-  ListKeys,
   Listable,
   List,
-  listableCreate,
   listCreate,
   listInsert,
   listRemoveFirst,
@@ -56,45 +53,28 @@ import {
  */
 const sentinel = void 0
 
-export const DequeableKeys = [ ...ListableKeys ] as const
-export const DequeKeys = [ ...ListKeys ] as const
-
 /**
  */
-export interface Dequeable extends Listable {
-  next: Optional<Dequeable>
-  previous: Optional<Dequeable>
-}
-
-/**
- */
-export const dequeableCreate = <T extends Dequeable>(props: Omit<T, keyof Dequeable>): Readonly<T> =>
-  listableCreate<T>(props)
-
-/**
- */
-export interface Deque<T extends Dequeable> extends List<T> {
-  first: Optional<T>
-  last: Optional<T>
+export interface Deque<T extends Listable> extends List<T> {
   count: number
 }
 
 /**
  * Creates a new `Deque` instance.
  */
-export const dequeCreate = <T extends Dequeable>(): Readonly<Deque<T>> =>
+export const dequeCreate = <T extends Listable>(): Readonly<Deque<T>> =>
   listCreate<T>()
 
 /**
  * @performance O(1)
  */
-export const dequeInsert = <T extends Dequeable>(deque: Deque<T>, node: T): void =>
+export const dequeInsert = <T extends Listable>(deque: Deque<T>, node: T): void =>
   listInsert(deque, node)
 
 /**
  * @performance O(1)
  */
-export const dequeRemoveFirst = <T extends Dequeable>(deque: Deque<T>): Optional<T> =>
+export const dequeRemoveFirst = <T extends Listable>(deque: Deque<T>): Optional<T> =>
   listRemoveFirst(deque)
 
 /**
@@ -104,8 +84,8 @@ export const dequeRemoveFirst = <T extends Dequeable>(deque: Deque<T>): Optional
  *
  * @performance O(1)
  */
-export function dequeAppend<T extends Dequeable>(deque: Deque<T>, node: T): void {
-  if (guardFor(deque.last, ...DequeableKeys)) {
+export function dequeAppend<T extends Listable>(deque: Deque<T>, node: T): void {
+  if (guard<T>(deque.last)) {
     deque.last.next = node
     node.previous = deque.last
   }
@@ -125,12 +105,12 @@ export function dequeAppend<T extends Dequeable>(deque: Deque<T>, node: T): void
  *
  * @performance O(1)
  */
-export function dequeRemoveLast<T extends Dequeable>(deque: Deque<T>): Optional<T> {
+export function dequeRemoveLast<T extends Listable>(deque: Deque<T>): Optional<T> {
   const node = deque.last
-  if (guardFor(node, ...DequeableKeys)) {
+  if (guard<T>(node)) {
     const previous = node.previous
-    if (guardFor(previous, ...DequeableKeys)) {
-      deque.last = previous as Optional<T>
+    if (guard<T>(previous)) {
+      deque.last = previous
       node.previous = sentinel
       previous.next = sentinel
     }
@@ -153,13 +133,13 @@ export function dequeRemoveLast<T extends Dequeable>(deque: Deque<T>): Optional<
  *
  * @performance O(1)
  */
-export function dequeInsertBefore<T extends Dequeable>(deque: Deque<T>, insert: T, before: T): void {
+export function dequeInsertBefore<T extends Listable>(deque: Deque<T>, insert: T, before: T): void {
   if (deque.first === before) {
     dequeInsert(deque, insert)
   }
   else {
     const previous = before.previous
-    if (guardFor(previous, ...DequeableKeys)) {
+    if (guard<T>(previous)) {
       previous.next = insert
       insert.previous = previous
       insert.next = before
@@ -179,14 +159,14 @@ export function dequeInsertBefore<T extends Dequeable>(deque: Deque<T>, insert: 
  *
  * @performance O(1)
  */
-export function dequeRemoveBefore<T extends Dequeable>(deque: Deque<T>, before: T): Optional<T> {
-  const node = before.previous as Optional<T>
+export function dequeRemoveBefore<T extends Listable>(deque: Deque<T>, before: T): Optional<T> {
+  const node = before.previous as T
   if (deque.first === node) {
     dequeRemoveFirst(deque)
   }
-  else if (guardFor(node, ...DequeableKeys)) {
+  else if (guard<T>(node)) {
     const previous = node.previous
-    if (guardFor(previous, ...DequeableKeys)) {
+    if (guard<T>(previous)) {
       before.previous = previous
       previous.next = before
       node.previous = sentinel
@@ -207,13 +187,13 @@ export function dequeRemoveBefore<T extends Dequeable>(deque: Deque<T>, before: 
  *
  * @performance O(1)
  */
-export function dequeInsertAfter<T extends Dequeable>(deque: Deque<T>, insert: T, after: T): void {
+export function dequeInsertAfter<T extends Listable>(deque: Deque<T>, insert: T, after: T): void {
   if (deque.last === after) {
     dequeAppend(deque, insert)
   }
   else {
     const next = after.next
-    if (guardFor(next, ...DequeableKeys)) {
+    if (guard<T>(next)) {
       next.previous = after
       after.next = next
       after.previous = insert
@@ -233,14 +213,14 @@ export function dequeInsertAfter<T extends Dequeable>(deque: Deque<T>, insert: T
  *
  * @performance O(1)
  */
-export function dequeRemoveAfter<T extends Dequeable>(deque: Deque<T>, after: T): Optional<T> {
-  const node = after.next as Optional<T>
+export function dequeRemoveAfter<T extends Listable>(deque: Deque<T>, after: T): Optional<T> {
+  const node = after.next as T
   if (deque.last === node) {
     dequeRemoveLast(deque)
   }
-  else if (guardFor(node, ...DequeableKeys)) {
+  else if (guard<T>(node)) {
     const next = node.next
-    if (guardFor(next, ...DequeableKeys)) {
+    if (guard<T>(next)) {
       next.previous = after
       after.next = next
       node.previous = sentinel
@@ -259,7 +239,7 @@ export function dequeRemoveAfter<T extends Dequeable>(deque: Deque<T>, after: T)
  *
  * @performance O(1)
  */
-export function dequeRemove<T extends Dequeable>(deque: Deque<T>, node: T): void {
+export function dequeRemove<T extends Listable>(deque: Deque<T>, node: T): void {
   if (deque.first === node) {
     dequeRemoveFirst(deque)
   }
@@ -269,7 +249,7 @@ export function dequeRemove<T extends Dequeable>(deque: Deque<T>, node: T): void
   else {
     const previous = node.previous
     const next = node.next
-    if (guardFor(previous, ...DequeableKeys) && guardFor(next, ...DequeableKeys)) {
+    if (guard<T>(previous) && guard<T>(next)) {
       previous.next = next
       next.previous = previous
       node.previous = sentinel
@@ -286,10 +266,10 @@ export function dequeRemove<T extends Dequeable>(deque: Deque<T>, node: T): void
  *
  * @performance O(n)
  */
-export function *dequeIterateFromFirst<T extends Dequeable>(deque: Deque<T>): IterableIterator<T> {
-  let node: Optional<Dequeable> = deque.first
-  while (guardFor(node, ...DequeableKeys)) {
-    yield node as T
+export function *dequeIterateFromFirst<T extends Listable>(deque: Deque<T>): IterableIterator<T> {
+  let node: Optional<Listable> = deque.first
+  while (guard<T>(node)) {
+    yield node
     node = node.next
   }
 }
@@ -297,10 +277,10 @@ export function *dequeIterateFromFirst<T extends Dequeable>(deque: Deque<T>): It
 /**
  * @performance O(n)
  */
-export function *dequeIterateFromLast<T extends Dequeable>(deque: Deque<T>): IterableIterator<T> {
-  let node: Optional<Dequeable> = deque.last
-  while (guardFor(node, ...DequeableKeys)) {
-    yield node as T
+export function *dequeIterateFromLast<T extends Listable>(deque: Deque<T>): IterableIterator<T> {
+  let node: Optional<Listable> = deque.last
+  while (guard<T>(node)) {
+    yield node
     node = node.previous
   }
 }
@@ -308,10 +288,10 @@ export function *dequeIterateFromLast<T extends Dequeable>(deque: Deque<T>): Ite
 /**
  * @performance O(n)
  */
-export function *dequeIterateToNext<T extends Dequeable>(node: T): IterableIterator<T> {
-  let n: Optional<Dequeable> = node.next
-  while (guardFor(n, ...DequeableKeys)) {
-    yield n as T
+export function *dequeIterateToNext<T extends Listable>(node: T): IterableIterator<T> {
+  let n: Optional<Listable> = node.next
+  while (guard<T>(n)) {
+    yield n
     n = n.next
   }
 }
@@ -319,10 +299,10 @@ export function *dequeIterateToNext<T extends Dequeable>(node: T): IterableItera
 /**
  * @performance O(n)
  */
-export function *dequeIterateToPrevious<T extends Dequeable>(node: T): IterableIterator<T> {
-  let n: Optional<Dequeable> = node.previous
-  while (guardFor(n, ...DequeableKeys)) {
-    yield n as T
+export function *dequeIterateToPrevious<T extends Listable>(node: T): IterableIterator<T> {
+  let n: Optional<Listable> = node.previous
+  while (guard<T>(n)) {
+    yield n
     n = n.previous
   }
 }
@@ -333,8 +313,8 @@ export function *dequeIterateToPrevious<T extends Dequeable>(node: T): IterableI
  *
  * @performance O(n)
  */
-export function dequeClear<T extends Dequeable>(deque: Deque<T>): void {
-  while (guardFor(deque.first, ...DequeableKeys)) {
+export function dequeClear<T extends Listable>(deque: Deque<T>): void {
+  while (guard<T>(deque.first)) {
     dequeRemoveFirst(deque)
   }
 }
@@ -346,7 +326,7 @@ export function dequeClear<T extends Dequeable>(deque: Deque<T>): void {
  *
  * @performance O(1)
  */
-export function dequeIsFirst<T extends Dequeable>(deque: Deque<T>, node: T): boolean {
+export function dequeIsFirst<T extends Listable>(deque: Deque<T>, node: T): boolean {
   return deque.first === node && deque.first !== sentinel
 }
 
@@ -357,7 +337,7 @@ export function dequeIsFirst<T extends Dequeable>(deque: Deque<T>, node: T): boo
  *
  * @performance O(1)
  */
-export function dequeIsLast<T extends Dequeable>(deque: Deque<T>, node: T): boolean {
+export function dequeIsLast<T extends Listable>(deque: Deque<T>, node: T): boolean {
   return deque.last === node && deque.last !== sentinel
 }
 
@@ -368,7 +348,7 @@ export function dequeIsLast<T extends Dequeable>(deque: Deque<T>, node: T): bool
  *
  * @performance O(1)
  */
-export function dequeIsNext<T extends Dequeable>(next: T, node: T): boolean {
+export function dequeIsNext<T extends Listable>(next: T, node: T): boolean {
   return next === node.next && node.next !== sentinel
 }
 
@@ -379,14 +359,14 @@ export function dequeIsNext<T extends Dequeable>(next: T, node: T): boolean {
  *
  * @performance O(1)
  */
-export function dequeIsPrevious<T extends Dequeable>(previous: T, node: T): boolean {
+export function dequeIsPrevious<T extends Listable>(previous: T, node: T): boolean {
   return previous === node.previous && node.previous !== sentinel
 }
 
 /**
  * @performance O(n)
  */
-export function dequeIsSibling<T extends Dequeable>(sibling: T, node: T): boolean {
+export function dequeIsSibling<T extends Listable>(sibling: T, node: T): boolean {
   for (const n of dequeIterateToNext(node)) {
     if (n === sibling) {
       return true
@@ -403,7 +383,7 @@ export function dequeIsSibling<T extends Dequeable>(sibling: T, node: T): boolea
 /**
  * @performance O(n)
  */
-export function dequeHas<T extends Dequeable>(deque: Deque<T>, node: T): boolean {
+export function dequeHas<T extends Listable>(deque: Deque<T>, node: T): boolean {
   for (const n of dequeIterateFromFirst(deque)) {
     if (n === node) {
       return true

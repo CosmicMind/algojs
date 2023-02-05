@@ -37,13 +37,10 @@ import {
 } from 'vitest'
 
 import {
-  Optional,
-  guardFor,
+  guard,
 } from '@cosmicmind/foundationjs'
 
 import {
-  StackableKeys,
-  StackKeys,
   Stackable,
   Stack,
   stackableCreate,
@@ -75,7 +72,7 @@ const createStackableNode = (key: number, value: string): StackableNode =>
   })
 
 class StackNode implements Stackable {
-  readonly parent: Optional<Stackable>
+  readonly parent?: Stackable
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
@@ -86,7 +83,7 @@ class StackNode implements Stackable {
 }
 
 class StackTrace<T extends StackNode> implements Stack<T> {
-  readonly top: Optional<T>
+  readonly top?: T
   readonly count: number
   constructor() {
     this.top = sentinel
@@ -98,14 +95,14 @@ describe('Stack', () => {
   it('stackableCreate', () => {
     const node = stackableCreate({})
 
-    expect(guardFor(node, ...StackableKeys)).toBeTruthy()
+    expect(guard(node)).toBeTruthy()
     expect(node.parent).toStrictEqual(sentinel)
   })
 
   it('stackCreate', () => {
     const stack = stackCreate<StackableNode>()
 
-    expect(guardFor(stack, ...StackKeys)).toBeTruthy()
+    expect(guard(stack)).toBeTruthy()
     expect(stack.top).toStrictEqual(sentinel)
     expect(stack.count).toBe(0)
   })
@@ -113,7 +110,7 @@ describe('Stack', () => {
   it('createStackableNode', () => {
     const node = createStackableNode(1, 'a')
 
-    expect(guardFor(node, ...StackableKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toStrictEqual(sentinel)
     expect(node.key).toBe(1)
     expect(node.value).toBe('a')
@@ -122,7 +119,7 @@ describe('Stack', () => {
   it('new StackNode', () => {
     const node = new StackNode(1, 'a')
 
-    expect(guardFor(node, ...StackableKeys, 'key', 'value')).toBeTruthy()
+    expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toStrictEqual(sentinel)
     expect(node.key).toBe(1)
     expect(node.value).toBe('a')
@@ -131,7 +128,7 @@ describe('Stack', () => {
   it('new StackTrace', () => {
     const stack = new StackTrace<StackNode>()
 
-    expect(guardFor(stack, ...StackKeys)).toBeTruthy()
+    expect(guard(stack)).toBeTruthy()
     expect(stack.top).toStrictEqual(sentinel)
     expect(stack.count).toBe(0)
   })
