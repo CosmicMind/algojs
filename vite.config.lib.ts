@@ -47,14 +47,12 @@ const external = [
   '@cosmicmind/foundationjs'
 ]
 
-const srcDir = './src'
+const srcDir = 'src'
 const emptyOutDir = false
 const formats: LibraryFormats[] = [ 'es' ]
 
-export default defineConfig(({
-  mode,
-}) => {
-  const minify = 'production' === mode
+export default defineConfig(() => {
+  const minify = 'production' === process.env.NODE_ENV
   const config: UserConfigExport = {
     resolve: {
       alias: {
