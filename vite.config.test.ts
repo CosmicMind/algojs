@@ -51,7 +51,11 @@ export default defineConfig(() => {
   const config: UserConfigExport = {
     resolve: {
       alias: {
+<<<<<<< HEAD
         '@': fileURLToPath(new URL(`${srcDir}`, import.meta.url)),
+=======
+        '@': fileURLToPath(new URL(srcDir, import.meta.url)),
+>>>>>>> e894a2ef55bbb8d8b028cca8e6287af88c8225d0
       },
     },
     test: {
@@ -62,7 +66,11 @@ export default defineConfig(() => {
       },
       coverage: {
         provider: 'c8',
+<<<<<<< HEAD
         include: [ `**/${srcDir}/**` ],
+=======
+        include: [ '**/src/**' ],
+>>>>>>> e894a2ef55bbb8d8b028cca8e6287af88c8225d0
         extension: [ '.ts' ],
       },
     },
