@@ -195,8 +195,8 @@ export function stackIsTop<T extends Stackable>(stack: Stack<T>, node: T): boole
 /**
  * @performance O(n)
  */
-export function stackIsDescendant<T extends Stackable>(descendant: T, node: T): boolean {
-  for (const n of stackIterateToParent(descendant)) {
+export function stackIsDescendant<T extends Stackable>(stack: T, node: T): boolean {
+  for (const n of stackIterateToParent(stack)) {
     if (n === node) {
       return true
     }

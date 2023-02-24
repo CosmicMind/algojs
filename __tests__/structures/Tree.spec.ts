@@ -36,19 +36,21 @@ import {
   describe,
 } from 'vitest'
 
-import {
-  Optional,
-  guard,
-} from '@cosmicmind/foundationjs'
+import { guard } from '@cosmicmind/foundationjs'
 
 import {
+  List,
   Tree,
-  TreeChildren,
   treeCreate,
   treeInsertChild,
+  treeAppendChild,
   treeDepth,
   treeIsFirstChild,
   treeIsLastChild,
+  treeIsOnlyChild,
+  treeIsDescendant,
+  treeIterator,
+  treeQuery,
 } from '@/internal'
 
 const sentinel = void 0
@@ -68,7 +70,7 @@ class TreeTrace implements Tree {
   readonly parent?: Tree
   readonly next?: Tree
   readonly previous?: Tree
-  readonly children: Optional<TreeChildren<Tree>>
+  readonly children?: List<Tree>
   readonly size: number
   readonly key: number
   readonly value: string
@@ -138,6 +140,27 @@ describe('Tree', () => {
     expect(n1.size).toBe(4)
   })
 
+  it('treeAppendChild', () => {
+    const n1 = createTreeNode(1, 'a')
+    const n2 = createTreeNode(2, 'b')
+    const n3 = createTreeNode(3, 'c')
+    const n4 = createTreeNode(4, 'd')
+
+    treeAppendChild(n2, n1)
+    expect(treeIsOnlyChild(n2, n1)).toBeTruthy()
+
+    treeAppendChild(n3, n1)
+    expect(treeIsOnlyChild(n2, n1)).toBeFalsy()
+
+    treeAppendChild(n4, n1)
+
+    expect(treeIsLastChild(n2, n1)).toBeFalsy()
+    expect(treeIsLastChild(n3, n1)).toBeFalsy()
+    expect(treeIsLastChild(n4, n1)).toBeTruthy()
+    expect(treeIsFirstChild(n2, n1)).toBeTruthy()
+    expect(n1.size).toBe(4)
+  })
+
   it('node.size', () => {
     const n1 = createTreeNode(1, 'a')
     const n2 = createTreeNode(2, 'b')
@@ -148,7 +171,11 @@ describe('Tree', () => {
     const n7 = createTreeNode(7, 'g')
 
     treeInsertChild(n2, n1)
+    expect(treeIsOnlyChild(n2, n1)).toBeTruthy()
+
     treeInsertChild(n3, n1)
+    expect(treeIsOnlyChild(n3, n1)).toBeFalsy()
+
     treeInsertChild(n4, n1)
     treeInsertChild(n5, n1)
     treeInsertChild(n6, n1)
@@ -183,5 +210,92 @@ describe('Tree', () => {
     expect(treeDepth(n5)).toBe(1)
     expect(treeDepth(n6)).toBe(2)
     expect(treeDepth(n7)).toBe(2)
+  })
+
+  it('treeIsDescendant', () => {
+    const n1 = createTreeNode(1, 'a')
+    const n2 = createTreeNode(2, 'b')
+    const n3 = createTreeNode(3, 'c')
+    const n4 = createTreeNode(4, 'd')
+    const n5 = createTreeNode(5, 'e')
+    const n6 = createTreeNode(6, 'f')
+    const n7 = createTreeNode(7, 'g')
+
+    treeInsertChild(n2, n1)
+    treeInsertChild(n3, n1)
+    treeInsertChild(n4, n1)
+    treeInsertChild(n5, n1)
+
+    treeInsertChild(n6, n2)
+    expect(treeIsOnlyChild(n6, n2)).toBeTruthy()
+
+    treeInsertChild(n7, n2)
+    expect(treeIsOnlyChild(n7, n2)).toBeFalsy()
+
+    expect(treeIsDescendant(n2, n1)).toBeTruthy()
+    expect(treeIsDescendant(n3, n1)).toBeTruthy()
+    expect(treeIsDescendant(n4, n1)).toBeTruthy()
+    expect(treeIsDescendant(n5, n1)).toBeTruthy()
+    expect(treeIsDescendant(n6, n2)).toBeTruthy()
+    expect(treeIsDescendant(n7, n2)).toBeTruthy()
+    expect(treeIsDescendant(n5, n2)).toBeFalsy()
+    expect(treeIsDescendant(n2, n2)).toBeFalsy()
+  })
+
+  it('treeIterator', () => {
+    const n1 = createTreeNode(1, 'a')
+    const n2 = createTreeNode(2, 'b')
+    const n3 = createTreeNode(3, 'c')
+    const n4 = createTreeNode(4, 'd')
+    const n5 = createTreeNode(5, 'e')
+    const n6 = createTreeNode(6, 'f')
+    const n7 = createTreeNode(7, 'g')
+
+    treeAppendChild(n2, n1)
+    treeAppendChild(n3, n1)
+    treeAppendChild(n4, n1)
+    treeAppendChild(n5, n1)
+    treeAppendChild(n6, n2)
+    treeAppendChild(n7, n2)
+
+    const result: Tree[] = []
+
+    for (const n of treeIterator(n1)) {
+      result.push(n)
+    }
+
+    expect(result).toStrictEqual([ n1, n2, n6, n7, n3, n4, n5 ])
+  })
+
+  it('treeQuery', () => {
+    const n1 = createTreeNode(1, 'a')
+    const n2 = createTreeNode(2, 'b')
+    const n3 = createTreeNode(3, 'c')
+    const n4 = createTreeNode(4, 'd')
+    const n5 = createTreeNode(5, 'e')
+    const n6 = createTreeNode(6, 'f')
+    const n7 = createTreeNode(7, 'g')
+
+    treeAppendChild(n2, n1)
+    treeAppendChild(n3, n1)
+    treeAppendChild(n4, n1)
+    treeAppendChild(n5, n1)
+    treeAppendChild(n6, n2)
+    treeAppendChild(n7, n2)
+
+    let result = treeQuery(n1, node => 1 === node.key || 3 === node.key)
+    expect(result.size).toBe(2)
+
+    result = treeQuery(n1,
+      node => 1 === node.key,
+      node => 'a' === node.value || 'b' === node.value
+    )
+    expect(result.size).toBe(1)
+
+    result = treeQuery(n1,
+      node => 1 === node.key,
+      node => 'b' === node.value
+    )
+    expect(result.size).toBe(0)
   })
 })

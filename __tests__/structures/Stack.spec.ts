@@ -36,9 +36,7 @@ import {
   describe,
 } from 'vitest'
 
-import {
-  guard,
-} from '@cosmicmind/foundationjs'
+import { guard } from '@cosmicmind/foundationjs'
 
 import {
   Stackable,

@@ -447,3 +447,20 @@ export function listHas<T extends Listable>(list: List<T>, node: T): boolean {
   }
   return false
 }
+
+/**
+ * @performance O(n)
+ */
+export function listQuery<T extends Listable>(list: List<T>, ...fn: ((node: T) => boolean)[]): Set<T> {
+  const r = new Set<T>()
+  loop: for (const n of listIterateFromFirst(list)) {
+    for (const f of fn) {
+      if (f(n)) {
+        continue
+      }
+      continue loop
+    }
+    r.add(n)
+  }
+  return r
+}
