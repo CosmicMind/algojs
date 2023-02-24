@@ -62,7 +62,7 @@ export interface Deque<T extends Listable> extends List<T> {
 /**
  * Creates a new `Deque` instance.
  */
-export const dequeCreate = <T extends Listable>(): Readonly<Deque<T>> =>
+export const dequeCreate = <T extends Listable>(): Deque<T> =>
   listCreate<T>()
 
 /**

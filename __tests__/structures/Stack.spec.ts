@@ -56,6 +56,7 @@ import {
   stackIsTop,
   stackIsDescendant,
   stackHas,
+  stackQuery,
 } from '@/internal'
 
 const sentinel = void 0
@@ -309,7 +310,7 @@ describe('Stack', () => {
     const n1 = createStackableNode(1, 'a')
     const n2 = createStackableNode(2, 'b')
     const n3 = createStackableNode(3, 'c')
-    const n4 = createStackableNode(3, 'd')
+    const n4 = createStackableNode(4, 'd')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -319,5 +320,34 @@ describe('Stack', () => {
     expect(stackHas(stack, n2)).toBeTruthy()
     expect(stackHas(stack, n3)).toBeTruthy()
     expect(stackHas(stack, n4)).toBeFalsy()
+  })
+
+  it('stackQuery', () => {
+    const stack = stackCreate<StackableNode>()
+
+    const n1 = createStackableNode(1, 'a')
+    const n2 = createStackableNode(2, 'b')
+    const n3 = createStackableNode(3, 'c')
+    const n4 = createStackableNode(4, 'd')
+
+    stackPush(stack, n1)
+    stackPush(stack, n2)
+    stackPush(stack, n3)
+    stackPush(stack, n4)
+
+    let result = stackQuery(stack, node => 1 === node.key || 3 === node.key)
+    expect(result.size).toBe(2)
+
+    result = stackQuery(stack,
+      node => 1 === node.key,
+      node => 'a' === node.value || 'b' === node.value
+    )
+    expect(result.size).toBe(1)
+
+    result = stackQuery(stack,
+      node => 1 === node.key,
+      node => 'b' === node.value
+    )
+    expect(result.size).toBe(0)
   })
 })

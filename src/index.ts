@@ -114,6 +114,7 @@ export {
   stackIsTop,
   stackIsDescendant,
   stackHas,
+  stackQuery,
   treeCreate,
   treeInsertChild,
   treeDepth,

@@ -56,10 +56,9 @@ export type Stackable = {
 
 /**
  * Creates a `Stackable` instance of type `T` by using the
- * given node definition and returning a Readonly version
- * of the node.
+ * given node definition.
  */
-export const stackableCreate = <T extends Stackable>(props: Omit<T, keyof Stackable>): Readonly<T> =>
+export const stackableCreate = <T extends Stackable>(props: Omit<T, keyof Stackable>): T =>
   Object.assign(props, {
     parent: sentinel,
   }) as T
@@ -78,7 +77,7 @@ export type Stack<T extends Stackable> = {
 /**
  * Creates a new `Stack` instance.
  */
-export const stackCreate = <T extends Stackable>(): Readonly<Stack<T>> => ({
+export const stackCreate = <T extends Stackable>(): Stack<T> => ({
   top: sentinel,
   count: 0,
 })
@@ -112,13 +111,13 @@ export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
  * @performance O(1)
  */
 export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
-  const node = stack.top
-  if (guard<T>(node)) {
-    stack.top = node.parent as T
-    node.parent = sentinel
+  const n = stack.top
+  if (guard<T>(n)) {
+    stack.top = n.parent as T
+    n.parent = sentinel
     --stack.count
   }
-  return node
+  return n
 }
 
 /**
@@ -215,4 +214,21 @@ export function stackHas<T extends Stackable>(stack: Stack<T>, node: T): boolean
     }
   }
   return false
+}
+
+/**
+ * @performance O(n)
+ */
+export function stackQuery<T extends Stackable>(stack: Stack<T>, ...fn: ((node: T) => boolean)[]): Set<T> {
+  const r = new Set<T>()
+  loop: for (const n of stackIterator(stack)) {
+    for (const f of fn) {
+      if (f(n)) {
+        continue
+      }
+      continue loop
+    }
+    r.add(n)
+  }
+  return r
 }

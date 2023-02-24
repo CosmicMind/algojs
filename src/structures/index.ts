@@ -107,6 +107,7 @@ export {
   stackIsTop,
   stackIsDescendant,
   stackHas,
+  stackQuery,
 } from '@/structures/Stack'
 
 export type {

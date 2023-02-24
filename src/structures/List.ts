@@ -58,10 +58,9 @@ export type Listable = {
 
 /**
  * Creates a `Listable` instance of type `T` by using the
- * given node definition and returning a Readonly version
- * of the node.
+ * given node definition.
  */
-export const listableCreate = <T extends Listable>(props: Omit<T, keyof Listable>): Readonly<T> =>
+export const listableCreate = <T extends Listable>(props: Omit<T, keyof Listable>): T =>
   Object.assign(props, {
     next: sentinel,
     previous: sentinel,
@@ -83,7 +82,7 @@ export type List<T extends Listable> = {
 /**
  * Creates a new `List` instance.
  */
-export const listCreate = <T extends Listable>(): Readonly<List<T>> => ({
+export const listCreate = <T extends Listable>(): List<T> => ({
   first: sentinel,
   last: sentinel,
   count: 0,
@@ -217,7 +216,7 @@ export function listInsertBefore<T extends Listable>(list: List<T>, insert: T, b
  * @performance O(1)
  */
 export function listRemoveBefore<T extends Listable>(list: List<T>, before: T): Optional<T> {
-  const node = before.previous as Optional<T>
+  const node = before.previous as T
   if (list.first === node) {
     listRemoveFirst(list)
   }
@@ -271,7 +270,7 @@ export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, af
  * @performance O(1)
  */
 export function listRemoveAfter<T extends Listable>(list: List<T>, after: T): Optional<T> {
-  const node = after.next as Optional<T>
+  const node = after.next as T
   if (list.last === node) {
     listRemoveLast(list)
   }
