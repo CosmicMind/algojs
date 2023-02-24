@@ -36,34 +36,6 @@ export type {
 } from '@/structures/Stack'
 
 export type {
-  Deque,
-} from '@/structures/Deque'
-
-export {
-  dequeCreate,
-  dequeInsert,
-  dequeRemoveFirst,
-  dequeAppend,
-  dequeRemoveLast,
-  dequeInsertBefore,
-  dequeRemoveBefore,
-  dequeInsertAfter,
-  dequeRemoveAfter,
-  dequeRemove,
-  dequeIterateFromFirst,
-  dequeIterateFromLast,
-  dequeIterateToNext,
-  dequeIterateToPrevious,
-  dequeClear,
-  dequeIsFirst,
-  dequeIsLast,
-  dequeIsNext,
-  dequeIsPrevious,
-  dequeIsSibling,
-  dequeHas,
-} from '@/structures/Deque'
-
-export type {
   Listable,
   List,
 } from '@/structures/List'
@@ -91,6 +63,7 @@ export {
   listIsPrevious,
   listIsSibling,
   listHas,
+  listQuery,
 } from '@/structures/List'
 
 export {
@@ -107,16 +80,15 @@ export {
   stackIsTop,
   stackIsDescendant,
   stackHas,
+  stackQuery,
 } from '@/structures/Stack'
 
-export type {
-  Tree,
-  TreeChildren,
-} from '@/structures/Tree'
+export type { Tree } from '@/structures/Tree'
 
 export {
   treeCreate,
   treeInsertChild,
+  treeAppendChild,
   treeDepth,
   treeIsRoot,
   treeIsLeaf,
@@ -127,4 +99,6 @@ export {
   treeIsDescendant,
   treeIncreaseSize,
   treeDecreaseSize,
+  treeIterator,
+  treeQuery,
 } from '@/structures/Tree'

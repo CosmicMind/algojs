@@ -36,9 +36,7 @@ import {
   describe,
 } from 'vitest'
 
-import {
-  guard,
-} from '@cosmicmind/foundationjs'
+import { guard } from '@cosmicmind/foundationjs'
 
 import {
   Listable,
@@ -65,6 +63,7 @@ import {
   listIsPrevious,
   listIsSibling,
   listHas,
+  listQuery,
 } from '@/internal'
 
 const sentinel = void 0
@@ -622,5 +621,34 @@ describe('List', () => {
     expect(listHas(list, n2)).toBeTruthy()
     expect(listHas(list, n3)).toBeTruthy()
     expect(listHas(list, n4)).toBeFalsy()
+  })
+
+  it('listQuery', () => {
+    const list = listCreate<ListableNode>()
+
+    const n1 = createListableNode(1, 'a')
+    const n2 = createListableNode(2, 'b')
+    const n3 = createListableNode(3, 'c')
+    const n4 = createListableNode(4, 'd')
+
+    listAppend(list, n1)
+    listAppend(list, n2)
+    listAppend(list, n3)
+    listAppend(list, n4)
+
+    let result = listQuery(list, node => 1 === node.key || 3 === node.key)
+    expect(result.size).toBe(2)
+
+    result = listQuery(list,
+      node => 1 === node.key,
+      node => 'a' === node.value || 'b' === node.value
+    )
+    expect(result.size).toBe(1)
+
+    result = listQuery(list,
+      node => 1 === node.key,
+      node => 'b' === node.value
+    )
+    expect(result.size).toBe(0)
   })
 })

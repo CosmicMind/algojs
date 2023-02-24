@@ -46,13 +46,14 @@ import {
   listIsFirst,
   listIsLast,
   listInsert,
+  listAppend,
+  listIterateFromFirst,
 } from '@/structures/List'
 
 import {
   Stackable,
   stackIterateFrom,
   stackDepth,
-  stackIsDescendant,
 } from '@/structures/Stack'
 
 /**
@@ -61,17 +62,15 @@ import {
  */
 const sentinel = void 0
 
-export type TreeChildren<T extends Listable> = List<T>
-
 export type Tree = Listable & Stackable & {
   parent?: Tree
   next?: Tree
   previous?: Tree
-  children?: TreeChildren<Tree>
+  children?: List<Tree>
   size: number
 }
 
-export const treeCreate = <T extends Tree>(props: Omit<T, keyof Tree>): Readonly<T> =>
+export const treeCreate = <T extends Tree>(props: Omit<T, keyof Tree>): T =>
   Object.assign(props, {
     parent: sentinel,
     next: sentinel,
@@ -93,6 +92,18 @@ export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
 }
 
 /**
+ * @performance O(1)
+ */
+export function treeAppendChild<T extends Tree>(insert: T, node: T): void {
+  if (!guard<T>(node.children)) {
+    node.children = listCreate<T>()
+  }
+  insert.parent = node
+  listAppend(node.children, insert)
+  treeIncreaseSize(node, insert.size)
+}
+
+/**
  * @performance O(n)
  */
 export const treeDepth = <T extends Tree>(node: T): ReturnType<typeof stackDepth> =>
@@ -101,15 +112,15 @@ export const treeDepth = <T extends Tree>(node: T): ReturnType<typeof stackDepth
 /**
  * @performance O(1)
  */
-export function treeIsRoot<T extends Tree>(tree: T): boolean {
-  return guard<T>(tree) && sentinel === tree.parent
+export function treeIsRoot<T extends Tree>(node: T): boolean {
+  return guard<T>(node) && sentinel === node.parent
 }
 
 /**
  * @performance O(1)
  */
-export function treeIsLeaf<T extends Tree>(tree: T): boolean {
-  return guard<T>(tree) && sentinel === tree.children
+export function treeIsLeaf<T extends Tree>(node: T): boolean {
+  return guard<T>(node) && sentinel === node.children
 }
 
 /**
@@ -147,8 +158,16 @@ export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
 /**
  * @performance O(n)
  */
-export function treeIsDescendant<T extends Tree>(descendant: T, tree: T): boolean {
-  return stackIsDescendant(descendant, tree)
+export function treeIsDescendant<T extends Tree>(node: T, parent: T): boolean {
+  if (node === parent) {
+    return false
+  }
+  for (const n of treeIterator(parent)) {
+    if (n === node) {
+      return true
+    }
+  }
+  return false
 }
 
 /**
@@ -169,4 +188,33 @@ export function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
   for (const n of stackIterateFrom(node)) {
     n.size -= size
   }
+}
+
+/**
+ * @performance O(n)
+ */
+export function *treeIterator<T extends Tree>(node: T): IterableIterator<T> {
+  yield node
+  if (guard<T>(node.children)) {
+    for (const n of listIterateFromFirst(node.children)) {
+      yield *treeIterator(n as T)
+    }
+  }
+}
+
+/**
+ * @performance O(n)
+ */
+export function treeQuery<T extends Tree>(node: T, ...fn: ((node: T) => boolean)[]): Set<T> {
+  const r = new Set<T>()
+  loop: for (const n of treeIterator(node)) {
+    for (const f of fn) {
+      if (f(n)) {
+        continue
+      }
+      continue loop
+    }
+    r.add(n)
+  }
+  return r
 }
