@@ -70,8 +70,8 @@ export type Tree = Listable & Stackable & {
   size: number
 }
 
-export const treeCreate = <T extends Tree>(props: Omit<T, keyof Tree>): T => ({
-  ...props as T,
+export const treeCreate = <T extends Tree>(props?: Omit<T, keyof Tree>): T => ({
+  ...(props ?? {}) as T,
   parent: sentinel,
   next: sentinel,
   previous: sentinel,

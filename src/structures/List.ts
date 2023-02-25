@@ -60,11 +60,11 @@ export type Listable = {
  * Creates a `Listable` instance of type `T` by using the
  * given node definition.
  */
-export const listableCreate = <T extends Listable>(props: Omit<T, keyof Listable>): T =>
-  Object.assign(props, {
-    next: sentinel,
-    previous: sentinel,
-  }) as T
+export const listableCreate = <T extends Listable>(props?: Omit<T, keyof Listable>): T => ({
+  ...(props ?? {}) as T,
+  next: sentinel,
+  previous: sentinel,
+})
 
 /**
  * The `List` class is a linear data structure that
@@ -82,7 +82,8 @@ export type List<T extends Listable> = {
 /**
  * Creates a new `List` instance.
  */
-export const listCreate = <T extends Listable>(): List<T> => ({
+export const listCreate = <T extends Listable>(props?: Omit<T, keyof List<Listable>>): T => ({
+  ...(props ?? {}) as T,
   first: sentinel,
   last: sentinel,
   count: 0,

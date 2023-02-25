@@ -40,6 +40,7 @@ import { guard } from '@cosmicmind/foundationjs'
 
 import {
   List,
+  listCreate,
   Tree,
   treeCreate,
   treeInsertChild,
@@ -70,7 +71,7 @@ class TreeTrace implements Tree {
   readonly parent?: Tree
   readonly next?: Tree
   readonly previous?: Tree
-  readonly children?: List<Tree>
+  readonly children: List<Tree>
   readonly size: number
   readonly key: number
   readonly value: string
@@ -78,7 +79,7 @@ class TreeTrace implements Tree {
     this.parent = sentinel
     this.next = sentinel
     this.previous = sentinel
-    this.children = sentinel
+    this.children = listCreate<TreeTrace>()
     this.size = 1
     this.key = key
     this.value = value
@@ -93,7 +94,7 @@ describe('Tree', () => {
     expect(node.parent).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.previous).toBe(sentinel)
-    expect(node.children).toBe(sentinel)
+    expect(node.children).toStrictEqual(listCreate())
     expect(node.size).toBe(1)
   })
 
@@ -104,7 +105,7 @@ describe('Tree', () => {
     expect(node.parent).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.previous).toBe(sentinel)
-    expect(node.children).toBe(sentinel)
+    expect(node.children).toStrictEqual(listCreate())
     expect(node.size).toBe(1)
     expect(node.key).toBe(1)
     expect(node.value).toBe('a')
@@ -117,7 +118,7 @@ describe('Tree', () => {
     expect(node.parent).toBe(sentinel)
     expect(node.next).toBe(sentinel)
     expect(node.previous).toBe(sentinel)
-    expect(node.children).toBe(sentinel)
+    expect(node.children).toStrictEqual(listCreate())
     expect(node.size).toBe(1)
     expect(node.key).toBe(1)
     expect(node.value).toBe('a')
