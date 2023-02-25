@@ -66,26 +66,23 @@ export type Tree = Listable & Stackable & {
   parent?: Tree
   next?: Tree
   previous?: Tree
-  children?: List<Tree>
+  children: List<Tree>
   size: number
 }
 
-export const treeCreate = <T extends Tree>(props: Omit<T, keyof Tree>): T =>
-  Object.assign(props, {
-    parent: sentinel,
-    next: sentinel,
-    previous: sentinel,
-    children: sentinel,
-    size: 1,
-  }) as T
+export const treeCreate = <T extends Tree>(props?: Omit<T, keyof Tree>): T => ({
+  ...(props ?? {}) as T,
+  parent: sentinel,
+  next: sentinel,
+  previous: sentinel,
+  children: listCreate<T>(),
+  size: 1,
+})
 
 /**
  * @performance O(1)
  */
 export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
-  if (!guard<T>(node.children)) {
-    node.children = listCreate<T>()
-  }
   insert.parent = node
   listInsert(node.children, insert)
   treeIncreaseSize(node, insert.size)
@@ -95,9 +92,6 @@ export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
  * @performance O(1)
  */
 export function treeAppendChild<T extends Tree>(insert: T, node: T): void {
-  if (!guard<T>(node.children)) {
-    node.children = listCreate<T>()
-  }
   insert.parent = node
   listAppend(node.children, insert)
   treeIncreaseSize(node, insert.size)
@@ -113,14 +107,14 @@ export const treeDepth = <T extends Tree>(node: T): ReturnType<typeof stackDepth
  * @performance O(1)
  */
 export function treeIsRoot<T extends Tree>(node: T): boolean {
-  return guard<T>(node) && sentinel === node.parent
+  return sentinel === node.parent
 }
 
 /**
  * @performance O(1)
  */
 export function treeIsLeaf<T extends Tree>(node: T): boolean {
-  return guard<T>(node) && sentinel === node.children
+  return 0 === node.children.count
 }
 
 /**
@@ -134,25 +128,21 @@ export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
  * @performance O(1)
  */
 export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
-  return guard<T>(parent.children) &&
-         listIsFirst(parent.children, child)
+  return listIsFirst(parent.children, child)
 }
 
 /**
  * @performance O(1)
  */
 export function treeIsLastChild<T extends Tree>(child: T, parent: T): boolean {
-  return guard<T>(parent.children) &&
-         listIsLast(parent.children, child)
+  return listIsLast(parent.children, child)
 }
 
 /**
  * @performance O(1)
  */
 export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
-  return guard<T>(parent.children) &&
-         listIsFirst(parent.children, child) &&
-         listIsLast(parent.children, child)
+  return listIsFirst(parent.children, child) && listIsLast(parent.children, child)
 }
 
 /**

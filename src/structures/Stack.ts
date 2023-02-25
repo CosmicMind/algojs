@@ -58,10 +58,10 @@ export type Stackable = {
  * Creates a `Stackable` instance of type `T` by using the
  * given node definition.
  */
-export const stackableCreate = <T extends Stackable>(props: Omit<T, keyof Stackable>): T =>
-  Object.assign(props, {
-    parent: sentinel,
-  }) as T
+export const stackableCreate = <T extends Stackable>(props?: Omit<T, keyof Stackable>): T => ({
+  ...(props ?? {}) as T,
+  parent: sentinel,
+})
 
 /**
  * The `Stack` class represents a linear data structure that
@@ -77,7 +77,8 @@ export type Stack<T extends Stackable> = {
 /**
  * Creates a new `Stack` instance.
  */
-export const stackCreate = <T extends Stackable>(): Stack<T> => ({
+export const stackCreate = <T extends Stackable>(props?: Omit<T, keyof Stack<Stackable>>): T => ({
+  ...(props ?? {}) as T,
   top: sentinel,
   count: 0,
 })
