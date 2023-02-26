@@ -61,7 +61,7 @@ export type Listable = {
  * given node definition.
  */
 export const listableCreate = <T extends Listable>(props?: Omit<T, keyof Listable>): T => ({
-  ...(props ?? {}) as T,
+  ...props as T,
   next: sentinel,
   previous: sentinel,
 })
@@ -82,8 +82,8 @@ export type List<T extends Listable> = {
 /**
  * Creates a new `List` instance.
  */
-export const listCreate = <T extends Listable>(props?: Omit<T, keyof List<Listable>>): T => ({
-  ...(props ?? {}) as T,
+export const listCreate = <T extends Listable>(props?: Omit<T, keyof List<T>>): List<T> => ({
+  ...props as T,
   first: sentinel,
   last: sentinel,
   count: 0,

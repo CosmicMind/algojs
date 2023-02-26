@@ -82,19 +82,19 @@ export const treeCreate = <T extends Tree>(props?: Omit<T, keyof Tree>): T => ({
 /**
  * @performance O(1)
  */
-export function treeInsertChild<T extends Tree>(insert: T, node: T): void {
-  insert.parent = node
-  listInsert(node.children, insert)
-  treeIncreaseSize(node, insert.size)
+export function treeInsertChild<T extends Tree>(insert: T, parent: T): void {
+  insert.parent = parent
+  listInsert(parent.children, insert)
+  treeIncreaseSize(parent, insert.size)
 }
 
 /**
  * @performance O(1)
  */
-export function treeAppendChild<T extends Tree>(insert: T, node: T): void {
-  insert.parent = node
-  listAppend(node.children, insert)
-  treeIncreaseSize(node, insert.size)
+export function treeAppendChild<T extends Tree>(insert: T, parent: T): void {
+  insert.parent = parent
+  listAppend(parent.children, insert)
+  treeIncreaseSize(parent, insert.size)
 }
 
 /**
@@ -120,29 +120,29 @@ export function treeIsLeaf<T extends Tree>(node: T): boolean {
 /**
  * @performance O(1)
  */
-export function treeIsChild<T extends Tree>(child: T, parent: T): boolean {
-  return child.parent === parent && child.parent !== sentinel
+export function treeIsChild<T extends Tree>(node: T, parent: T): boolean {
+  return node.parent === parent && node.parent !== sentinel
 }
 
 /**
  * @performance O(1)
  */
-export function treeIsFirstChild<T extends Tree>(child: T, parent: T): boolean {
-  return listIsFirst(parent.children, child)
+export function treeIsFirstChild<T extends Tree>(node: T, parent: T): boolean {
+  return listIsFirst(parent.children, node)
 }
 
 /**
  * @performance O(1)
  */
-export function treeIsLastChild<T extends Tree>(child: T, parent: T): boolean {
-  return listIsLast(parent.children, child)
+export function treeIsLastChild<T extends Tree>(node: T, parent: T): boolean {
+  return listIsLast(parent.children, node)
 }
 
 /**
  * @performance O(1)
  */
-export function treeIsOnlyChild<T extends Tree>(child: T, parent: T): boolean {
-  return listIsFirst(parent.children, child) && listIsLast(parent.children, child)
+export function treeIsOnlyChild<T extends Tree>(node: T, parent: T): boolean {
+  return listIsFirst(parent.children, node) && listIsLast(parent.children, node)
 }
 
 /**
