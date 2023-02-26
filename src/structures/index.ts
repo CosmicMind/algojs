@@ -31,17 +31,35 @@
  */
 
 export type {
-  Stackable,
+  StackNode,
   Stack,
 } from '@/structures/Stack'
 
+export {
+  StackCompareFn,
+  stackNodeCreate,
+  stackCreate,
+  stackPeek,
+  stackPush,
+  stackPop,
+  stackIterator,
+  stackIterateFrom,
+  stackIterateToParent,
+  stackClear,
+  stackDepth,
+  stackIsTop,
+  stackHas,
+  stackQuery,
+} from '@/structures/Stack'
+
 export type {
-  Listable,
+  ListNode,
   List,
 } from '@/structures/List'
 
 export {
-  listableCreate,
+  ListCompareFn,
+  listNodeCreate,
   listCreate,
   listInsert,
   listRemoveFirst,
@@ -59,33 +77,14 @@ export {
   listClear,
   listIsFirst,
   listIsLast,
-  listIsNext,
-  listIsPrevious,
-  listIsSibling,
   listHas,
   listQuery,
 } from '@/structures/List'
 
-export {
-  stackableCreate,
-  stackCreate,
-  stackPeek,
-  stackPush,
-  stackPop,
-  stackIterator,
-  stackIterateFrom,
-  stackIterateToParent,
-  stackClear,
-  stackDepth,
-  stackIsTop,
-  stackIsDescendant,
-  stackHas,
-  stackQuery,
-} from '@/structures/Stack'
-
 export type { Tree } from '@/structures/Tree'
 
 export {
+  TreeCompareFn,
   treeCreate,
   treeInsertChild,
   treeAppendChild,
@@ -96,7 +95,6 @@ export {
   treeIsFirstChild,
   treeIsLastChild,
   treeIsOnlyChild,
-  treeIsDescendant,
   treeIncreaseSize,
   treeDecreaseSize,
   treeIterator,

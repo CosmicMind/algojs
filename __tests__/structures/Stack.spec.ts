@@ -39,9 +39,11 @@ import {
 import { guard } from '@cosmicmind/foundationjs'
 
 import {
-  Stackable,
+  CompareFn,
+  StackCompareFn,
+  StackNode,
   Stack,
-  stackableCreate,
+  stackNodeCreate,
   stackCreate,
   stackPeek,
   stackPush,
@@ -52,26 +54,25 @@ import {
   stackClear,
   stackDepth,
   stackIsTop,
-  stackIsDescendant,
   stackHas,
   stackQuery,
 } from '@/internal'
 
 const sentinel = void 0
 
-type StackableNode = Stackable & {
+type StackNodeKeyValue = StackNode & {
   key: number
   value: string
 }
 
-const createStackableNode = (key: number, value: string): StackableNode =>
-  stackableCreate<StackableNode>({
+const createStackKeyValue = (key: number, value: string): StackNodeKeyValue =>
+  stackNodeCreate<StackNodeKeyValue>({
     key,
     value,
   })
 
-class StackNode implements Stackable {
-  readonly parent?: Stackable
+class StackTraceKeyValue implements StackNode {
+  readonly parent?: StackNode
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
@@ -81,33 +82,35 @@ class StackNode implements Stackable {
   }
 }
 
-class StackTrace<T extends StackNode> implements Stack<T> {
+class StackKeyValue<T extends StackNode> implements Stack<T> {
   readonly top?: T
   readonly count: number
+  readonly compare: CompareFn<T>
   constructor() {
     this.top = sentinel
     this.count = 0
+    this.compare = StackCompareFn
   }
 }
 
 describe('Stack', () => {
-  it('stackableCreate', () => {
-    const node = stackableCreate({})
+  it('stackNodeCreate', () => {
+    const node = stackNodeCreate()
 
     expect(guard(node)).toBeTruthy()
     expect(node.parent).toStrictEqual(sentinel)
   })
 
   it('stackCreate', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackTraceKeyValue>()
 
     expect(guard(stack)).toBeTruthy()
     expect(stack.top).toStrictEqual(sentinel)
     expect(stack.count).toBe(0)
   })
 
-  it('createStackableNode', () => {
-    const node = createStackableNode(1, 'a')
+  it('createStackKeyValue', () => {
+    const node = createStackKeyValue(1, 'a')
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toStrictEqual(sentinel)
@@ -116,7 +119,7 @@ describe('Stack', () => {
   })
 
   it('new StackNode', () => {
-    const node = new StackNode(1, 'a')
+    const node = new StackTraceKeyValue(1, 'a')
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toStrictEqual(sentinel)
@@ -124,8 +127,8 @@ describe('Stack', () => {
     expect(node.value).toBe('a')
   })
 
-  it('new StackTrace', () => {
-    const stack = new StackTrace<StackNode>()
+  it('new StackKeyValue', () => {
+    const stack = new StackKeyValue<StackNodeKeyValue>()
 
     expect(guard(stack)).toBeTruthy()
     expect(stack.top).toStrictEqual(sentinel)
@@ -133,11 +136,11 @@ describe('Stack', () => {
   })
 
   it('stackPeek', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -148,11 +151,11 @@ describe('Stack', () => {
   })
 
   it('stackPush/stackPop', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -170,11 +173,11 @@ describe('Stack', () => {
   })
 
   it('stackIterator', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -182,7 +185,7 @@ describe('Stack', () => {
 
     expect(stack.count).toBe(3)
 
-    const result: StackableNode[] = []
+    const result: StackNodeKeyValue[] = []
 
     for (const x of stackIterator(stack)) {
       result.push(x)
@@ -192,11 +195,11 @@ describe('Stack', () => {
   })
 
   it('stackIterateFrom', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -204,7 +207,7 @@ describe('Stack', () => {
 
     expect(stack.count).toBe(3)
 
-    const result: StackableNode[] = []
+    const result: StackNodeKeyValue[] = []
 
     for (const x of stackIterateFrom(n3)) {
       result.push(x)
@@ -214,11 +217,11 @@ describe('Stack', () => {
   })
 
   it('stackIterateToParent', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -226,7 +229,7 @@ describe('Stack', () => {
 
     expect(stack.count).toBe(3)
 
-    const result: StackableNode[] = []
+    const result: StackNodeKeyValue[] = []
 
     for (const x of stackIterateToParent(n3)) {
       result.push(x)
@@ -236,11 +239,11 @@ describe('Stack', () => {
   })
 
   it('stackClear', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -254,11 +257,11 @@ describe('Stack', () => {
   })
 
   it('stackDepth', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -270,11 +273,11 @@ describe('Stack', () => {
   })
 
   it('stackIsTop', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -284,31 +287,13 @@ describe('Stack', () => {
     expect(stack.count).toBe(3)
   })
 
-  it('stackIsDescendant', () => {
-    const stack = stackCreate<StackableNode>()
-
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
-    const n4 = createStackableNode(4, 'd')
-
-    stackPush(stack, n1)
-    stackPush(stack, n2)
-    stackPush(stack, n3)
-
-    expect(stackIsDescendant(n3, n1)).toBeTruthy()
-    expect(stackIsDescendant(n1, n3)).toBeFalsy()
-    expect(stackIsDescendant(n4, n1)).toBeFalsy()
-    expect(stackIsDescendant(n4, n3)).toBeFalsy()
-  })
-
   it('stackHas', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
-    const n4 = createStackableNode(4, 'd')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
+    const n4 = createStackKeyValue(4, 'd')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -321,12 +306,12 @@ describe('Stack', () => {
   })
 
   it('stackQuery', () => {
-    const stack = stackCreate<StackableNode>()
+    const stack = stackCreate<StackNodeKeyValue>()
 
-    const n1 = createStackableNode(1, 'a')
-    const n2 = createStackableNode(2, 'b')
-    const n3 = createStackableNode(3, 'c')
-    const n4 = createStackableNode(4, 'd')
+    const n1 = createStackKeyValue(1, 'a')
+    const n2 = createStackKeyValue(2, 'b')
+    const n3 = createStackKeyValue(3, 'c')
+    const n4 = createStackKeyValue(4, 'd')
 
     stackPush(stack, n1)
     stackPush(stack, n2)
