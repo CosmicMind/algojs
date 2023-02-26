@@ -40,7 +40,7 @@ import {
 } from '@cosmicmind/foundationjs'
 
 import {
-  ListNode,
+  Listable,
   List,
   listCreate,
   listIsFirst,
@@ -51,14 +51,14 @@ import {
 } from '@/structures/List'
 
 import {
-  StackNode,
+  Stackable,
   stackIterateFrom,
   stackDepth,
 } from '@/structures/Stack'
 
 import { SentinelNode } from '@/utils'
 
-export type Tree = ListNode & StackNode & {
+export type Tree = Listable & Stackable & {
   parent?: Tree
   next?: Tree
   previous?: Tree

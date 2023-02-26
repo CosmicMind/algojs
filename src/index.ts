@@ -54,9 +54,9 @@ export {
 } from '@/sort'
 
 export type {
-  ListNode,
+  Listable,
   List,
-  StackNode,
+  Stackable,
   Stack,
   Tree,
 } from '@/structures'

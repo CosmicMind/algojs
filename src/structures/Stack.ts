@@ -42,18 +42,18 @@ import {
 import { SentinelNode } from '@/utils'
 
 /**
- * The `StackNode` interface defines a structure that moves
+ * The `Stackable` interface defines a structure that moves
  * from a child node to its parent node within a `Stack`
  * data structure.
  */
-export type StackNode = {
-  parent?: StackNode
+export type Stackable = {
+  parent?: Stackable
 }
 
 export const StackCompareFn = <T extends Stackable>(a: T, b: T): number => a === b ? 0 : -1
 
 /**
- * Creates a `StackNode` instance of type `T` by using the
+ * Creates a `Stackable` instance of type `T` by using the
  * given node definition.
  */
 export const stackNodeCreate = <T extends Stackable>(props?: Omit<T, keyof Stackable>): T => ({
@@ -63,11 +63,11 @@ export const stackNodeCreate = <T extends Stackable>(props?: Omit<T, keyof Stack
 
 /**
  * The `Stack` class represents a linear data structure that
- * stores a single reference to a `StackNode` node called
+ * stores a single reference to a `Stackable` node called
  * `top`. It creates a `vertical` relationship between the
  * nodes that exist within its structure.
  */
-export type Stack<T extends StackNode> = {
+export type Stack<T extends Stackable> = {
   top?: T
   count: number
 }
@@ -86,7 +86,7 @@ export const stackCreate = <T extends Stackable>(): Stack<T> => ({
  *
  * @performance O(1)
  */
-export function stackPeek<T extends StackNode>(stack: Stack<T>): Optional<T> {
+export function stackPeek<T extends Stackable>(stack: Stack<T>): Optional<T> {
   return stack.top
 }
 
@@ -96,7 +96,7 @@ export function stackPeek<T extends StackNode>(stack: Stack<T>): Optional<T> {
  *
  * @performance O(1)
  */
-export function stackPush<T extends StackNode>(stack: Stack<T>, node: T): void {
+export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
   node.parent = stack.top
   stack.top = node
   ++stack.count
@@ -108,7 +108,7 @@ export function stackPush<T extends StackNode>(stack: Stack<T>, node: T): void {
  *
  * @performance O(1)
  */
-export function stackPop<T extends StackNode>(stack: Stack<T>): Optional<T> {
+export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
   const n = stack.top
   if (guard<T>(n)) {
     stack.top = n.parent as T
@@ -146,7 +146,7 @@ export function *stackIterateFrom<T extends Stackable>(node: T): IterableIterato
 /**
  * @performance O(n)
  */
-export function *stackIterateToParent<T extends StackNode>(node: T): IterableIterator<T> {
+export function *stackIterateToParent<T extends Stackable>(node: T): IterableIterator<T> {
   let n = node.parent
   while (guard<T>(n)) {
     yield n
@@ -160,7 +160,7 @@ export function *stackIterateToParent<T extends StackNode>(node: T): IterableIte
  *
  * @performance O(n)
  */
-export function stackClear<T extends StackNode>(stack: Stack<T>): void {
+export function stackClear<T extends Stackable>(stack: Stack<T>): void {
   while (guard<T>(stack.top)) {
     stackPop(stack)
   }
@@ -169,7 +169,7 @@ export function stackClear<T extends StackNode>(stack: Stack<T>): void {
 /**
  * @performance O(n)
  */
-export function stackDepth<T extends StackNode>(node: T): number {
+export function stackDepth<T extends Stackable>(node: T): number {
   let n = node.parent
   let depth = 0
   while (guard<T>(n)) {
@@ -205,7 +205,7 @@ export function stackHas<T extends Stackable>(stack: Stack<T>, node: T, compare 
 /**
  * @performance O(n)
  */
-export function stackQuery<T extends StackNode>(stack: Stack<T>, ...fn: ((node: T) => boolean)[]): Set<T> {
+export function stackQuery<T extends Stackable>(stack: Stack<T>, ...fn: ((node: T) => boolean)[]): Set<T> {
   const r = new Set<T>()
   loop: for (const n of stackIterator(stack)) {
     for (const f of fn) {

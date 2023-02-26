@@ -150,8 +150,8 @@ describe('Stack', () => {
     expect(node.value).toBe('a')
   })
 
-  it('new StackKeyValue', () => {
-    const stack = new StackKeyValue<StackNodeKeyValue>()
+  it('new StackTrace', () => {
+    const stack = new StackTrace<StackNode>()
 
     expect(guard(stack)).toBeTruthy()
     expect(stack.top).toStrictEqual(SentinelNode)
