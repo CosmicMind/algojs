@@ -39,16 +39,10 @@ import {
 import { guard } from '@cosmicmind/foundationjs'
 
 import {
-<<<<<<< HEAD
   SentinelNode,
   CompareFn,
   StackCompareFn,
   Stackable,
-=======
-  CompareFn,
-  StackCompareFn,
-  StackNode,
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   Stack,
   stackNodeCreate,
   stackCreate,
@@ -65,35 +59,19 @@ import {
   stackQuery,
 } from '@/internal'
 
-<<<<<<< HEAD
 type StackNode = Stackable & {
-=======
-const sentinel = void 0
-
-type StackNodeKeyValue = StackNode & {
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   key: number
   value: string
 }
 
-<<<<<<< HEAD
 const createStackTrace = (key: number, value: string): StackNode =>
   stackNodeCreate<StackNode>({
-=======
-const createStackKeyValue = (key: number, value: string): StackNodeKeyValue =>
-  stackNodeCreate<StackNodeKeyValue>({
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     key,
     value,
   })
 
-<<<<<<< HEAD
 class StackTraceNode implements Stackable {
   readonly parent?: Stackable
-=======
-class StackTraceKeyValue implements StackNode {
-  readonly parent?: StackNode
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
@@ -103,27 +81,18 @@ class StackTraceKeyValue implements StackNode {
   }
 }
 
-<<<<<<< HEAD
 class StackTrace<T extends StackTraceNode> implements Stack<T> {
-=======
-class StackKeyValue<T extends StackNode> implements Stack<T> {
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   readonly top?: T
   readonly count: number
   readonly compare: CompareFn<T>
   constructor() {
     this.top = SentinelNode
     this.count = 0
-<<<<<<< HEAD
     this.compare = (a, b): number => a.key === b.key ? 0 : a.key > b.key ? 1 : -1
-=======
-    this.compare = StackCompareFn
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   }
 }
 
 describe('Stack', () => {
-<<<<<<< HEAD
   it('StackCompareFn', () => {
     const compare = StackCompareFn<StackTraceNode>
 
@@ -148,8 +117,6 @@ describe('Stack', () => {
     expect(compare(n2, n3)).toBe(-1)
   })
 
-=======
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   it('stackNodeCreate', () => {
     const node = stackNodeCreate()
 
@@ -158,24 +125,15 @@ describe('Stack', () => {
   })
 
   it('stackCreate', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackTraceNode>()
-=======
-    const stack = stackCreate<StackTraceKeyValue>()
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     expect(guard(stack)).toBeTruthy()
     expect(stack.top).toStrictEqual(SentinelNode)
     expect(stack.count).toBe(0)
   })
 
-<<<<<<< HEAD
   it('createStackTrace', () => {
     const node = createStackTrace(1, 'a')
-=======
-  it('createStackKeyValue', () => {
-    const node = createStackKeyValue(1, 'a')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toStrictEqual(SentinelNode)
@@ -183,13 +141,8 @@ describe('Stack', () => {
     expect(node.value).toBe('a')
   })
 
-<<<<<<< HEAD
   it('new Stackable', () => {
     const node = new StackTraceNode(1, 'a')
-=======
-  it('new StackNode', () => {
-    const node = new StackTraceKeyValue(1, 'a')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toStrictEqual(SentinelNode)
@@ -206,19 +159,11 @@ describe('Stack', () => {
   })
 
   it('stackPeek', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -229,19 +174,11 @@ describe('Stack', () => {
   })
 
   it('stackPush/stackPop', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -259,19 +196,11 @@ describe('Stack', () => {
   })
 
   it('stackIterator', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -279,11 +208,7 @@ describe('Stack', () => {
 
     expect(stack.count).toBe(3)
 
-<<<<<<< HEAD
     const result: StackNode[] = []
-=======
-    const result: StackNodeKeyValue[] = []
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     for (const x of stackIterator(stack)) {
       result.push(x)
@@ -293,19 +218,11 @@ describe('Stack', () => {
   })
 
   it('stackIterateFrom', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -313,11 +230,7 @@ describe('Stack', () => {
 
     expect(stack.count).toBe(3)
 
-<<<<<<< HEAD
     const result: StackNode[] = []
-=======
-    const result: StackNodeKeyValue[] = []
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     for (const x of stackIterateFrom(n3)) {
       result.push(x)
@@ -327,19 +240,11 @@ describe('Stack', () => {
   })
 
   it('stackIterateToParent', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -347,11 +252,7 @@ describe('Stack', () => {
 
     expect(stack.count).toBe(3)
 
-<<<<<<< HEAD
     const result: StackNode[] = []
-=======
-    const result: StackNodeKeyValue[] = []
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     for (const x of stackIterateToParent(n3)) {
       result.push(x)
@@ -361,19 +262,11 @@ describe('Stack', () => {
   })
 
   it('stackClear', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -387,19 +280,11 @@ describe('Stack', () => {
   })
 
   it('stackDepth', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -411,19 +296,11 @@ describe('Stack', () => {
   })
 
   it('stackIsTop', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -434,21 +311,12 @@ describe('Stack', () => {
   })
 
   it('stackHas', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
     const n4 = createStackTrace(4, 'd')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
-    const n4 = createStackKeyValue(4, 'd')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)
@@ -461,21 +329,12 @@ describe('Stack', () => {
   })
 
   it('stackQuery', () => {
-<<<<<<< HEAD
     const stack = stackCreate<StackNode>()
 
     const n1 = createStackTrace(1, 'a')
     const n2 = createStackTrace(2, 'b')
     const n3 = createStackTrace(3, 'c')
     const n4 = createStackTrace(4, 'd')
-=======
-    const stack = stackCreate<StackNodeKeyValue>()
-
-    const n1 = createStackKeyValue(1, 'a')
-    const n2 = createStackKeyValue(2, 'b')
-    const n3 = createStackKeyValue(3, 'c')
-    const n4 = createStackKeyValue(4, 'd')
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     stackPush(stack, n1)
     stackPush(stack, n2)

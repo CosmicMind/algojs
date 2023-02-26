@@ -1,10 +1,6 @@
 {
   "name": "@cosmicmind/algojs",
-<<<<<<< HEAD
   "version": "0.0.1-rc-022623-2-1",
-=======
-  "version": "0.0.1-rc-022623-2",
->>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
   "author": {
