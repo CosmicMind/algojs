@@ -40,7 +40,7 @@ import {
 } from '@cosmicmind/foundationjs'
 
 import {
-  Listable,
+  ListNode,
   List,
   listCreate,
   listIsFirst,
@@ -51,14 +51,25 @@ import {
 } from '@/structures/List'
 
 import {
-  Stackable,
+  StackNode,
   stackIterateFrom,
   stackDepth,
 } from '@/structures/Stack'
 
+<<<<<<< HEAD
 import { SentinelNode } from '@/utils'
+=======
+export const TreeCompareFn = <T>(a: T, b: T): number => a === b ? 0 : a > b ? 1 : -1
 
-export type Tree = Listable & Stackable & {
+
+/**
+ * The `sentinel` value is used to determine
+ * leaf nodes within the `Tree`.
+ */
+const sentinel = void 0
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
+
+export type Tree = ListNode & StackNode & {
   parent?: Tree
   next?: Tree
   previous?: Tree
@@ -118,29 +129,48 @@ export function treeIsLeaf<T extends Tree>(node: T): boolean {
 /**
  * @performance O(1)
  */
+<<<<<<< HEAD
 export function treeIsChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
+=======
+export function treeIsChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn): boolean {
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   return guard<T>(node.parent) && 0 === compare(node.parent, parent)
 }
 
 /**
  * @performance O(1)
  */
+<<<<<<< HEAD
 export function treeIsFirstChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
   return listIsFirst(parent.children as List<T>, node, compare)
+=======
+export function treeIsFirstChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn): boolean {
+  return listIsFirst(parent.children, node, compare)
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 }
 
 /**
  * @performance O(1)
  */
+<<<<<<< HEAD
 export function treeIsLastChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
   return listIsLast(parent.children as List<T>, node, compare)
+=======
+export function treeIsLastChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn): boolean {
+  return listIsLast(parent.children, node, compare)
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 }
 
 /**
  * @performance O(1)
  */
+<<<<<<< HEAD
 export function treeIsOnlyChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
   return listIsFirst(parent.children as List<T>, node, compare) && listIsLast(parent.children as List<T>, node, compare)
+=======
+export function treeIsOnlyChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn): boolean {
+  return listIsFirst(parent.children, node, compare) && listIsLast(parent.children, node, compare)
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 }
 
 /**

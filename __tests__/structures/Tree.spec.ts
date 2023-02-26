@@ -66,11 +66,11 @@ const createTreeNode = (key: number, value: string): A =>
     value,
   })
 
-class TreeTrace implements Tree {
-  readonly parent?: Tree
-  readonly next?: Tree
-  readonly previous?: Tree
-  readonly children: List<Tree>
+class TreeTrace implements TreeNode {
+  readonly parent?: TreeNode
+  readonly next?: TreeNode
+  readonly previous?: TreeNode
+  readonly children: List<TreeNode>
   readonly size: number
   readonly key: number
   readonly value: string

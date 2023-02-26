@@ -39,8 +39,12 @@ import {
 import { guard } from '@cosmicmind/foundationjs'
 
 import {
+<<<<<<< HEAD
   SentinelNode,
   Listable,
+=======
+  ListNode,
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   List,
   listNodeCreate,
   listCreate,
@@ -64,20 +68,37 @@ import {
   listQuery,
 } from '@/internal'
 
+<<<<<<< HEAD
 type ListNode = Listable & {
+=======
+const sentinel = void 0
+
+type ListNodeNode = ListNode & {
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   key: number
   value: string
 }
 
+<<<<<<< HEAD
 const createListNode = (key: number, value: string): ListNode =>
   listNodeCreate<ListNode>({
+=======
+const createListNodeNode = (key: number, value: string): ListNodeNode =>
+  listNodeCreate<ListNodeNode>({
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     key,
     value,
   })
 
+<<<<<<< HEAD
 class ListTraceNode implements Listable {
   readonly next?: Listable
   readonly previous?: Listable
+=======
+class ListNode implements ListNode {
+  readonly next?: ListNode
+  readonly previous?: ListNode
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
@@ -109,7 +130,11 @@ describe('List', () => {
   })
 
   it('listCreate', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
+=======
+    const list = listCreate<ListNodeNode>()
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     expect(guard(list)).toBeTruthy()
     expect(list.first).toBe(SentinelNode)
@@ -117,8 +142,13 @@ describe('List', () => {
     expect(list.count).toBe(0)
   })
 
+<<<<<<< HEAD
   it('createListNode', () => {
     const node = createListNode(1, 'a')
+=======
+  it('createListNodeNode', () => {
+    const node = createListNodeNode(1, 'a')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.previous).toBe(SentinelNode)
@@ -147,17 +177,29 @@ describe('List', () => {
   })
 
   it('listInsert', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listInsert(list, n1)
     listInsert(list, n2)
     listInsert(list, n3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -171,17 +213,29 @@ describe('List', () => {
   })
 
   it('listRemoveFirst', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
+<<<<<<< HEAD
     let result: ListNode[] = []
+=======
+    let result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     let expectation = [ n1, n2, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -208,17 +262,29 @@ describe('List', () => {
   })
 
   it('listAppend', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromLast(list)) {
@@ -232,17 +298,29 @@ describe('List', () => {
   })
 
   it('listRemoveLast', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
+<<<<<<< HEAD
     let result: ListNode[] = []
+=======
+    let result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     let expectation = [ n1, n2, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -269,17 +347,29 @@ describe('List', () => {
   })
 
   it('listInsertBefore', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listInsert(list, n1)
     listInsertBefore(list, n2, n1)
     listInsertBefore(list, n3, n1)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n2, n3, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -293,18 +383,30 @@ describe('List', () => {
   })
 
   it('listRemoveBefore', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listInsert(list, n1)
     listInsertBefore(list, n2, n1)
     listInsertBefore(list, n3, n1)
     listRemoveBefore(list, n3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n3, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -317,17 +419,29 @@ describe('List', () => {
   })
 
   it('listInsertAfter', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listInsert(list, n1)
     listInsertAfter(list, n2, n1)
     listInsertAfter(list, n3, n2)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n1, n2, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -341,18 +455,30 @@ describe('List', () => {
   })
 
   it('listRemoveAfter', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listInsert(list, n1)
     listInsertAfter(list, n2, n1)
     listInsertAfter(list, n3, n2)
     listRemoveAfter(list, n1)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n1, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -365,18 +491,30 @@ describe('List', () => {
   })
 
   it('listRemove', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listInsert(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
     listRemove(list, n3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n1, n2 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -389,17 +527,29 @@ describe('List', () => {
   })
 
   it('listIterateFromFirst', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listInsert(list, n1)
     listInsert(list, n2)
     listInsert(list, n3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -413,17 +563,29 @@ describe('List', () => {
   })
 
   it('listIterateFromLast', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromLast(list)) {
@@ -437,11 +599,19 @@ describe('List', () => {
   })
 
   it('listIterateToNext', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -449,7 +619,11 @@ describe('List', () => {
 
     expect(list.count).toBe(3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n2, n3 ]
 
     for (const n of listIterateToNext(n1)) {
@@ -462,11 +636,19 @@ describe('List', () => {
   })
 
   it('listIterateToPrevious', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -474,7 +656,11 @@ describe('List', () => {
 
     expect(list.count).toBe(3)
 
+<<<<<<< HEAD
     const result: ListNode[] = []
+=======
+    const result: ListNodeNode[] = []
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
     const expectation = [ n2, n1 ]
 
     for (const n of listIterateToPrevious(n3)) {
@@ -487,11 +673,19 @@ describe('List', () => {
   })
 
   it('listClear', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -505,11 +699,19 @@ describe('List', () => {
   })
 
   it('listIsFirst/listIsLast', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -522,12 +724,21 @@ describe('List', () => {
   })
 
   it('listHas', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
     const n4 = createListNode(3, 'd')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+    const n4 = createListNodeNode(3, 'd')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -540,12 +751,21 @@ describe('List', () => {
   })
 
   it('listQuery', () => {
+<<<<<<< HEAD
     const list = listCreate<ListNode>()
 
     const n1 = createListNode(1, 'a')
     const n2 = createListNode(2, 'b')
     const n3 = createListNode(3, 'c')
     const n4 = createListNode(4, 'd')
+=======
+    const list = listCreate<ListNodeNode>()
+
+    const n1 = createListNodeNode(1, 'a')
+    const n2 = createListNodeNode(2, 'b')
+    const n3 = createListNodeNode(3, 'c')
+    const n4 = createListNodeNode(4, 'd')
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 
     listAppend(list, n1)
     listAppend(list, n2)

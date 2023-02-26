@@ -39,35 +39,49 @@ import {
   guard,
 } from '@cosmicmind/foundationjs'
 
+<<<<<<< HEAD
 import { SentinelNode } from '@/utils'
+=======
+export const StackCompareFn = <T>(a: T, b: T): number => a === b ? 0 : a > b ? 1 : -1
 
 /**
- * The `Stackable` interface defines a structure that moves
+ * The `sentinel` value is used to determine
+ * leaf nodes within the `Stack`.
+ */
+const sentinel = void 0
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
+
+/**
+ * The `StackNode` interface defines a structure that moves
  * from a child node to its parent node within a `Stack`
  * data structure.
  */
-export type Stackable = {
-  parent?: Stackable
+export type StackNode = {
+  parent?: StackNode
 }
 
 export const StackCompareFn = <T extends Stackable>(a: T, b: T): number => a === b ? 0 : -1
 
 /**
- * Creates a `Stackable` instance of type `T` by using the
+ * Creates a `StackNode` instance of type `T` by using the
  * given node definition.
  */
+<<<<<<< HEAD
 export const stackNodeCreate = <T extends Stackable>(props?: Omit<T, keyof Stackable>): T => ({
+=======
+export const stackNodeCreate = <T extends StackNode>(props?: Omit<T, keyof StackNode>): T => ({
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   ...(props ?? {}) as T,
   parent: SentinelNode,
 })
 
 /**
  * The `Stack` class represents a linear data structure that
- * stores a single reference to a `Stackable` node called
+ * stores a single reference to a `StackNode` node called
  * `top`. It creates a `vertical` relationship between the
  * nodes that exist within its structure.
  */
-export type Stack<T extends Stackable> = {
+export type Stack<T extends StackNode> = {
   top?: T
   count: number
 }
@@ -75,8 +89,13 @@ export type Stack<T extends Stackable> = {
 /**
  * Creates a new `Stack` instance.
  */
+<<<<<<< HEAD
 export const stackCreate = <T extends Stackable>(): Stack<T> => ({
   top: SentinelNode,
+=======
+export const stackCreate = <T extends StackNode>(): Stack<T> => ({
+  top: sentinel,
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   count: 0,
 })
 
@@ -86,7 +105,7 @@ export const stackCreate = <T extends Stackable>(): Stack<T> => ({
  *
  * @performance O(1)
  */
-export function stackPeek<T extends Stackable>(stack: Stack<T>): Optional<T> {
+export function stackPeek<T extends StackNode>(stack: Stack<T>): Optional<T> {
   return stack.top
 }
 
@@ -96,7 +115,7 @@ export function stackPeek<T extends Stackable>(stack: Stack<T>): Optional<T> {
  *
  * @performance O(1)
  */
-export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
+export function stackPush<T extends StackNode>(stack: Stack<T>, node: T): void {
   node.parent = stack.top
   stack.top = node
   ++stack.count
@@ -108,7 +127,7 @@ export function stackPush<T extends Stackable>(stack: Stack<T>, node: T): void {
  *
  * @performance O(1)
  */
-export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
+export function stackPop<T extends StackNode>(stack: Stack<T>): Optional<T> {
   const n = stack.top
   if (guard<T>(n)) {
     stack.top = n.parent as T
@@ -124,19 +143,32 @@ export function stackPop<T extends Stackable>(stack: Stack<T>): Optional<T> {
  *
  * @performance O(n)
  */
+<<<<<<< HEAD
 export function *stackIterator<T extends Stackable>(stack: Stack<T>): IterableIterator<T> {
   let n = stack.top
   while (guard<T>(n)) {
     yield n
     n = n.parent as T
+=======
+export function *stackIterator<T extends StackNode>(stack: Stack<T>): IterableIterator<T> {
+  let node: Optional<StackNode> = stack.top
+  while (guard<T>(node)) {
+    yield node
+    node = node.parent
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   }
 }
 
 /**
  * @performance O(n)
  */
+<<<<<<< HEAD
 export function *stackIterateFrom<T extends Stackable>(node: T): IterableIterator<T> {
   let n = node
+=======
+export function *stackIterateFrom<T extends StackNode>(node: T): IterableIterator<T> {
+  let n: Optional<StackNode> = node
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   while (guard<T>(n)) {
     yield n
     n = n.parent as T
@@ -146,7 +178,7 @@ export function *stackIterateFrom<T extends Stackable>(node: T): IterableIterato
 /**
  * @performance O(n)
  */
-export function *stackIterateToParent<T extends Stackable>(node: T): IterableIterator<T> {
+export function *stackIterateToParent<T extends StackNode>(node: T): IterableIterator<T> {
   let n = node.parent
   while (guard<T>(n)) {
     yield n
@@ -160,7 +192,7 @@ export function *stackIterateToParent<T extends Stackable>(node: T): IterableIte
  *
  * @performance O(n)
  */
-export function stackClear<T extends Stackable>(stack: Stack<T>): void {
+export function stackClear<T extends StackNode>(stack: Stack<T>): void {
   while (guard<T>(stack.top)) {
     stackPop(stack)
   }
@@ -169,7 +201,7 @@ export function stackClear<T extends Stackable>(stack: Stack<T>): void {
 /**
  * @performance O(n)
  */
-export function stackDepth<T extends Stackable>(node: T): number {
+export function stackDepth<T extends StackNode>(node: T): number {
   let n = node.parent
   let depth = 0
   while (guard<T>(n)) {
@@ -186,14 +218,23 @@ export function stackDepth<T extends Stackable>(node: T): number {
  *
  * @performance O(1)
  */
+<<<<<<< HEAD
 export function stackIsTop<T extends Stackable>(stack: Stack<T>, node: T, compare = StackCompareFn<T>): boolean {
   return guard<T>(stack.top) &&  0 === compare(stack.top, node)
+=======
+export function stackIsTop<T extends StackNode>(stack: Stack<T>, node: T, compare = StackCompareFn<T>): boolean {
+  return guard<StackNode>(stack.top) &&  0 === compare(stack.top, node)
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
 }
 
 /**
  * @performance O(n)
  */
+<<<<<<< HEAD
 export function stackHas<T extends Stackable>(stack: Stack<T>, node: T, compare = StackCompareFn<T>): boolean {
+=======
+export function stackHas<T extends StackNode>(stack: Stack<T>, node: T, compare = StackCompareFn<T>): boolean {
+>>>>>>> bfc066e9ee3ccd4ec3d8e412118ebffeb1a379b3
   for (const n of stackIterator(stack)) {
     if (0 === compare(n, node)) {
       return true
@@ -205,7 +246,7 @@ export function stackHas<T extends Stackable>(stack: Stack<T>, node: T, compare 
 /**
  * @performance O(n)
  */
-export function stackQuery<T extends Stackable>(stack: Stack<T>, ...fn: ((node: T) => boolean)[]): Set<T> {
+export function stackQuery<T extends StackNode>(stack: Stack<T>, ...fn: ((node: T) => boolean)[]): Set<T> {
   const r = new Set<T>()
   loop: for (const n of stackIterator(stack)) {
     for (const f of fn) {

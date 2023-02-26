@@ -31,7 +31,7 @@
  */
 
 export type {
-  Stackable,
+  StackNode,
   Stack,
 } from '@/structures/Stack'
 
@@ -53,7 +53,7 @@ export {
 } from '@/structures/Stack'
 
 export type {
-  Listable,
+  ListNode,
   List,
 } from '@/structures/List'
 
