@@ -39,7 +39,8 @@ import {
 import { guard } from '@cosmicmind/foundationjs'
 
 import {
-  ListNode,
+  SentinelNode,
+  Listable,
   List,
   listNodeCreate,
   listCreate,
@@ -63,39 +64,37 @@ import {
   listQuery,
 } from '@/internal'
 
-const sentinel = void 0
-
-type ListNodeNode = ListNode & {
+type ListNode = Listable & {
   key: number
   value: string
 }
 
-const createListNodeNode = (key: number, value: string): ListNodeNode =>
-  listNodeCreate<ListNodeNode>({
+const createListNode = (key: number, value: string): ListNode =>
+  listNodeCreate<ListNode>({
     key,
     value,
   })
 
-class ListNode implements ListNode {
-  readonly next?: ListNode
-  readonly previous?: ListNode
+class ListTraceNode implements Listable {
+  readonly next?: Listable
+  readonly previous?: Listable
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
-    this.next = sentinel
-    this.previous = sentinel
+    this.next = SentinelNode
+    this.previous = SentinelNode
     this.key = key
     this.value = value
   }
 }
 
-class ListTrace<T extends ListNode> implements List<T> {
+class ListTrace<T extends ListTraceNode> implements List<T> {
   readonly first?: T
   readonly last?: T
   readonly count: number
   constructor() {
-    this.first = sentinel
-    this.last = sentinel
+    this.first = SentinelNode
+    this.last = SentinelNode
     this.count = 0
   }
 }
@@ -105,60 +104,60 @@ describe('List', () => {
     const node = listNodeCreate({})
 
     expect(guard(node)).toBeTruthy()
-    expect(node.previous).toBe(sentinel)
-    expect(node.next).toBe(sentinel)
+    expect(node.previous).toBe(SentinelNode)
+    expect(node.next).toBe(SentinelNode)
   })
 
   it('listCreate', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
     expect(guard(list)).toBeTruthy()
-    expect(list.first).toBe(sentinel)
-    expect(list.last).toBe(sentinel)
+    expect(list.first).toBe(SentinelNode)
+    expect(list.last).toBe(SentinelNode)
     expect(list.count).toBe(0)
   })
 
-  it('createListNodeNode', () => {
-    const node = createListNodeNode(1, 'a')
+  it('createListNode', () => {
+    const node = createListNode(1, 'a')
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
-    expect(node.previous).toBe(sentinel)
-    expect(node.next).toBe(sentinel)
+    expect(node.previous).toBe(SentinelNode)
+    expect(node.next).toBe(SentinelNode)
     expect(node.key).toBe(1)
     expect(node.value).toBe('a')
   })
 
-  it('new ListNode', () => {
-    const node = new ListNode(1, 'a')
+  it('new Listable', () => {
+    const node = new ListTraceNode(1, 'a')
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
-    expect(node.previous).toBe(sentinel)
-    expect(node.next).toBe(sentinel)
+    expect(node.previous).toBe(SentinelNode)
+    expect(node.next).toBe(SentinelNode)
     expect(node.key).toBe(1)
     expect(node.value).toBe('a')
   })
 
   it('new ListTrace', () => {
-    const list = new ListTrace<ListNode>()
+    const list = new ListTrace()
 
     expect(guard(list)).toBeTruthy()
-    expect(list.first).toBe(sentinel)
-    expect(list.last).toBe(sentinel)
+    expect(list.first).toBe(SentinelNode)
+    expect(list.last).toBe(SentinelNode)
     expect(list.count).toBe(0)
   })
 
   it('listInsert', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listInsert(list, n1)
     listInsert(list, n2)
     listInsert(list, n3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -172,17 +171,17 @@ describe('List', () => {
   })
 
   it('listRemoveFirst', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
-    let result: ListNodeNode[] = []
+    let result: ListNode[] = []
     let expectation = [ n1, n2, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -209,17 +208,17 @@ describe('List', () => {
   })
 
   it('listAppend', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromLast(list)) {
@@ -233,17 +232,17 @@ describe('List', () => {
   })
 
   it('listRemoveLast', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
-    let result: ListNodeNode[] = []
+    let result: ListNode[] = []
     let expectation = [ n1, n2, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -270,17 +269,17 @@ describe('List', () => {
   })
 
   it('listInsertBefore', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listInsert(list, n1)
     listInsertBefore(list, n2, n1)
     listInsertBefore(list, n3, n1)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n2, n3, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -294,18 +293,18 @@ describe('List', () => {
   })
 
   it('listRemoveBefore', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listInsert(list, n1)
     listInsertBefore(list, n2, n1)
     listInsertBefore(list, n3, n1)
     listRemoveBefore(list, n3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n3, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -318,17 +317,17 @@ describe('List', () => {
   })
 
   it('listInsertAfter', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listInsert(list, n1)
     listInsertAfter(list, n2, n1)
     listInsertAfter(list, n3, n2)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n1, n2, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -342,18 +341,18 @@ describe('List', () => {
   })
 
   it('listRemoveAfter', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listInsert(list, n1)
     listInsertAfter(list, n2, n1)
     listInsertAfter(list, n3, n2)
     listRemoveAfter(list, n1)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n1, n3 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -366,18 +365,18 @@ describe('List', () => {
   })
 
   it('listRemove', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listInsert(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
     listRemove(list, n3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n1, n2 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -390,17 +389,17 @@ describe('List', () => {
   })
 
   it('listIterateFromFirst', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listInsert(list, n1)
     listInsert(list, n2)
     listInsert(list, n3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromFirst(list)) {
@@ -414,17 +413,17 @@ describe('List', () => {
   })
 
   it('listIterateFromLast', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
     listAppend(list, n3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateFromLast(list)) {
@@ -438,11 +437,11 @@ describe('List', () => {
   })
 
   it('listIterateToNext', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -450,7 +449,7 @@ describe('List', () => {
 
     expect(list.count).toBe(3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n2, n3 ]
 
     for (const n of listIterateToNext(n1)) {
@@ -463,11 +462,11 @@ describe('List', () => {
   })
 
   it('listIterateToPrevious', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -475,7 +474,7 @@ describe('List', () => {
 
     expect(list.count).toBe(3)
 
-    const result: ListNodeNode[] = []
+    const result: ListNode[] = []
     const expectation = [ n2, n1 ]
 
     for (const n of listIterateToPrevious(n3)) {
@@ -488,11 +487,11 @@ describe('List', () => {
   })
 
   it('listClear', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -506,11 +505,11 @@ describe('List', () => {
   })
 
   it('listIsFirst/listIsLast', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -523,12 +522,12 @@ describe('List', () => {
   })
 
   it('listHas', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
-    const n4 = createListNodeNode(3, 'd')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
+    const n4 = createListNode(3, 'd')
 
     listAppend(list, n1)
     listAppend(list, n2)
@@ -541,12 +540,12 @@ describe('List', () => {
   })
 
   it('listQuery', () => {
-    const list = listCreate<ListNodeNode>()
+    const list = listCreate<ListNode>()
 
-    const n1 = createListNodeNode(1, 'a')
-    const n2 = createListNodeNode(2, 'b')
-    const n3 = createListNodeNode(3, 'c')
-    const n4 = createListNodeNode(4, 'd')
+    const n1 = createListNode(1, 'a')
+    const n2 = createListNode(2, 'b')
+    const n3 = createListNode(3, 'c')
+    const n4 = createListNode(4, 'd')
 
     listAppend(list, n1)
     listAppend(list, n2)

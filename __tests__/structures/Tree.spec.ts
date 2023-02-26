@@ -53,32 +53,32 @@ import {
   treeQuery,
 } from '@/internal'
 
-const sentinel = void 0
+import { SentinelNode } from '@/utils'
 
-type TreeNode = Tree & {
+type A = Tree & {
   key: number
   value: string
 }
 
-const createTreeNode = (key: number, value: string): TreeNode =>
-  treeCreate<TreeNode>({
+const createTreeNode = (key: number, value: string): A =>
+  treeCreate({
     key,
     value,
   })
 
-class TreeTrace implements TreeNode {
-  readonly parent?: TreeNode
-  readonly next?: TreeNode
-  readonly previous?: TreeNode
-  readonly children: List<TreeNode>
+class TreeTrace implements Tree {
+  readonly parent?: Tree
+  readonly next?: Tree
+  readonly previous?: Tree
+  readonly children: List<Tree>
   readonly size: number
   readonly key: number
   readonly value: string
   constructor(key: number, value: string) {
-    this.parent = sentinel
-    this.next = sentinel
-    this.previous = sentinel
-    this.children = listCreate<TreeTrace>()
+    this.parent = SentinelNode
+    this.next = SentinelNode
+    this.previous = SentinelNode
+    this.children = listCreate()
     this.size = 1
     this.key = key
     this.value = value
@@ -90,9 +90,9 @@ describe('Tree', () => {
     const node = treeCreate()
 
     expect(guard(node)).toBeTruthy()
-    expect(node.parent).toBe(sentinel)
-    expect(node.next).toBe(sentinel)
-    expect(node.previous).toBe(sentinel)
+    expect(node.parent).toBe(SentinelNode)
+    expect(node.next).toBe(SentinelNode)
+    expect(node.previous).toBe(SentinelNode)
     expect(node.children).toStrictEqual(listCreate())
     expect(node.size).toBe(1)
   })
@@ -101,9 +101,9 @@ describe('Tree', () => {
     const node = createTreeNode(1, 'a')
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
-    expect(node.parent).toBe(sentinel)
-    expect(node.next).toBe(sentinel)
-    expect(node.previous).toBe(sentinel)
+    expect(node.parent).toBe(SentinelNode)
+    expect(node.next).toBe(SentinelNode)
+    expect(node.previous).toBe(SentinelNode)
     expect(node.children).toStrictEqual(listCreate())
     expect(node.size).toBe(1)
     expect(node.key).toBe(1)
@@ -114,9 +114,9 @@ describe('Tree', () => {
     const node = new TreeTrace(1, 'a')
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
-    expect(node.parent).toBe(sentinel)
-    expect(node.next).toBe(sentinel)
-    expect(node.previous).toBe(sentinel)
+    expect(node.parent).toBe(SentinelNode)
+    expect(node.next).toBe(SentinelNode)
+    expect(node.previous).toBe(SentinelNode)
     expect(node.children).toStrictEqual(listCreate())
     expect(node.size).toBe(1)
     expect(node.key).toBe(1)

@@ -42,17 +42,17 @@ export const stringCompare: CompareFn<string> = (a, b) =>
 export const numericCompare: CompareFn<number> = (a, b) =>
   a === b ? 0 : a > b ? 1 : -1
 
-export interface IStringKey {
+export type CompareStringKey = {
   key: string
 }
 
-export const stringKeyCompare: CompareFn<IStringKey> = (a, b) =>
+export const stringKeyCompare: CompareFn<CompareStringKey> = (a, b) =>
   a.key === b.key ? 0 : a.key > b.key ? 1 : -1
 
 
-export interface INumericKey {
+export type CompareNumericKey = {
   key: number
 }
 
-export const numericKeyCompare: CompareFn<INumericKey> = (a, b) =>
+export const numericKeyCompare: CompareFn<CompareNumericKey> = (a, b) =>
   a.key === b.key ? 0 : a.key > b.key ? 1 : -1
