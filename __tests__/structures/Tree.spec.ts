@@ -49,7 +49,6 @@ import {
   treeIsFirstChild,
   treeIsLastChild,
   treeIsOnlyChild,
-  treeIsDescendant,
   treeIterator,
   treeQuery,
 } from '@/internal'
@@ -67,11 +66,11 @@ const createTreeNode = (key: number, value: string): TreeNode =>
     value,
   })
 
-class TreeTrace implements Tree {
-  readonly parent?: Tree
-  readonly next?: Tree
-  readonly previous?: Tree
-  readonly children: List<Tree>
+class TreeTrace implements TreeNode {
+  readonly parent?: TreeNode
+  readonly next?: TreeNode
+  readonly previous?: TreeNode
+  readonly children: List<TreeNode>
   readonly size: number
   readonly key: number
   readonly value: string
@@ -88,7 +87,7 @@ class TreeTrace implements Tree {
 
 describe('Tree', () => {
   it('treeCreate', () => {
-    const node = treeCreate({})
+    const node = treeCreate()
 
     expect(guard(node)).toBeTruthy()
     expect(node.parent).toBe(sentinel)
@@ -211,36 +210,6 @@ describe('Tree', () => {
     expect(treeDepth(n5)).toBe(1)
     expect(treeDepth(n6)).toBe(2)
     expect(treeDepth(n7)).toBe(2)
-  })
-
-  it('treeIsDescendant', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
-    const n5 = createTreeNode(5, 'e')
-    const n6 = createTreeNode(6, 'f')
-    const n7 = createTreeNode(7, 'g')
-
-    treeInsertChild(n2, n1)
-    treeInsertChild(n3, n1)
-    treeInsertChild(n4, n1)
-    treeInsertChild(n5, n1)
-
-    treeInsertChild(n6, n2)
-    expect(treeIsOnlyChild(n6, n2)).toBeTruthy()
-
-    treeInsertChild(n7, n2)
-    expect(treeIsOnlyChild(n7, n2)).toBeFalsy()
-
-    expect(treeIsDescendant(n2, n1)).toBeTruthy()
-    expect(treeIsDescendant(n3, n1)).toBeTruthy()
-    expect(treeIsDescendant(n4, n1)).toBeTruthy()
-    expect(treeIsDescendant(n5, n1)).toBeTruthy()
-    expect(treeIsDescendant(n6, n2)).toBeTruthy()
-    expect(treeIsDescendant(n7, n2)).toBeTruthy()
-    expect(treeIsDescendant(n5, n2)).toBeFalsy()
-    expect(treeIsDescendant(n2, n2)).toBeFalsy()
   })
 
   it('treeIterator', () => {

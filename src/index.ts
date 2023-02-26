@@ -48,15 +48,16 @@ export {
 } from '@/sort'
 
 export type {
-  Listable,
+  ListNode,
   List,
-  Stackable,
+  StackNode,
   Stack,
   Tree,
 } from '@/structures'
 
 export {
-  listableCreate,
+  ListCompareFn,
+  listNodeCreate,
   listCreate,
   listInsert,
   listRemoveFirst,
@@ -74,12 +75,10 @@ export {
   listClear,
   listIsFirst,
   listIsLast,
-  listIsNext,
-  listIsPrevious,
-  listIsSibling,
   listHas,
   listQuery,
-  stackableCreate,
+  StackCompareFn,
+  stackNodeCreate,
   stackCreate,
   stackPeek,
   stackPush,
@@ -90,9 +89,9 @@ export {
   stackClear,
   stackDepth,
   stackIsTop,
-  stackIsDescendant,
   stackHas,
   stackQuery,
+  TreeCompareFn,
   treeCreate,
   treeInsertChild,
   treeAppendChild,
@@ -103,7 +102,6 @@ export {
   treeIsFirstChild,
   treeIsLastChild,
   treeIsOnlyChild,
-  treeIsDescendant,
   treeIncreaseSize,
   treeDecreaseSize,
   treeIterator,
