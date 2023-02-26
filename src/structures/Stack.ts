@@ -77,7 +77,7 @@ export type Stack<T extends Stackable> = {
 /**
  * Creates a new `Stack` instance.
  */
-export const stackCreate = <T extends Stackable>(props?: Omit<T, keyof Stack<Stackable>>): T => ({
+export const stackCreate = <T extends Stackable>(props?: Omit<T, keyof Stack<Stackable>>): Stack<T> => ({
   ...(props ?? {}) as T,
   top: sentinel,
   count: 0,
