@@ -31,9 +31,11 @@
  */
 
 /**
- * @module Sort
+ * @module Sentinel
  */
 
-import { CompareFn } from '@/utils/compare'
-
-export type LogarithmicSearch = <T>(data: T[], fn: CompareFn<T>) => void
+/**
+ * The `sentinel` value is used to determine
+ * leaf nodes within the `Stack`.
+ */
+export const SentinelNode = void 0

@@ -30,7 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export type { CompareFn } from '@/utils'
+export type {
+  CompareFn,
+  CompareStringKey,
+  CompareNumericKey,
+} from '@/utils'
 
 export {
   stringCompare,
@@ -41,6 +45,8 @@ export {
 
 export type { LinearSort } from '@/utils'
 
+export { SentinelNode } from '@/utils'
+
 export {
   insertionSort,
   mergeSort,
@@ -48,9 +54,9 @@ export {
 } from '@/sort'
 
 export type {
-  ListNode,
+  Listable,
   List,
-  StackNode,
+  Stackable,
   Stack,
   Tree,
 } from '@/structures'
