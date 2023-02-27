@@ -96,9 +96,12 @@ export function listInsert<T extends Listable>(list: List<T>, node: T): void {
   if (guard<T>(list.first)) {
     list.first.previous = node
     node.next = list.first
+    node.previous = SentinelNode
   }
   else {
     list.last = node
+    node.previous = SentinelNode
+    node.next = SentinelNode
   }
   list.first = node
   ++list.count
@@ -119,13 +122,14 @@ export function listRemoveFirst<T extends Listable>(list: List<T>): Optional<T> 
     const next = node.next
     if (guard<T>(next)) {
       list.first = next
-      node.next = SentinelNode
       next.previous = SentinelNode
     }
     else {
       list.first = SentinelNode
       list.last = SentinelNode
     }
+    node.previous = SentinelNode
+    node.next = SentinelNode
     --list.count
   }
   return node
@@ -142,9 +146,12 @@ export function listAppend<T extends Listable>(list: List<T>, node: T): void {
   if (guard<T>(list.last)) {
     list.last.next = node
     node.previous = list.last
+    node.next = SentinelNode
   }
   else {
     list.first = node
+    node.previous = SentinelNode
+    node.next = SentinelNode
   }
   list.last = node
   ++list.count
@@ -165,13 +172,14 @@ export function listRemoveLast<T extends Listable>(list: List<T>): Optional<T> {
     const previous = node.previous
     if (guard<T>(previous)) {
       list.last = previous
-      node.previous = SentinelNode
       previous.next = SentinelNode
     }
     else {
       list.first = SentinelNode
       list.last = SentinelNode
     }
+    node.previous = SentinelNode
+    node.next = SentinelNode
     --list.count
   }
   return node
