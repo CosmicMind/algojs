@@ -256,10 +256,10 @@ export function listInsertAfter<T extends Listable>(list: List<T>, insert: T, af
   else {
     const next = after.next
     if (guard<T>(next)) {
-      next.previous = after
-      after.next = next
-      after.previous = insert
-      insert.next = after
+      next.previous = insert
+      insert.next = next
+      insert.previous = after
+      after.next = insert
       ++list.count
     }
   }
