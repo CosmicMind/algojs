@@ -57,10 +57,9 @@ const alias = {
   '@': fileURLToPath(new URL(srcDir, import.meta.url)),
 }
 
-const external = (id: string): boolean =>
-  !id.startsWith(resolve(entry)) &&
-  !id.startsWith('.') &&
-	!id.startsWith('@/')
+const external = [
+  '@cosmicmind/foundationjs'
+]
 
 const plugins = [
   dts()
