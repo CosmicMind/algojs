@@ -1,6 +1,6 @@
 {
   "name": "@cosmicmind/algojs",
-  "version": "0.0.1-rc-030123-2-a",
+  "version": "0.0.1-rc-030223-2",
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
   "author": {
@@ -16,9 +16,15 @@
     "access": "public"
   },
   "type": "module",
-  "main": "dist/lib.es.js",
-  "module": "dist/lib.es.js",
-  "types": "dist/src/index.d.ts",
+  "main": "./dist/lib-cjs.js",
+  "module": "./dist/lib-es.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/lib-es.js",
+      "require": "./dist/lib-cjs.cjs"
+    }
+  },
   "files": [
     "dist",
     "typings",
@@ -39,7 +45,7 @@
     "test:coverage": "vitest run --coverage --config vite.config.test.ts --mode ${VITE_MODE:-benchmark}"
   },
   "dependencies": {
-    "@cosmicmind/foundationjs": "^0.0.1-rc-030123-1-a"
+    "@cosmicmind/foundationjs": "^0.0.1-rc-030223-1"
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
