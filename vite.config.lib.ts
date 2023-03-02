@@ -35,46 +35,53 @@ import {
   fileURLToPath,
 } from 'node:url'
 
+import { resolve } from 'path'
+
 import {
-  defineConfig,
+  PluginOption,
   LibraryFormats,
-  UserConfigExport,
+  defineConfig,
 } from 'vite'
 
 import dts from 'vite-plugin-dts'
 
-const external = [
-  '@cosmicmind/foundationjs'
-]
-
+const name = process.env.npm_package_name
 const srcDir = 'src'
-const emptyOutDir = false
+const entry = `${srcDir}/index.ts`
+const output = 'lib.es'
 const formats: LibraryFormats[] = [ 'es' ]
+const emptyOutDir = false
+const minify = 'development' !== process.env.NODE_ENV
 
-export default defineConfig(() => {
-  const minify = 'production' === process.env.NODE_ENV
-  const config: UserConfigExport = {
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL(srcDir, import.meta.url)),
-      },
+const alias = {
+  '@': fileURLToPath(new URL(srcDir, import.meta.url)),
+}
+
+const external = (id: string): boolean =>
+  !id.startsWith(resolve(entry)) &&
+  !id.startsWith('.') &&
+	!id.startsWith('@/')
+
+const plugins = [
+  dts()
+] as PluginOption[]
+
+export default defineConfig(() => ({
+  resolve: {
+    alias,
+  },
+  plugins,
+  build: {
+    emptyOutDir,
+    lib: {
+      name,
+      entry,
+      formats,
+      fileName: output,
     },
-    plugins: [
-      dts()
-    ],
-    build: {
-      emptyOutDir,
-      lib: {
-        name: process.env.npm_package_name,
-        entry: `${srcDir}/index.ts`,
-        formats,
-        fileName: 'lib.es',
-      },
-      rollupOptions: {
-        external,
-      },
-      minify,
+    rollupOptions: {
+      external,
     },
-  }
-  return config
-})
+    minify,
+  },
+}))
