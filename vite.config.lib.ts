@@ -35,8 +35,6 @@ import {
   fileURLToPath,
 } from 'node:url'
 
-import { resolve } from 'path'
-
 import {
   PluginOption,
   LibraryFormats,
