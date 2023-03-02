@@ -38,8 +38,9 @@ import {
 import { resolve } from 'path'
 
 import {
-  defineConfig,
+  PluginOption,
   LibraryFormats,
+  defineConfig,
 } from 'vite'
 
 import dts from 'vite-plugin-dts'
@@ -61,13 +62,15 @@ const external = (id: string): boolean =>
   !id.startsWith('.') &&
 	!id.startsWith('@/')
 
+const plugins = [
+  dts()
+] as PluginOption[]
+
 export default defineConfig(() => ({
   resolve: {
     alias,
   },
-  plugins: [
-    dts()
-  ],
+  plugins,
   build: {
     emptyOutDir,
     lib: {
