@@ -13,15 +13,15 @@ jobs:
   build:
     uses: cosmicmind/github-actions/.github/workflows/lib-build.yml@release
     with:
-      BUILD_TARGET: dev
-      NODE_ENV: development
-      VITE_MODE: test
+      build_target: dev
+      node_env: development
+      vite_mode: test
   test:
     uses: cosmicmind/github-actions/.github/workflows/lib-build.yml@release
     with:
-      BUILD_TARGET: test
-      NODE_ENV: development
-      VITE_MODE: test
+      build_target: test
+      node_env: development
+      vite_mode: test
   publish:
     needs:
       - lint
@@ -30,4 +30,4 @@ jobs:
       - test
     uses: cosmicmind/github-actions/.github/workflows/lib-publish.yml@release
     secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      npm_token: ${{ secrets.npm_token }}
