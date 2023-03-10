@@ -450,7 +450,7 @@ describe('List', () => {
     expect(list.count).toBe(3)
 
     const result: ListNode[] = []
-    const expectation = [ n2, n3 ]
+    const expectation = [ n1, n2, n3 ]
 
     for (const n of listIterateToNext(n1)) {
       result.push(n)
@@ -458,7 +458,7 @@ describe('List', () => {
 
     expect(result[0]).toBe(expectation[0])
     expect(result[1]).toBe(expectation[1])
-    expect(result.length).toBe(2)
+    expect(result.length).toBe(3)
   })
 
   it('listIterateToPrevious', () => {
@@ -475,7 +475,7 @@ describe('List', () => {
     expect(list.count).toBe(3)
 
     const result: ListNode[] = []
-    const expectation = [ n2, n1 ]
+    const expectation = [ n3, n2, n1 ]
 
     for (const n of listIterateToPrevious(n3)) {
       result.push(n)
@@ -483,7 +483,7 @@ describe('List', () => {
 
     expect(result[0]).toBe(expectation[0])
     expect(result[1]).toBe(expectation[1])
-    expect(result.length).toBe(2)
+    expect(result.length).toBe(3)
   })
 
   it('listClear', () => {

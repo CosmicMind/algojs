@@ -351,10 +351,10 @@ export function *listIterateFromLast<T extends Listable>(list: List<T>): Iterabl
  * @performance O(n)
  */
 export function *listIterateToNext<T extends Listable>(node: T): IterableIterator<T> {
-  let n = node.next
-  while (guard<T>(n)) {
+  let n = node
+  while (guard(n)) {
     yield n
-    n = n.next
+    n = n.next as T
   }
 }
 
@@ -362,10 +362,10 @@ export function *listIterateToNext<T extends Listable>(node: T): IterableIterato
  * @performance O(n)
  */
 export function *listIterateToPrevious<T extends Listable>(node: T): IterableIterator<T> {
-  let n = node.previous
-  while (guard<T>(n)) {
+  let n = node
+  while (guard(n)) {
     yield n
-    n = n.previous
+    n = n.previous as T
   }
 }
 
@@ -376,7 +376,7 @@ export function *listIterateToPrevious<T extends Listable>(node: T): IterableIte
  * @performance O(n)
  */
 export function listClear<T extends Listable>(list: List<T>): void {
-  while (guard<T>(list.first)) {
+  while (guard(list.first)) {
     listRemoveFirst(list)
   }
 }
