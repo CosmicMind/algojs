@@ -1,6 +1,6 @@
 {
   "name": "@cosmicmind/algojs",
-  "version": "0.0.1-rc-050323-2",
+  "version": "0.0.1-rc-060123-2",
   "description": "An algorithms and data structures library in TypeScript.",
   "keywords": [],
   "author": {
@@ -44,10 +44,8 @@
     "test:unit": "vitest run --config vite.config.test.ts --mode ${VITE_MODE:-test}",
     "test:coverage": "vitest run --coverage --config vite.config.test.ts --mode ${VITE_MODE:-benchmark}"
   },
-  "dependencies": {
-    "@cosmicmind/foundationjs": "^0.0.1-rc-050323-1"
-  },
   "devDependencies": {
+    "@cosmicmind/foundationjs": "^0.0.1-rc-060123-1",
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@types/node": "^18.7.15",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
