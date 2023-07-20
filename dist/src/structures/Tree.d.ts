@@ -1,0 +1,24 @@
+import { Listable, List } from '../structures/List';
+import { Stackable, stackDepth } from '../structures/Stack';
+export type Tree = Listable & Stackable & {
+    parent?: Tree;
+    next?: Tree;
+    previous?: Tree;
+    children: List<Tree>;
+    size: number;
+};
+export declare const TreeCompareFn: <T extends Tree>(a: T, b: T) => number;
+export declare const treeCreate: <T extends Tree>(props?: Omit<T, keyof Listable | "parent" | "children" | "size"> | undefined) => T;
+export declare function treeInsertChild<T extends Tree>(insert: T, parent: T): void;
+export declare function treeAppendChild<T extends Tree>(insert: T, parent: T): void;
+export declare const treeDepth: <T extends Tree>(node: T) => ReturnType<typeof stackDepth>;
+export declare function treeIsRoot<T extends Tree>(node: T): boolean;
+export declare function treeIsLeaf<T extends Tree>(node: T): boolean;
+export declare function treeIsChild<T extends Tree>(node: T, parent: T, compare?: (a: T, b: T) => number): boolean;
+export declare function treeIsFirstChild<T extends Tree>(node: T, parent: T, compare?: (a: T, b: T) => number): boolean;
+export declare function treeIsLastChild<T extends Tree>(node: T, parent: T, compare?: (a: T, b: T) => number): boolean;
+export declare function treeIsOnlyChild<T extends Tree>(node: T, parent: T, compare?: (a: T, b: T) => number): boolean;
+export declare function treeIncreaseSize<T extends Tree>(node: T, size: number): void;
+export declare function treeDecreaseSize<T extends Tree>(node: T, size: number): void;
+export declare function treeIterator<T extends Tree>(node: T): IterableIterator<T>;
+export declare function treeQuery<T extends Tree>(node: T, ...fn: ((node: T) => boolean)[]): Set<T>;
