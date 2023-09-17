@@ -35,4 +35,60 @@
  *
  */
 
-export type Heap = {}
+import {
+  assert,
+} from '@cosmicmind/foundationjs'
+
+export type Heap<T> = {
+  size: number
+  nodes: T[]
+}
+
+export const heapParent = (index: number): number | never => {
+  assert(-1 < index, 'index must be 0 or greater')
+  return index / 2
+}
+
+export const heapLeft = (index: number): number | never => {
+  assert(-1 < index, 'index must be 0 or greater')
+  return 2 * index
+}
+
+export const heapRight = (index: number): number | never => {
+  assert(-1 < index, 'index must be 0 or greater')
+  return 2 * index + 1
+}
+
+export const heapSwapAt = <T>(heap: Heap<T>, a: number, b: number): void => {
+  assert(-1 < a, 'first index must be 0 or greater')
+  assert(-1 < b, 'second index must be 0 or greater')
+
+  const temp = heap.nodes[a]
+  heap.nodes[a] = heap.nodes[b]
+  heap.nodes[b] = temp
+}
+
+export const maxHeapify = <T>(heap: Heap<T>, index: number): void | never {
+  assert(-1 < index, 'index must be 0 or greater')
+
+  const l = heapLeft(index)
+  const r = heapRight(index)
+
+  let largest = 0
+
+  if (l <= heap.size && heap.nodes[l] > heap.nodes[index]) {
+    largest = l
+  }
+  else {
+    largest = index
+  }
+
+  if (r <= heap.size && heap.nodes[r] > heap.nodes[largest]) {
+    largest = r
+  }
+
+  if (largest != index) {
+    heapSwapAt(heap, index, largest)
+    maxHeapify(heap, largest)
+  }
+}
