@@ -30,6 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export * from '@/structures/Stack'
+export * from '@/structures/Heap'
 export * from '@/structures/List'
+export * from '@/structures/Stack'
 export * from '@/structures/Tree'
