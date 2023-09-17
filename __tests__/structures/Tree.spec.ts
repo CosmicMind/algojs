@@ -36,9 +36,12 @@ import {
   describe,
 } from 'vitest'
 
-import { guard } from '@cosmicmind/foundationjs'
+import {
+  guard,
+} from '@cosmicmind/foundationjs'
 
 import {
+  SentinelNode,
   List,
   listCreate,
   Tree,
@@ -51,9 +54,7 @@ import {
   treeIsOnlyChild,
   treeIterator,
   treeQuery,
-} from '@/internal'
-
-import { SentinelNode } from '@/utils'
+} from '@/index'
 
 type A = Tree & {
   key: number

@@ -64,7 +64,9 @@
  * @performance O(n * log(n))
  */
 
-import { CompareFn } from '@/utils/compare'
+import {
+  CompareFn,
+} from '@/utils/compare'
 
 /**
  * Performs the comparison and merge operations.

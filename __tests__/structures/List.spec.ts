@@ -36,7 +36,9 @@ import {
   describe,
 } from 'vitest'
 
-import { guard } from '@cosmicmind/foundationjs'
+import {
+  guard,
+} from '@cosmicmind/foundationjs'
 
 import {
   SentinelNode,
@@ -62,7 +64,7 @@ import {
   listIsLast,
   listHas,
   listQuery,
-} from '@/internal'
+} from '@/index'
 
 type ListNode = Listable & {
   key: number

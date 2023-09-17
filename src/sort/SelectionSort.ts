@@ -39,8 +39,13 @@
  * @performance O(n^2)
  */
 
-import { LinearSort } from '@/utils/sort'
-import { CompareFn } from '@/utils/compare'
+import {
+  LinearSort,
+} from '@/utils/sort'
+
+import {
+  CompareFn,
+} from '@/utils/compare'
 
 /**
  * The `selectionSort` algorithm is implemented using generics, which

@@ -44,7 +44,7 @@ import {
   insertionSort,
   Tree,
   treeCreate,
-} from '@/internal'
+} from '@/index'
 
 type TreeNode = Tree & {
   key: number

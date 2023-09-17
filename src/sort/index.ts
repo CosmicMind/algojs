@@ -30,6 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export { insertionSort } from '@/sort/InsertionSort'
-export { mergeSort } from '@/sort/MergeSort'
-export { selectionSort } from '@/sort/SelectionSort'
+export * from '@/sort/InsertionSort'
+export * from '@/sort/MergeSort'
+export * from '@/sort/SelectionSort'

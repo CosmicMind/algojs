@@ -36,7 +36,9 @@ import {
   describe,
 } from 'vitest'
 
-import { guard } from '@cosmicmind/foundationjs'
+import {
+  guard,
+} from '@cosmicmind/foundationjs'
 
 import {
   SentinelNode,
@@ -57,7 +59,7 @@ import {
   stackIsTop,
   stackHas,
   stackQuery,
-} from '@/internal'
+} from '@/index'
 
 type StackNode = Stackable & {
   key: number

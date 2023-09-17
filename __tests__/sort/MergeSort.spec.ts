@@ -42,7 +42,7 @@ import {
   numericCompare,
   numericKeyCompare,
   mergeSort,
-} from '@/internal'
+} from '@/index'
 
 describe('MergeSort', () => {
   it('string', () => {

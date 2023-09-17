@@ -30,4 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export * from '@/index'
+/**
+ * @module Heap
+ *
+ */
+
+export type Heap = {}

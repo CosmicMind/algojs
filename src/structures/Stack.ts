@@ -39,7 +39,9 @@ import {
   guard,
 } from '@cosmicmind/foundationjs'
 
-import { SentinelNode } from '@/utils'
+import {
+  SentinelNode,
+} from '@/utils'
 
 /**
  * The `Stackable` interface defines a structure that moves
