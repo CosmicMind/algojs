@@ -40,69 +40,78 @@ import {
 } from '@cosmicmind/foundationjs'
 
 export type Heap<T> = {
-  size: number
   nodes: T[]
+  size: number
 }
 
 export const heapParent = (index: number): number | never => {
-  assert(-1 < index, 'index must be 0 or greater')
-  return index / 2
+  assert(0 <= index, 'index must be 0 or greater')
+  return (index - 1) / 2
 }
 
 export const heapLeft = (index: number): number | never => {
-  assert(-1 < index, 'index must be 0 or greater')
-  return 2 * index
-}
-
-export const heapRight = (index: number): number | never => {
-  assert(-1 < index, 'index must be 0 or greater')
+  assert(0 <= index, 'index must be 0 or greater')
   return 2 * index + 1
 }
 
-export const heapSwapAt = <T>(heap: Heap<T>, a: number, b: number): void => {
-  assert(-1 < a, 'first index must be 0 or greater')
-  assert(-1 < b, 'second index must be 0 or greater')
-
-  const temp = heap.nodes[a]
-  heap.nodes[a] = heap.nodes[b]
-  heap.nodes[b] = temp
+export const heapRight = (index: number): number | never => {
+  assert(0 <= index, 'index must be 0 or greater')
+  return 2 * index + 2
 }
 
-export const heapMaxHeapify = <T>(heap: Heap<T>, index: number): void | never => {
-  assert(-1 < index, 'index must be 0 or greater')
+export const heapSwapAt = <T>(nodes: T[], a: number, b: number): void => {
+  assert(0 <= a, 'first index must be 0 or greater')
+  assert(0 <= b, 'second index must be 0 or greater')
+
+  const temp = nodes[a]
+  nodes[a] = nodes[b]
+  nodes[b] = temp
+}
+
+export const heapMaxHeapify = <T>(nodes: T[], size: number, index: number): void | never => {
+  assert(0 <= size, 'size must be 0 or greater')
+  assert(0 <= index, 'index must be 0 or greater')
 
   const l = heapLeft(index)
   const r = heapRight(index)
 
   let largest = 0
 
-  if (l <= heap.size && heap.nodes[l] > heap.nodes[index]) {
+  if (l < size && nodes[l] > nodes[index]) {
     largest = l
   }
   else {
     largest = index
   }
 
-  if (r <= heap.size && heap.nodes[r] > heap.nodes[largest]) {
+  if (r < size && nodes[r] > nodes[largest]) {
     largest = r
   }
 
-  if (largest !== index) {
-    heapSwapAt(heap, index, largest)
-    heapMaxHeapify(heap, largest)
+  if (index !== largest) {
+    heapSwapAt(nodes, index, largest)
+    heapMaxHeapify(nodes, size, largest)
   }
 }
 
 export const createMaxHeap = <T>(nodes: T[]): Heap<T> => {
   const size = nodes.length
-  const heap: Heap<T> = {
-    size,
+
+  for (let i = size / 2 - 1; 0 <= i; --i) {
+    heapMaxHeapify(nodes, size, i)
+  }
+
+  return {
     nodes,
+    size,
   }
+}
 
-  for (let i = size / 2; 0 <= i; --i) {
-    heapMaxHeapify(heap, i)
+export const heapSort = <T>(nodes: T[]): void | never => {
+  const heap = createMaxHeap(nodes)
+
+  for (let i = heap.size - 1; 0 < i; --i) {
+    heapSwapAt(nodes, 0, i)
+    heapMaxHeapify(nodes, i, 0)
   }
-
-  return heap
 }

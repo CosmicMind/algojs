@@ -38,13 +38,22 @@ import {
 
 import {
   createMaxHeap,
+  heapSort,
 } from '@/index'
 
 describe('Heap', () => {
   it('createMaxHeap', () => {
-    const nodes = [ 1, 2, 3, 4, 5 ]
+    const nodes = [ 4, 1, 3, 2, 16, 9, 10, 14, 8, 7 ]
     const heap = createMaxHeap(nodes)
 
     expect(heap.size).toBe(nodes.length)
+    expect(heap.nodes).toStrictEqual([ 16, 14, 10, 8, 7, 9, 3, 2, 4, 1 ])
+  })
+
+  it('heapSort', () => {
+    const nodes = [ 4, 1, 3, 2, 16, 9, 10, 14, 8, 7 ]
+    heapSort(nodes)
+
+    expect(nodes).toStrictEqual([ 1, 2, 3, 4, 7, 8, 9, 10, 14, 16 ])
   })
 })
