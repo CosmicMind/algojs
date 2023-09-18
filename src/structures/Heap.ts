@@ -46,7 +46,7 @@ export type Heap<T> = {
 
 export const heapParent = (index: number): number | never => {
   assert(0 <= index, 'index must be 0 or greater')
-  return (index - 1) / 2
+  return Math.floor((index - 1) / 2)
 }
 
 export const heapLeft = (index: number): number | never => {
@@ -97,7 +97,7 @@ export const heapMaxHeapify = <T>(nodes: T[], size: number, index: number): void
 export const createMaxHeap = <T>(nodes: T[]): Heap<T> => {
   const size = nodes.length
 
-  for (let i = size / 2 - 1; 0 <= i; --i) {
+  for (let i = Math.floor(size / 2); 0 <= i; --i) {
     heapMaxHeapify(nodes, size, i)
   }
 
