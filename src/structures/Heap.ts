@@ -32,17 +32,11 @@
 
 /**
  * @module Heap
- *
  */
 
 import {
   assert,
 } from '@cosmicmind/foundationjs'
-
-export type Heap<T> = {
-  nodes: T[]
-  size: number
-}
 
 export const heapParent = (index: number): number | never => {
   assert(0 <= index, 'index must be 0 or greater')
@@ -94,23 +88,18 @@ export const heapMaxHeapify = <T>(nodes: T[], size: number, index: number): void
   }
 }
 
-export const createMaxHeap = <T>(nodes: T[]): Heap<T> => {
+export const buildMaxHeap = <T>(nodes: T[]): void | never => {
   const size = nodes.length
 
   for (let i = Math.floor(size / 2); 0 <= i; --i) {
     heapMaxHeapify(nodes, size, i)
   }
-
-  return {
-    nodes,
-    size,
-  }
 }
 
 export const heapSort = <T>(nodes: T[]): void | never => {
-  const heap = createMaxHeap(nodes)
+  buildMaxHeap(nodes)
 
-  for (let i = heap.size - 1; 0 < i; --i) {
+  for (let i = nodes.length - 1; 0 < i; --i) {
     heapSwapAt(nodes, 0, i)
     heapMaxHeapify(nodes, i, 0)
   }

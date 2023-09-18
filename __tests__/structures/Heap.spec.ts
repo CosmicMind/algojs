@@ -37,17 +37,16 @@ import {
 } from 'vitest'
 
 import {
-  createMaxHeap,
+  buildMaxHeap,
   heapSort,
 } from '@/index'
 
 describe('Heap', () => {
-  it('createMaxHeap', () => {
+  it('buildMaxHeap', () => {
     const nodes = [ 4, 1, 3, 2, 16, 9, 10, 14, 8, 7 ]
-    const heap = createMaxHeap(nodes)
+    buildMaxHeap(nodes)
 
-    expect(heap.size).toBe(nodes.length)
-    expect(heap.nodes).toStrictEqual([ 16, 14, 10, 8, 7, 9, 3, 2, 4, 1 ])
+    expect(nodes).toStrictEqual([ 16, 14, 10, 8, 7, 9, 3, 2, 4, 1 ])
   })
 
   it('heapSort', () => {
