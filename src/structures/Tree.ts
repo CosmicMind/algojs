@@ -144,6 +144,20 @@ export function treeIsOnlyChild<T extends Tree>(node: T, parent: T, compare = Tr
 }
 
 /**
+ * @performance O(h) where h = height of Tree
+ */
+export function treeIsChildDeep<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
+  let n = node.parent
+  while (guard<T>(n)) {
+    if (0 === compare(n, parent)) {
+      return true
+    }
+    n = n.parent
+  }
+  return false
+}
+
+/**
  * @performance O(n)
  */
 export function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
