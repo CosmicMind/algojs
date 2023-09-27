@@ -36,6 +36,6 @@
 
 import {
   CompareFn,
-} from '@/utils/compare'
+} from '@/utils'
 
 export type LinearSort = <T>(data: T[], fn: CompareFn<T>) => void

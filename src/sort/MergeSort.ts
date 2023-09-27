@@ -66,7 +66,7 @@
 
 import {
   CompareFn,
-} from '@/utils/compare'
+} from '@/utils'
 
 /**
  * Performs the comparison and merge operations.

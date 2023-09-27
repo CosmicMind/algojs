@@ -69,14 +69,7 @@ export const heapMaxHeapify = <T>(nodes: T[], size: number, index: number): void
   const l = heapLeft(index)
   const r = heapRight(index)
 
-  let largest = 0
-
-  if (l < size && nodes[l] > nodes[index]) {
-    largest = l
-  }
-  else {
-    largest = index
-  }
+  let largest = l < size && nodes[l] > nodes[index] ? l : index
 
   if (r < size && nodes[r] > nodes[largest]) {
     largest = r
@@ -90,7 +83,6 @@ export const heapMaxHeapify = <T>(nodes: T[], size: number, index: number): void
 
 export const buildMaxHeap = <T>(nodes: T[]): void | never => {
   const size = nodes.length
-
   for (let i = Math.floor(size / 2); 0 <= i; --i) {
     heapMaxHeapify(nodes, size, i)
   }

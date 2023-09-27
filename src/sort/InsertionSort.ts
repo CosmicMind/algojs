@@ -65,11 +65,8 @@
 
 import {
   LinearSort,
-} from '@/utils/sort'
-
-import {
   CompareFn,
-} from '@/utils/compare'
+} from '@/utils'
 
 /**
  * The `insertionSort` algorithm is implemented using generics, which

@@ -41,11 +41,11 @@
 
 import {
   LinearSort,
-} from '@/utils/sort'
+} from '@/utils'
 
 import {
   CompareFn,
-} from '@/utils/compare'
+} from '@/utils'
 
 /**
  * The `selectionSort` algorithm is implemented using generics, which

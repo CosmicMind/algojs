@@ -34,8 +34,4 @@
  * @module Sentinel
  */
 
-/**
- * The `sentinel` value is used to determine
- * leaf nodes within the `Stack`.
- */
-export const SentinelNode = void 0
+export const SentinelNode = undefined
