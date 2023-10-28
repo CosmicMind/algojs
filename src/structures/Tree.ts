@@ -96,7 +96,7 @@ export function treeAppendChild<T extends Tree>(parent: T, node: T): void {
   treeIncreaseSize(parent, node.size)
 }
 
-function treeRemove<T extends Tree>(node: T, compare = TreeCompareFn<T>): void {
+export function treeRemove<T extends Tree>(node: T, compare = TreeCompareFn<T>): void {
   const parent = node.parent as Optional<T>
   if (guard<T>(parent)) {
     listRemove(parent.children as List<T>, node, compare)

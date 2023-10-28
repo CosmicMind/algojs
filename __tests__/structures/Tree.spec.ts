@@ -46,6 +46,7 @@ import {
   listCreate,
   Tree,
   treeCreate,
+  treeRemove,
   treeInsertChild,
   treeAppendChild,
   treeDepth,
@@ -160,6 +161,28 @@ describe('Tree', () => {
     expect(treeIsLastChild(n4, n1)).toBeTruthy()
     expect(treeIsFirstChild(n2, n1)).toBeTruthy()
     expect(n1.size).toBe(4)
+  })
+
+  it('treeRemove', () => {
+    const n1 = createTreeNode(1, 'a')
+    const n2 = createTreeNode(2, 'b')
+    const n3 = createTreeNode(3, 'c')
+    const n4 = createTreeNode(4, 'd')
+
+    treeInsertChild(n1, n2)
+    treeInsertChild(n1, n3)
+    treeInsertChild(n1, n4)
+
+    expect(n1.size).toBe(4)
+
+    treeRemove(n2)
+    expect(n1.size).toBe(3)
+
+    treeRemove(n3)
+    expect(n1.size).toBe(2)
+
+    treeRemove(n1)
+    expect(n1.size).toBe(2)
   })
 
   it('node.size', () => {
