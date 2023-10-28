@@ -137,10 +137,10 @@ describe('Tree', () => {
     treeInsertChild(n1, n3)
     treeInsertChild(n1, n4)
 
-    expect(treeIsFirstChild(n2, n1)).toBeFalsy()
-    expect(treeIsFirstChild(n3, n1)).toBeFalsy()
-    expect(treeIsFirstChild(n4, n1)).toBeTruthy()
-    expect(treeIsLastChild(n2, n1)).toBeTruthy()
+    expect(treeIsFirstChild(n1, n2)).toBeFalsy()
+    expect(treeIsFirstChild(n1, n3)).toBeFalsy()
+    expect(treeIsFirstChild(n1, n4)).toBeTruthy()
+    expect(treeIsLastChild(n1, n2)).toBeTruthy()
     expect(n1.size).toBe(4)
   })
 
@@ -151,17 +151,17 @@ describe('Tree', () => {
     const n4 = createTreeNode(4, 'd')
 
     treeAppendChild(n1, n2)
-    expect(treeIsOnlyChild(n2, n1)).toBeTruthy()
+    expect(treeIsOnlyChild(n1, n2)).toBeTruthy()
 
     treeAppendChild(n1, n3)
-    expect(treeIsOnlyChild(n2, n1)).toBeFalsy()
+    expect(treeIsOnlyChild(n1, n2)).toBeFalsy()
 
     treeAppendChild(n1, n4)
 
-    expect(treeIsLastChild(n2, n1)).toBeFalsy()
-    expect(treeIsLastChild(n3, n1)).toBeFalsy()
-    expect(treeIsLastChild(n4, n1)).toBeTruthy()
-    expect(treeIsFirstChild(n2, n1)).toBeTruthy()
+    expect(treeIsLastChild(n1, n2)).toBeFalsy()
+    expect(treeIsLastChild(n1, n3)).toBeFalsy()
+    expect(treeIsLastChild(n1, n4)).toBeTruthy()
+    expect(treeIsFirstChild(n1, n2)).toBeTruthy()
     expect(n1.size).toBe(4)
   })
 
@@ -227,10 +227,10 @@ describe('Tree', () => {
     const n7 = createTreeNode(7, 'g')
 
     treeInsertChild(n1, n2)
-    expect(treeIsOnlyChild(n2, n1)).toBeTruthy()
+    expect(treeIsOnlyChild(n1, n2)).toBeTruthy()
 
     treeInsertChild(n1, n3)
-    expect(treeIsOnlyChild(n3, n1)).toBeFalsy()
+    expect(treeIsOnlyChild(n1, n3)).toBeFalsy()
 
     treeInsertChild(n1, n4)
     treeInsertChild(n1, n5)

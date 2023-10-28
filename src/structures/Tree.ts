@@ -155,21 +155,21 @@ export function treeIsChild<T extends Tree>(parent: T, node: T, compare = TreeCo
 /**
  * @performance O(1)
  */
-export function treeIsFirstChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
+export function treeIsFirstChild<T extends Tree>(parent: T, node: T, compare = TreeCompareFn<T>): boolean {
   return listIsFirst(parent.children as List<T>, node, compare)
 }
 
 /**
  * @performance O(1)
  */
-export function treeIsLastChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
+export function treeIsLastChild<T extends Tree>(parent: T, node: T, compare = TreeCompareFn<T>): boolean {
   return listIsLast(parent.children as List<T>, node, compare)
 }
 
 /**
  * @performance O(1)
  */
-export function treeIsOnlyChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
+export function treeIsOnlyChild<T extends Tree>(parent: T, node: T, compare = TreeCompareFn<T>): boolean {
   return listIsFirst(parent.children as List<T>, node, compare) && listIsLast(parent.children as List<T>, node, compare)
 }
 
