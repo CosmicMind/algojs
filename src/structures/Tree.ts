@@ -35,6 +35,7 @@
  */
 
 import {
+  Optional,
   assert,
   guard,
 } from '@cosmicmind/foundationjs'
@@ -50,6 +51,7 @@ import {
   listIsLast,
   listInsert,
   listAppend,
+  listRemove,
   listIterateFromFirst,
 } from '@/structures'
 
@@ -79,19 +81,28 @@ export const treeCreate = <T extends Tree>(props?: Omit<T, keyof Tree>): T => ({
 /**
  * @performance O(1)
  */
-export function treeInsertChild<T extends Tree>(insert: T, parent: T): void {
-  insert.parent = parent
-  listInsert(parent.children, insert)
-  treeIncreaseSize(parent, insert.size)
+export function treeInsertChild<T extends Tree>(parent: T, node: T): void {
+  node.parent = parent
+  listInsert(parent.children, node)
+  treeIncreaseSize(parent, node.size)
 }
 
 /**
  * @performance O(1)
  */
-export function treeAppendChild<T extends Tree>(insert: T, parent: T): void {
-  insert.parent = parent
-  listAppend(parent.children, insert)
-  treeIncreaseSize(parent, insert.size)
+export function treeAppendChild<T extends Tree>(parent: T, node: T): void {
+  node.parent = parent
+  listAppend(parent.children, node)
+  treeIncreaseSize(parent, node.size)
+}
+
+function treeRemove<T extends Tree>(node: T, compare = TreeCompareFn<T>): void {
+  const parent = node.parent as Optional<T>
+  if (guard<T>(parent)) {
+    listRemove(parent.children as List<T>, node, compare)
+    treeDecreaseSize(parent, node.size)
+    node.parent = SentinelNode
+  }
 }
 
 /**
@@ -117,7 +128,7 @@ export function treeIsLeaf<T extends Tree>(node: T): boolean {
 /**
  * @performance O(1)
  */
-export function treeIsChild<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
+export function treeIsChild<T extends Tree>(parent: T, node: T, compare = TreeCompareFn<T>): boolean {
   return guard<T>(node.parent) && 0 === compare(node.parent, parent)
 }
 
@@ -145,7 +156,7 @@ export function treeIsOnlyChild<T extends Tree>(node: T, parent: T, compare = Tr
 /**
  * @performance O(h) where h = height of Tree
  */
-export function treeIsChildDeep<T extends Tree>(node: T, parent: T, compare = TreeCompareFn<T>): boolean {
+export function treeIsChildDeep<T extends Tree>(parent: T, node: T, compare = TreeCompareFn<T>): boolean {
   let n = node.parent
   while (guard<T>(n)) {
     if (0 === compare(n, parent)) {

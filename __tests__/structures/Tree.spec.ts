@@ -130,9 +130,9 @@ describe('Tree', () => {
     const n3 = createTreeNode(3, 'c')
     const n4 = createTreeNode(4, 'd')
 
-    treeInsertChild(n2, n1)
-    treeInsertChild(n3, n1)
-    treeInsertChild(n4, n1)
+    treeInsertChild(n1, n2)
+    treeInsertChild(n1, n3)
+    treeInsertChild(n1, n4)
 
     expect(treeIsFirstChild(n2, n1)).toBeFalsy()
     expect(treeIsFirstChild(n3, n1)).toBeFalsy()
@@ -147,13 +147,13 @@ describe('Tree', () => {
     const n3 = createTreeNode(3, 'c')
     const n4 = createTreeNode(4, 'd')
 
-    treeAppendChild(n2, n1)
+    treeAppendChild(n1, n2)
     expect(treeIsOnlyChild(n2, n1)).toBeTruthy()
 
-    treeAppendChild(n3, n1)
+    treeAppendChild(n1, n3)
     expect(treeIsOnlyChild(n2, n1)).toBeFalsy()
 
-    treeAppendChild(n4, n1)
+    treeAppendChild(n1, n4)
 
     expect(treeIsLastChild(n2, n1)).toBeFalsy()
     expect(treeIsLastChild(n3, n1)).toBeFalsy()
@@ -171,16 +171,16 @@ describe('Tree', () => {
     const n6 = createTreeNode(6, 'f')
     const n7 = createTreeNode(7, 'g')
 
-    treeInsertChild(n2, n1)
+    treeInsertChild(n1, n2)
     expect(treeIsOnlyChild(n2, n1)).toBeTruthy()
 
-    treeInsertChild(n3, n1)
+    treeInsertChild(n1, n3)
     expect(treeIsOnlyChild(n3, n1)).toBeFalsy()
 
-    treeInsertChild(n4, n1)
-    treeInsertChild(n5, n1)
-    treeInsertChild(n6, n1)
-    treeInsertChild(n7, n2)
+    treeInsertChild(n1, n4)
+    treeInsertChild(n1, n5)
+    treeInsertChild(n1, n6)
+    treeInsertChild(n2, n7)
 
     expect(n1.size).toBe(7)
     expect(n2.size).toBe(2)
@@ -197,12 +197,12 @@ describe('Tree', () => {
     const n6 = createTreeNode(6, 'f')
     const n7 = createTreeNode(7, 'g')
 
-    treeInsertChild(n2, n1)
-    treeInsertChild(n3, n1)
-    treeInsertChild(n4, n1)
-    treeInsertChild(n5, n1)
-    treeInsertChild(n6, n2)
-    treeInsertChild(n7, n2)
+    treeInsertChild(n1, n2)
+    treeInsertChild(n1, n3)
+    treeInsertChild(n1, n4)
+    treeInsertChild(n1, n5)
+    treeInsertChild(n2, n6)
+    treeInsertChild(n2, n7)
 
     expect(treeDepth(n1)).toBe(0)
     expect(treeDepth(n2)).toBe(1)
@@ -222,12 +222,12 @@ describe('Tree', () => {
     const n6 = createTreeNode(6, 'f')
     const n7 = createTreeNode(7, 'g')
 
-    treeAppendChild(n2, n1)
-    treeAppendChild(n3, n1)
-    treeAppendChild(n4, n1)
-    treeAppendChild(n5, n1)
-    treeAppendChild(n6, n2)
-    treeAppendChild(n7, n2)
+    treeAppendChild(n1, n2)
+    treeAppendChild(n1, n3)
+    treeAppendChild(n1, n4)
+    treeAppendChild(n1, n5)
+    treeAppendChild(n2, n6)
+    treeAppendChild(n2, n7)
 
     const result: Tree[] = []
 
@@ -247,12 +247,12 @@ describe('Tree', () => {
     const n6 = createTreeNode(6, 'f')
     const n7 = createTreeNode(7, 'g')
 
-    treeAppendChild(n2, n1)
-    treeAppendChild(n3, n1)
-    treeAppendChild(n4, n1)
-    treeAppendChild(n5, n1)
-    treeAppendChild(n6, n2)
-    treeAppendChild(n7, n2)
+    treeAppendChild(n1, n2)
+    treeAppendChild(n1, n3)
+    treeAppendChild(n1, n4)
+    treeAppendChild(n1, n5)
+    treeAppendChild(n2, n6)
+    treeAppendChild(n2, n7)
 
     let result = treeQuery(n1, node => 1 === node.key || 3 === node.key)
     expect(result.size).toBe(2)
