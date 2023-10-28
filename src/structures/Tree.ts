@@ -52,6 +52,8 @@ import {
   listInsert,
   listAppend,
   listRemove,
+  listInsertBefore,
+  listInsertAfter,
   listIterateFromFirst,
 } from '@/structures'
 
@@ -84,6 +86,24 @@ export const treeCreate = <T extends Tree>(props?: Omit<T, keyof Tree>): T => ({
 export function treeInsertChild<T extends Tree>(parent: T, node: T): void {
   node.parent = parent
   listInsert(parent.children, node)
+  treeIncreaseSize(parent, node.size)
+}
+
+/**
+ * @performance O(1)
+ */
+export function treeInsertChildBefore<T extends Tree>(parent: T, node: T, before: T, compare = TreeCompareFn<T>): void {
+  node.parent = parent
+  listInsertBefore(parent.children as List<T>, node, before, compare)
+  treeIncreaseSize(parent, node.size)
+}
+
+/**
+ * @performance O(1)
+ */
+export function treeInsertChildAfter<T extends Tree>(parent: T, node: T, after: T, compare = TreeCompareFn<T>): void {
+  node.parent = parent
+  listInsertAfter(parent.children as List<T>, node, after, compare)
   treeIncreaseSize(parent, node.size)
 }
 

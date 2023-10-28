@@ -55,6 +55,8 @@ import {
   treeIsOnlyChild,
   treeIterator,
   treeQuery,
+  treeInsertChildBefore,
+  treeInsertChildAfter,
 } from '@/index'
 
 type A = Tree & {
@@ -183,6 +185,36 @@ describe('Tree', () => {
 
     treeRemove(n1)
     expect(n1.size).toBe(2)
+  })
+
+  it('treeInsertChildBefore', () => {
+    const n1 = createTreeNode(1, 'a')
+    const n2 = createTreeNode(2, 'b')
+    const n3 = createTreeNode(3, 'c')
+    const n4 = createTreeNode(4, 'd')
+
+    treeInsertChild(n1, n2)
+    treeInsertChildBefore(n1, n3, n2)
+    treeInsertChildBefore(n1, n4, n3)
+
+    expect(n1.children.first).toStrictEqual(n4)
+    expect(n4.next).toStrictEqual(n3)
+    expect(n3.next).toStrictEqual(n2)
+  })
+
+  it('treeInsertChildAfter', () => {
+    const n1 = createTreeNode(1, 'a')
+    const n2 = createTreeNode(2, 'b')
+    const n3 = createTreeNode(3, 'c')
+    const n4 = createTreeNode(4, 'd')
+
+    treeInsertChild(n1, n2)
+    treeInsertChildAfter(n1, n3, n2)
+    treeInsertChildAfter(n1, n4, n3)
+
+    expect(n1.children.last).toStrictEqual(n4)
+    expect(n2.next).toStrictEqual(n3)
+    expect(n3.next).toStrictEqual(n4)
   })
 
   it('node.size', () => {
