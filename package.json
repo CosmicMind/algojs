@@ -45,10 +45,10 @@
     "test:coverage": "vitest run --coverage --config vite.config.test.ts --mode ${VITE_MODE:-benchmark}"
   },
   "dependencies": {
-    "@cosmicmind/foundationjs": "^0.0.1-rc-092723-1"
+    "@cosmicmind/foundationjs": "^0.0.1-rc-120323-1"
   },
   "devDependencies": {
-    "@cosmicmind/foundationjs": "^0.0.1-rc-092723-1",
+    "@cosmicmind/foundationjs": "^0.0.1-rc-120323-1",
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@types/node": "^18.17.17",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
