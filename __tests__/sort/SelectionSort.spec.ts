@@ -42,7 +42,7 @@ import {
   numericCompare,
   numericKeyCompare,
   selectionSort,
-} from '@/index'
+} from '@/'
 
 describe('SelectionSort', () => {
   it('string', () => {

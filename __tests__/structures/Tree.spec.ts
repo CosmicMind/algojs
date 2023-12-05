@@ -57,7 +57,7 @@ import {
   treeQuery,
   treeInsertChildBefore,
   treeInsertChildAfter,
-} from '@/index'
+} from '@/'
 
 type A = Tree & {
   key: number

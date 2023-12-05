@@ -59,7 +59,7 @@ import {
   stackIsTop,
   stackHas,
   stackQuery,
-} from '@/index'
+} from '@/'
 
 type StackNode = Stackable & {
   key: number

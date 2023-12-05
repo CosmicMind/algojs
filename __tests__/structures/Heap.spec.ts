@@ -40,7 +40,7 @@ import {
   heapSort,
   buildMaxHeap,
   // buildMinHeap,
-} from '@/index'
+} from '@/'
 
 describe('Heap', () => {
   it('buildMaxHeap', () => {
