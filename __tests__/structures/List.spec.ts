@@ -64,7 +64,7 @@ import {
   listIsLast,
   listHas,
   listQuery,
-} from '@/'
+} from '@/index'
 
 type ListNode = Listable & {
   key: number
