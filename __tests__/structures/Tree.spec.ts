@@ -64,7 +64,7 @@ type A = Tree & {
   value: string
 }
 
-const createTreeNode = (key: number, value: string): A =>
+const createTreeEntry = (key: number, value: string): A =>
   treeCreate({
     key,
     value,
@@ -101,8 +101,8 @@ describe('Tree', () => {
     expect(node.size).toBe(1)
   })
 
-  it('createTreeNode', () => {
-    const node = createTreeNode(1, 'a')
+  it('createTreeEntry', () => {
+    const node = createTreeEntry(1, 'a')
 
     expect(guard(node, 'key', 'value')).toBeTruthy()
     expect(node.parent).toBe(SentinelNode)
@@ -128,10 +128,10 @@ describe('Tree', () => {
   })
 
   it('treeInsertChild', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
 
     treeInsertChild(n1, n2)
     treeInsertChild(n1, n3)
@@ -145,10 +145,10 @@ describe('Tree', () => {
   })
 
   it('treeAppendChild', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
 
     treeAppendChild(n1, n2)
     expect(treeIsOnlyChild(n1, n2)).toBeTruthy()
@@ -166,10 +166,10 @@ describe('Tree', () => {
   })
 
   it('treeRemove', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
 
     treeInsertChild(n1, n2)
     treeInsertChild(n1, n3)
@@ -188,10 +188,10 @@ describe('Tree', () => {
   })
 
   it('treeInsertChildBefore', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
 
     treeInsertChild(n1, n2)
     treeInsertChildBefore(n1, n3, n2)
@@ -203,10 +203,10 @@ describe('Tree', () => {
   })
 
   it('treeInsertChildAfter', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
 
     treeInsertChild(n1, n2)
     treeInsertChildAfter(n1, n3, n2)
@@ -218,13 +218,13 @@ describe('Tree', () => {
   })
 
   it('node.size', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
-    const n5 = createTreeNode(5, 'e')
-    const n6 = createTreeNode(6, 'f')
-    const n7 = createTreeNode(7, 'g')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
+    const n5 = createTreeEntry(5, 'e')
+    const n6 = createTreeEntry(6, 'f')
+    const n7 = createTreeEntry(7, 'g')
 
     treeInsertChild(n1, n2)
     expect(treeIsOnlyChild(n1, n2)).toBeTruthy()
@@ -244,13 +244,13 @@ describe('Tree', () => {
   })
 
   it('treeDepth', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
-    const n5 = createTreeNode(5, 'e')
-    const n6 = createTreeNode(6, 'f')
-    const n7 = createTreeNode(7, 'g')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
+    const n5 = createTreeEntry(5, 'e')
+    const n6 = createTreeEntry(6, 'f')
+    const n7 = createTreeEntry(7, 'g')
 
     treeInsertChild(n1, n2)
     treeInsertChild(n1, n3)
@@ -269,13 +269,13 @@ describe('Tree', () => {
   })
 
   it('treeIterator', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
-    const n5 = createTreeNode(5, 'e')
-    const n6 = createTreeNode(6, 'f')
-    const n7 = createTreeNode(7, 'g')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
+    const n5 = createTreeEntry(5, 'e')
+    const n6 = createTreeEntry(6, 'f')
+    const n7 = createTreeEntry(7, 'g')
 
     treeAppendChild(n1, n2)
     treeAppendChild(n1, n3)
@@ -294,13 +294,13 @@ describe('Tree', () => {
   })
 
   it('treeQuery', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
-    const n5 = createTreeNode(5, 'e')
-    const n6 = createTreeNode(6, 'f')
-    const n7 = createTreeNode(7, 'g')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
+    const n5 = createTreeEntry(5, 'e')
+    const n6 = createTreeEntry(6, 'f')
+    const n7 = createTreeEntry(7, 'g')
 
     treeAppendChild(n1, n2)
     treeAppendChild(n1, n3)

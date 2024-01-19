@@ -46,13 +46,13 @@ import {
   treeCreate,
 } from '@/index'
 
-type TreeNode = Tree & {
+type TreeEntry = Tree & {
   key: number
   value: string
 }
 
-const createTreeNode = (key: number, value: string): TreeNode =>
-  treeCreate<TreeNode>({
+const createTreeEntry = (key: number, value: string): TreeEntry =>
+  treeCreate<TreeEntry>({
     key,
     value,
   })
@@ -199,10 +199,10 @@ describe('InsertionSort', () => {
   })
 
   it('tree sorting', () => {
-    const n1 = createTreeNode(1, 'a')
-    const n2 = createTreeNode(2, 'b')
-    const n3 = createTreeNode(3, 'c')
-    const n4 = createTreeNode(4, 'd')
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
 
     const data = [
       n1,
