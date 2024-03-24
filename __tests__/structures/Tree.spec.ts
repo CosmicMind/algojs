@@ -37,7 +37,6 @@ import {
 } from 'vitest'
 
 import {
-  logger,
   guard,
 } from '@cosmicmind/foundationjs'
 
