@@ -54,7 +54,7 @@ import {
   listRemove,
   listInsertBefore,
   listInsertAfter,
-  listIterateFromFirst,
+  listIterateFromFirst, listRemoveFirst,
 } from '@/structures'
 
 import {
@@ -128,8 +128,8 @@ export function treeRemove<T extends Tree>(node: T, compare = TreeCompareFn<T>):
 /**
  * @performance O(n)
  */
-export const treeDepth = <T extends Tree>(node: T): ReturnType<typeof stackDepth> =>
-  stackDepth(node)
+export const treeDepth = <T extends Tree>(root: T): ReturnType<typeof stackDepth> =>
+  stackDepth(root)
 
 /**
  * @performance O(1)
@@ -190,19 +190,19 @@ export function treeIsChildDeep<T extends Tree>(parent: T, node: T, compare = Tr
 /**
  * @performance O(n)
  */
-export function treeIncreaseSize<T extends Tree>(node: T, size: number): void {
+export function treeIncreaseSize<T extends Tree>(root: T, size: number): void {
   assert(0 < size, 'size must be greater than 0')
-  for (const n of stackIterateFrom(node)) {
-    n.size += size
+  for (const node of stackIterateFrom(root)) {
+    node.size += size
   }
 }
 
 /**
  * @performance O(n)
  */
-export function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
+export function treeDecreaseSize<T extends Tree>(root: T, size: number): void {
   assert(0 < size, 'size must be greater than 0')
-  for (const n of stackIterateFrom(node)) {
+  for (const n of stackIterateFrom(root)) {
     n.size -= size
   }
 }
@@ -210,26 +210,44 @@ export function treeDecreaseSize<T extends Tree>(node: T, size: number): void {
 /**
  * @performance O(n)
  */
-export function *treeIterator<T extends Tree>(node: T): IterableIterator<T> {
-  yield node
-  for (const n of listIterateFromFirst(node.children as List<T>)) {
-    yield *treeIterator(n)
+export function *depthFirstIterator<T extends Tree>(root: T): IterableIterator<T> {
+  yield root
+  for (const n of listIterateFromFirst(root.children as List<T>)) {
+    yield *depthFirstIterator(n)
   }
 }
 
 /**
  * @performance O(n)
  */
-export function treeQuery<T extends Tree>(node: T, ...fn: ((node: T) => boolean)[]): Set<T> {
+export function *breadthFirstIterator<T extends Tree>(root: T): IterableIterator<T> {
+  const queue = listCreate<T>()
+  listAppend(queue, { ...root })
+
+  while (0 < queue.count) {
+    const node = listRemoveFirst(queue) as T
+
+    yield node
+
+    for (const q of listIterateFromFirst(node.children as List<T>)) {
+      listAppend(queue, { ...q })
+    }
+  }
+}
+
+/**
+ * @performance O(n)
+ */
+export function treeQuery<T extends Tree>(root: T, ...fn: ((node: T) => boolean)[]): Set<T> {
   const r = new Set<T>()
-  loop: for (const n of treeIterator(node)) {
+  loop: for (const node of depthFirstIterator(root)) {
     for (const f of fn) {
-      if (f(n)) {
+      if (f(node)) {
         continue
       }
       continue loop
     }
-    r.add(n)
+    r.add(node)
   }
   return r
 }

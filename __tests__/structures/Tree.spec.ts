@@ -37,6 +37,7 @@ import {
 } from 'vitest'
 
 import {
+  logger,
   guard,
 } from '@cosmicmind/foundationjs'
 
@@ -53,7 +54,8 @@ import {
   treeIsFirstChild,
   treeIsLastChild,
   treeIsOnlyChild,
-  treeIterator,
+  depthFirstIterator,
+  breadthFirstIterator,
   treeQuery,
   treeInsertChildBefore,
   treeInsertChildAfter,
@@ -268,7 +270,7 @@ describe('Tree', () => {
     expect(treeDepth(n7)).toBe(2)
   })
 
-  it('treeIterator', () => {
+  it('depthFirstIterator', () => {
     const n1 = createTreeEntry(1, 'a')
     const n2 = createTreeEntry(2, 'b')
     const n3 = createTreeEntry(3, 'c')
@@ -286,11 +288,67 @@ describe('Tree', () => {
 
     const result: Tree[] = []
 
-    for (const n of treeIterator(n1)) {
+    for (const n of depthFirstIterator(n1)) {
       result.push(n)
     }
 
     expect(result).toStrictEqual([ n1, n2, n6, n7, n3, n4, n5 ])
+  })
+
+  it('breadthFirstIterator', () => {
+    const n1 = createTreeEntry(1, 'a')
+    const n2 = createTreeEntry(2, 'b')
+    const n3 = createTreeEntry(3, 'c')
+    const n4 = createTreeEntry(4, 'd')
+    const n5 = createTreeEntry(5, 'e')
+    const n6 = createTreeEntry(6, 'f')
+    const n7 = createTreeEntry(7, 'g')
+    const n8 = createTreeEntry(8, 'h')
+    const n9 = createTreeEntry(9, 'i')
+    const n10 = createTreeEntry(10, 'j')
+    const n11 = createTreeEntry(11, 'k')
+    const n12 = createTreeEntry(12, 'l')
+    const n13 = createTreeEntry(13, 'm')
+    const n14 = createTreeEntry(14, 'n')
+    const n15 = createTreeEntry(15, 'o')
+    const n16 = createTreeEntry(16, 'p')
+    const n17 = createTreeEntry(17, 'q')
+    const n18 = createTreeEntry(18, 'r')
+    const n19 = createTreeEntry(19, 'j')
+
+    treeAppendChild(n1, n2)
+    treeAppendChild(n1, n3)
+    treeAppendChild(n1, n4)
+    treeAppendChild(n1, n5)
+
+    treeAppendChild(n2, n6)
+    treeAppendChild(n2, n7)
+
+    treeAppendChild(n3, n8)
+    treeAppendChild(n3, n9)
+    treeAppendChild(n3, n10)
+
+    treeAppendChild(n4, n11)
+    treeAppendChild(n4, n12)
+    treeAppendChild(n4, n13)
+
+    treeAppendChild(n5, n14)
+    treeAppendChild(n5, n15)
+
+    treeAppendChild(n10, n16)
+    treeAppendChild(n10, n17)
+
+    treeAppendChild(n11, n18)
+    treeAppendChild(n11, n19)
+
+
+    const result = []
+
+    for (const n of breadthFirstIterator(n1)) {
+      result.push(n.key)
+    }
+
+    expect(result).toStrictEqual([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ])
   })
 
   it('treeQuery', () => {
