@@ -1,8 +1,14 @@
 {
   "name": "@cosmicmind/algojs",
-  "version": "0.0.1-rc-011825-2",
+  "version": "0.0.1-rc-030725-2",
   "description": "A TypeScript library featuring algorithms and data structures.",
-  "keywords": ["typescript", "algorithms", "data-structures", "cosmicmind", "algojs"],
+  "keywords": [
+    "typescript",
+    "algorithms",
+    "data-structures",
+    "cosmicmind",
+    "algojs"
+  ],
   "author": {
     "name": "Daniel Jonathan",
     "email": "daniel@cosmicverse.org"
@@ -43,24 +49,24 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@cosmicmind/foundationjs": "^0.0.1-rc-011825-1.2",
+    "@cosmicmind/foundationjs": "^0.0.1-rc-030725-1",
     "npm-run-all": "^4.1.5",
     "tslib": "^2.8.1",
-    "typescript": "^5.7.3",
-    "vite": "^6.0.7",
-    "vite-plugin-dts": "^4.5.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.1",
+    "vite-plugin-dts": "^4.5.3",
     "vitest": "^3.0.2"
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
-    "@types/node": "^22.10.2",
-    "@typescript-eslint/eslint-plugin": "^8.20.0",
-    "@typescript-eslint/parser": "^8.20.0",
-    "@vitest/coverage-v8": "^3.0.2",
-    "eslint": "^9.18.0",
-    "eslint-import-resolver-typescript": "^3.7.0",
+    "@types/node": "^22.13.9",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
+    "@vitest/coverage-v8": "^3.0.8",
+    "eslint": "^9.21.0",
+    "eslint-import-resolver-typescript": "^3.8.3",
     "eslint-plugin-import": "^2.31.0",
-    "terser": "^5.37.0",
+    "terser": "^5.39.0",
     "ts-node": "^10.9.2"
   }
 }
