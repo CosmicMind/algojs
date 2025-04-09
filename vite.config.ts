@@ -45,10 +45,20 @@ import {
 import dts from 'vite-plugin-dts'
 
 export default ({ mode }: ConfigEnv): UserConfigExport => {
+    const env = process.env
+
+    const define = {
+        BUILD_TARGET: JSON.stringify(`${env['BUILD_TARGET']}`),
+    }
+
     const name = process.env.npm_package_name
     const srcDir = 'src'
     const entry = `${srcDir}/index.ts`
     const fileName = 'lib-[format]'
+    const distDir = 'dist'
+    const outDir = `${distDir}`
+    const testsDir = '__tests__'
+    const benchmarksDir = '__benchmarks__'
     const formats: LibraryFormats[] = [ 'es', 'cjs' ]
     const emptyOutDir = true
     const minify = 'production' === mode ? 'terser' : false
@@ -70,12 +80,13 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
             alias,
         },
         esbuild: {
-            minifyIdentifiers: true,
             keepNames: true,
+            minifyIdentifiers: true,
         },
         plugins,
         build: {
             minify,
+            outDir,
             emptyOutDir,
             lib: {
                 name,
@@ -85,6 +96,32 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
             },
             rollupOptions: {
                 external,
+            },
+        },
+        test: {
+            globals: true,
+            environment: 'jsdom',
+            include: [
+                `**/${testsDir}/**/*.test.ts`
+            ],
+            benchmark: {
+                include: [`${benchmarksDir}/**/*.bench.ts`],
+                outputFile: `${distDir}/benchmarks.json`,
+            },
+            coverage: {
+                provider: 'v8',
+                include: [`**/${srcDir}/**`],
+                extension: ['.ts'],
+            },
+            browser: {
+                enabled: 'feature' === define.BUILD_TARGET,
+                name: 'chromium',
+            },
+            environmentOptions: {
+                jsdom: {
+                    pretendToBeVisual: true,
+                    resources: 'usable',
+                },
             },
         },
     })

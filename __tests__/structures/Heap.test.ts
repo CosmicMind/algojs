@@ -31,7 +31,7 @@
  */
 
 import {
-    it,
+    test,
     expect,
     describe,
 } from 'vitest'
@@ -43,21 +43,22 @@ import {
 } from '@/index'
 
 describe('Heap', () => {
-    it('buildMaxHeap', () => {
+    test('buildMaxHeap', () => {
         const nodes = [ 4, 1, 3, 2, 16, 9, 10, 14, 8, 7 ]
         buildMaxHeap(nodes)
 
         expect(nodes).toStrictEqual([ 16, 14, 10, 8, 7, 9, 3, 2, 4, 1 ])
     })
 
-    // it('buildMinHeap', () => {
+    // ToDo: Needs implementation
+    // test('buildMinHeap', () => {
     //   const nodes = [ 4, 1, 3, 2, 16, 9, 10, 14, 8, 7 ]
     //   buildMinHeap(nodes)
     //
     //   expect(nodes).toStrictEqual([ 1, 4, 2, 3, 9, 7, 8, 10, 14, 16 ])
     // })
 
-    it('heapSort', () => {
+    test('heapSort', () => {
         const nodes = [ 4, 1, 3, 2, 16, 9, 10, 14, 8, 7 ]
         heapSort(nodes)
 

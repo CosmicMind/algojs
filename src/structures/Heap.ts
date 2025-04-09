@@ -81,24 +81,25 @@ export const heapMaxHeapify = <T>(nodes: T[], size: number, index= 0): void | ne
     }
 }
 
-export const heapMinHeapify = <T>(nodes: T[], size: number, index= 0): void | never => {
-    assert(0 <= size, 'size must be 0 or greater')
-    assert(0 <= index, 'index must be 0 or greater')
-
-    const left = heapLeft(index)
-    const right = heapRight(index)
-
-    let largest = left < size && nodes[left] > nodes[index] ? left : index
-
-    if (right < size && nodes[right] > nodes[largest]) {
-        largest = right
-    }
-
-    if (index !== largest) {
-        heapSwapAt(nodes, index, largest)
-        heapMaxHeapify(nodes, size, largest)
-    }
-}
+// ToDo: Implement
+// export const heapMinHeapify = <T>(nodes: T[], size: number, index= 0): void | never => {
+//     assert(0 <= size, 'size must be 0 or greater')
+//     assert(0 <= index, 'index must be 0 or greater')
+//
+//     const left = heapLeft(index)
+//     const right = heapRight(index)
+//
+//     let largest = left < size && nodes[left] > nodes[index] ? left : index
+//
+//     if (right < size && nodes[right] > nodes[largest]) {
+//         largest = right
+//     }
+//
+//     if (index !== largest) {
+//         heapSwapAt(nodes, index, largest)
+//         heapMaxHeapify(nodes, size, largest)
+//     }
+// }
 
 export const buildMaxHeap = <T>(nodes: T[]): void | never => {
     const size = nodes.length
@@ -107,12 +108,12 @@ export const buildMaxHeap = <T>(nodes: T[]): void | never => {
     }
 }
 
-export const buildMinHeap = <T>(nodes: T[]): void | never => {
-    const size = nodes.length
-    for (let i = Math.floor(size / 2); 0 <= i; --i) {
-        heapMinHeapify(nodes, size, i)
-    }
-}
+// export const buildMinHeap = <T>(nodes: T[]): void | never => {
+//     const size = nodes.length
+//     for (let i = Math.floor(size / 2); 0 <= i; --i) {
+//         heapMinHeapify(nodes, size, i)
+//     }
+// }
 
 export const heapSort = <T>(nodes: T[]): void | never => {
     buildMaxHeap(nodes)
