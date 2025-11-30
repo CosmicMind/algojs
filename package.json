@@ -1,6 +1,6 @@
 {
   "name": "@cosmicmind/algojs",
-  "version": "0.0.1-rc-112925-2",
+  "version": "0.0.1-rc-112925-2-1",
   "description": "A TypeScript library featuring algorithms and data structures.",
   "keywords": [
     "typescript",
@@ -16,7 +16,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cosmicmind/algojs.git"
+    "url": "git+https://github.com/cosmicmind/algojs.git"
   },
   "publishConfig": {
     "access": "public"
