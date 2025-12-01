@@ -1,6 +1,6 @@
 {
   "name": "@cosmicmind/algojs",
-  "version": "0.0.1-rc-112925-2-1",
+  "version": "0.0.1-rc-113025-2",
   "description": "A TypeScript library featuring algorithms and data structures.",
   "keywords": [
     "typescript",
@@ -49,7 +49,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@cosmicmind/foundationjs": "^0.0.1-rc-112925-1",
+    "@cosmicmind/foundationjs": "0.0.1-rc-113025-1",
     "vite": "^7.2.4",
     "vite-plugin-dts": "^4.5.4"
   },
