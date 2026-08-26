@@ -39,28 +39,18 @@ import {
     PluginOption,
     LibraryFormats,
     ConfigEnv,
-} from 'vite'
-import {
     defineConfig,
-    ViteUserConfigExport,
-} from 'vitest/config'
+    UserConfigExport,
+} from 'vite'
 import dts from 'vite-plugin-dts'
 
-export default ({ mode }: ConfigEnv): ViteUserConfigExport => {
-    const env = process.env
-
-    const define = {
-        BUILD_TARGET: JSON.stringify(`${env['BUILD_TARGET']}`),
-    }
-
+export default ({ mode }: ConfigEnv): UserConfigExport => {
     const name = process.env.npm_package_name
     const srcDir = 'src'
     const entry = `${srcDir}/index.ts`
     const fileName = 'lib-[format]'
     const distDir = 'dist'
     const outDir = `${distDir}`
-    const testsDir = '__tests__'
-    const benchmarksDir = '__benchmarks__'
     const formats: LibraryFormats[] = [ 'es', 'cjs' ]
     const emptyOutDir = true
     const minify = 'production' === mode ? 'terser' : false
@@ -96,31 +86,6 @@ export default ({ mode }: ConfigEnv): ViteUserConfigExport => {
                 external,
                 output: {
                     keepNames: true,
-                },
-            },
-        },
-        test: {
-            globals: true,
-            environment: 'jsdom',
-            include: [
-                `**/${testsDir}/**/*.test.ts`
-            ],
-            benchmark: {
-                include: [`${benchmarksDir}/**/*.bench.ts`],
-                outputFile: `${distDir}/benchmarks.json`,
-            },
-            coverage: {
-                provider: 'v8',
-                include: [`**/${srcDir}/**`],
-            },
-            browser: {
-                enabled: 'feature' === define.BUILD_TARGET,
-                name: 'chromium',
-            },
-            environmentOptions: {
-                jsdom: {
-                    pretendToBeVisual: true,
-                    resources: 'usable',
                 },
             },
         },

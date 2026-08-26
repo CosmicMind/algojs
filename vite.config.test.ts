@@ -55,7 +55,9 @@ export default defineConfig({
         alias,
     },
     test: {
-        include: [ `${testsDir}/**/*.spec.ts` ],
+        globals: true,
+        environment: 'jsdom',
+        include: [ `${testsDir}/**/*.test.ts` ],
         benchmark: {
             include: [ `${benchmarksDir}/**/*.bench.ts` ],
             outputFile: `${distDir}/benchmarks.json`,
@@ -63,6 +65,12 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             include: [ `**/${srcDir}/**` ],
+        },
+        environmentOptions: {
+            jsdom: {
+                pretendToBeVisual: true,
+                resources: 'usable',
+            },
         },
     },
 })

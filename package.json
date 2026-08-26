@@ -45,9 +45,9 @@
     "develop": "npm run develop:lib",
     "develop:lib": "vite build --config vite.config.ts --mode development",
     "watch": "vite build --watch --config vite.config.ts --mode development",
-    "test": "vitest run",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage"
+    "test": "vitest run --config vite.config.test.ts",
+    "test:watch": "vitest --watch --config vite.config.test.ts",
+    "test:coverage": "vitest run --coverage --config vite.config.test.ts"
   },
   "dependencies": {
     "@cosmicmind/foundationjs": "0.0.1-rc-082626-1",
