@@ -39,12 +39,14 @@ import {
     PluginOption,
     LibraryFormats,
     ConfigEnv,
-    defineConfig,
-    UserConfigExport,
 } from 'vite'
+import {
+    defineConfig,
+    ViteUserConfigExport,
+} from 'vitest/config'
 import dts from 'vite-plugin-dts'
 
-export default ({ mode }: ConfigEnv): UserConfigExport => {
+export default ({ mode }: ConfigEnv): ViteUserConfigExport => {
     const env = process.env
 
     const define = {
@@ -72,16 +74,12 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
     ]
 
     const plugins = [
-        dts()
+        dts({ include: [srcDir] })
     ] as PluginOption[]
 
     return defineConfig({
         resolve: {
             alias,
-        },
-        esbuild: {
-            keepNames: true,
-            minifyIdentifiers: true,
         },
         plugins,
         build: {
@@ -94,8 +92,11 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
                 formats,
                 fileName,
             },
-            rollupOptions: {
+            rolldownOptions: {
                 external,
+                output: {
+                    keepNames: true,
+                },
             },
         },
         test: {
@@ -111,7 +112,6 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
             coverage: {
                 provider: 'v8',
                 include: [`**/${srcDir}/**`],
-                extension: ['.ts'],
             },
             browser: {
                 enabled: 'feature' === define.BUILD_TARGET,
